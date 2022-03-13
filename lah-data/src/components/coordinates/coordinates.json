@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_coordinates_coordinates",
+  "info": {
+    "displayName": "Coordinates",
+    "icon": "arrows-alt"
+  },
+  "options": {},
+  "attributes": {
+    "longitude": {
+      "type": "float"
+    },
+    "latitude": {
+      "type": "float"
+    }
+  }
+}

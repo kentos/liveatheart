@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "venues",
+  "info": {
+    "singularName": "venue",
+    "pluralName": "venues",
+    "displayName": "Venue",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "coordinates": {
+      "type": "component",
+      "repeatable": false,
+      "component": "coordinates.coordinates"
+    }
+  }
+}
