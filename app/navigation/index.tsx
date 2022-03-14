@@ -12,16 +12,15 @@ import TabTwoScreen from '../screens/TabTwoScreen';
 import ArtistsList from '../features/artists/list/ArtistsList';
 import ArtistDetails from '../features/artists/details/ArtistDetails';
 import { RootStackParamList, RootTabParamList } from '../types';
-import LinkingConfiguration from './LinkingConfiguration';
-import FavoritesList from '../features/favorites/FavoritesList';
+// import LinkingConfiguration from './LinkingConfiguration';
+// import FavoritesList from '../features/favorites/FavoritesList';
 import MapView from '../features/mapview/MapView';
 import Schedule from '../features/schedule/Schedule';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
     <NavigationContainer
-      linking={LinkingConfiguration}
-      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+      theme={{ ...DefaultTheme, colors: { ...DefaultTheme.colors, background: '#fafafa' } }}
     >
       <RootNavigator />
     </NavigationContainer>
