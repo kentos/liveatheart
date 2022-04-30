@@ -31,7 +31,8 @@ export type RootTabParamList = {
   MyFavorites: undefined;
   MapView: undefined;
   Schedule: undefined;
-  TabFour: undefined;
+  Offers: undefined;
+  News: undefined;
   More: undefined;
 };
 

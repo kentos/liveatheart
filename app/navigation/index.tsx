@@ -1,23 +1,26 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { ColorSchemeName } from 'react-native';
+import { Image } from 'react-native';
 
 import Colors from '../constants/Colors';
-import useColorScheme from '../hooks/useColorScheme';
 import ModalScreen from '../screens/ModalScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
-import ArtistsList from '../features/artists/list/ArtistsList';
+
 import ArtistDetails from '../features/artists/details/ArtistDetails';
 import { RootStackParamList, RootTabParamList } from '../types';
-// import LinkingConfiguration from './LinkingConfiguration';
-// import FavoritesList from '../features/favorites/FavoritesList';
+import LinkingConfiguration from './LinkingConfiguration';
+import FavoritesList from '../features/favorites/FavoritesList';
 import MapView from '../features/mapview/MapView';
 import Schedule from '../features/schedule/Schedule';
+import OffersList from '../features/offers/OffersList';
+import Offer from '../features/offers/OfferDetails';
+import OffersNavigator from '../features/offers/OffersNavigator';
+import ArtistsList from '../features/artists/list/ArtistsList';
 
-export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
+export default function Navigation() {
   return (
     <NavigationContainer
       theme={{ ...DefaultTheme, colors: { ...DefaultTheme.colors, background: '#fafafa' } }}
@@ -31,7 +34,18 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#fff',
+        },
+        headerTitleStyle: {
+          color: Colors.light.tint,
+          fontFamily: 'HelveticaNeue',
+          fontWeight: '400',
+        },
+      }}
+    >
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Group screenOptions={{ presentation: 'card' }}>
         <Stack.Screen
@@ -50,19 +64,24 @@ function RootNavigator() {
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
-  const colorScheme = useColorScheme();
-
   return (
     <BottomTab.Navigator
       initialRouteName="ArtistsList"
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].tint,
+        headerLeft: () => (
+          <Image
+            source={require('../assets/images/lah-logo.png')}
+            style={{ width: 52, height: 40, marginLeft: 8 }}
+          />
+        ),
+        tabBarActiveTintColor: Colors.light.tint,
         tabBarStyle: {
           borderTopWidth: 0,
         },
         headerStyle: {
-          backgroundColor: '#fff',
-          shadowColor: 'transparent',
+          // backgroundColor: '#fff',
+          //shadowColor: 'transparent',
+          height: 90,
         },
         headerTitleStyle: {
           color: Colors.light.tint,
@@ -91,14 +110,14 @@ function BottomTabNavigator() {
           tabBarIcon: ({ color }) => <TabBarIcon name="map" color={color} />,
         }}
       />
-      {/* <BottomTab.Screen
+      <BottomTab.Screen
         name="MyFavorites"
         component={FavoritesList}
         options={{
           title: 'Mina artister',
           tabBarIcon: ({ color }) => <TabBarIcon name="heart-o" color={color} />,
         }}
-      /> */}
+      />
       <BottomTab.Screen
         name="Schedule"
         component={Schedule}
@@ -108,7 +127,15 @@ function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="TabFour"
+        name="Offers"
+        component={OffersNavigator}
+        options={{
+          title: 'Erbjudanden',
+          tabBarIcon: ({ color }) => <TabBarIcon name="newspaper-o" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="News"
         component={TabTwoScreen}
         options={{
           title: 'Nyheter',
@@ -119,7 +146,7 @@ function BottomTabNavigator() {
         name="More"
         component={TabTwoScreen}
         options={{
-          title: 'More',
+          title: 'Mer',
           tabBarIcon: ({ color }) => <TabBarIcon name="bars" color={color} />,
         }}
       />
