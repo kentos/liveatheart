@@ -1,19 +1,29 @@
 import { Pressable, View, StyleSheet, ViewStyle } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import { useCallback } from 'react';
 
 interface CloseButtonProps {
   back?: boolean;
   style?: ViewStyle;
-  onPress: () => void;
+  onPress?: () => void;
 }
 
 function CloseButton({ back = false, style, onPress }: CloseButtonProps) {
+  const navigation = useNavigation();
+  const onPressFn = useCallback(() => {
+    if (onPress) {
+      onPress();
+    } else if (back) {
+      navigation.goBack();
+    }
+  }, [onPress, navigation]);
   return (
-    <Pressable style={({ pressed }) => [pressed && { opacity: 0.8 }, style]} onPress={onPress}>
+    <Pressable style={({ pressed }) => [pressed && { opacity: 0.8 }, style]} onPress={onPressFn}>
       <View style={styles.wrapper}>
         <FontAwesome
-          size={24}
-          style={[back && { marginLeft: 2 }, { width: 24, height: 24 }]}
+          size={20}
+          style={[back && { marginLeft: 2 }, { width: 20, height: 20 }]}
           name={back ? 'chevron-left' : 'close'}
         />
       </View>

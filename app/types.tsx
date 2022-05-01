@@ -7,6 +7,7 @@ import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ArtistDetailsParams } from './features/artists/details/ArtistDetails';
+import { NewsDetailsParams } from './features/news/NewsDetails';
 
 declare global {
   namespace ReactNavigation {
@@ -19,6 +20,7 @@ export type RootStackParamList = {
   Modal: undefined;
   NotFound: undefined;
   ArtistDetails: ArtistDetailsParams;
+  NewsDetails: NewsDetailsParams;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
