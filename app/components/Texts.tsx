@@ -1,7 +1,8 @@
+import Colors from '../constants/Colors';
 import { Text, TextProps } from './Themed';
 
 export function Headline(props: TextProps) {
-  return <Text style={{ fontSize: 24, lineHeight: 32, textTransform: 'capitalize' }} {...props} />;
+  return <Text style={{ fontSize: 24, lineHeight: 32, color: Colors.light.tint }} {...props} />;
 }
 
 export function Title(props: TextProps) {

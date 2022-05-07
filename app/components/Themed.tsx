@@ -23,6 +23,7 @@ export function useThemeColor(
 }
 
 type ThemeProps = {
+  bold?: boolean;
   lightColor?: string;
   darkColor?: string;
 };
@@ -34,7 +35,12 @@ export function Text(props: TextProps) {
   const { style, lightColor, darkColor, ...otherProps } = props;
   const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
 
-  return <DefaultText style={[{ color, fontFamily: 'HelveticaNeue' }, style]} {...otherProps} />;
+  return (
+    <DefaultText
+      style={[{ color, fontFamily: 'HelveticaNeue' }, style, props.bold && { fontWeight: 'bold' }]}
+      {...otherProps}
+    />
+  );
 }
 
 export function View(props: ViewProps) {
