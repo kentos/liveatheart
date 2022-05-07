@@ -24,6 +24,7 @@ export type RootStackParamList = {
   Tickets: undefined;
   WebView: WebViewProps;
   DealDetails: { dealid: string };
+  AboutApp: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

@@ -23,6 +23,7 @@ import CloseButton from '../components/CloseButton';
 import More from '../features/more/More';
 import Tickets from '../features/more/Tickets/Tickets';
 import WebView from '../features/webview/WebView';
+import AboutApp from '../features/more/AboutApp';
 
 export default function Navigation() {
   return (
@@ -91,6 +92,7 @@ function RootNavigator() {
         <Stack.Screen name="Modal" component={ModalScreen} />
         <Stack.Screen name="Tickets" component={Tickets} />
         <Stack.Screen name="WebView" component={WebView} />
+        <Stack.Screen name="AboutApp" component={AboutApp} options={{ title: 'About this app' }} />
       </Stack.Group>
     </Stack.Navigator>
   );

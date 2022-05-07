@@ -29,8 +29,16 @@ function More() {
   return (
     <ScrollView>
       <Item title="Buy tickets" onPress={() => navigation.navigate('Tickets')} />
-      <Item title="About Live at Heart" />
-      <Item title="About the app" />
+      <Item
+        title="About Live at Heart"
+        onPress={() =>
+          navigation.navigate('WebView', {
+            url: 'https://liveatheart.se/about/',
+            title: 'About Live At Heart',
+          })
+        }
+      />
+      <Item title="About the app" onPress={() => navigation.navigate('AboutApp')} />
     </ScrollView>
   );
 }
