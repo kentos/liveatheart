@@ -1,13 +1,22 @@
-import { RouteProp, useRoute } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { useLayoutEffect } from 'react';
 import { Image, ScrollView, StyleSheet, View } from 'react-native';
 import { Body, Headline } from '../../components/Texts';
 import { DealsStackParamList } from './DealsNavigator';
 import useDeals from './useDeals';
 
 function DealDetails() {
+  const navigation = useNavigation();
   const route = useRoute<RouteProp<DealsStackParamList, 'DealDetails'>>();
   const dealid = route.params.dealid;
   const { deal } = useDeals(dealid);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: deal?.title,
+    });
+  }, [deal]);
+
   return (
     <>
       <ScrollView>
