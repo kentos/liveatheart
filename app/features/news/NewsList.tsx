@@ -11,14 +11,14 @@ interface NewsItemProps {
 function NewsItem({ news }: NewsItemProps) {
   const navigation = useNavigation();
   const goTo = useCallback(() => {
-    navigation.navigate('NewsDetails', { id: news.id });
+    navigation.navigate('WebView', { url: news.link, title: news.title });
   }, [navigation, news.id]);
   return (
     <Pressable onPress={goTo}>
+      <Image source={{ uri: news.image }} style={{ width: '100%', height: 200 }} />
       <View style={{ marginHorizontal: 8, marginVertical: 16 }}>
         <Headline>{news.title}</Headline>
       </View>
-      <Image source={{ uri: news.image }} style={{ width: '100%', height: 200 }} />
     </Pressable>
   );
 }

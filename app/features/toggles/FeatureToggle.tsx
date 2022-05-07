@@ -3,13 +3,13 @@ import React, { ReactNode, useEffect, useState } from 'react';
 interface FeatureToggle {
   artists: boolean;
   schedule: boolean;
-  offers: boolean;
+  deals: boolean;
 }
 
 const defaultState = {
   artists: true,
   schedule: true,
-  offers: true,
+  deals: true,
 };
 
 export const FeatureToggleContext = React.createContext<FeatureToggle>(defaultState);
@@ -25,7 +25,7 @@ function FeatureToggleProvider({ children }: FeatureToggleProviderProps) {
       setFeatures({
         artists: false,
         schedule: false,
-        offers: true,
+        deals: true,
       });
     }, 15);
   }, []);

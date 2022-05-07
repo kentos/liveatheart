@@ -14,7 +14,7 @@ function CloseButton({ back = false, style, onPress }: CloseButtonProps) {
   const onPressFn = useCallback(() => {
     if (onPress) {
       onPress();
-    } else if (back) {
+    } else {
       navigation.goBack();
     }
   }, [onPress, navigation]);

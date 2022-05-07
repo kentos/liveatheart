@@ -4,16 +4,16 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CloseButton from '../../components/CloseButton';
 import Colors from '../../constants/Colors';
 import { HEADER_HEIGHT } from '../../helpers/header';
-import OfferDetails from './OfferDetails';
-import OffersList from './OffersList';
+import DealDetails from './DealDetails';
+import DealsList from './DealsList';
 
-export type OffersStackParamList = {
-  OffersList: undefined;
-  OfferDetails: { offerid: string };
+export type DealsStackParamList = {
+  DealsList: undefined;
+  DealDetails: { dealid: string };
 };
 
-const Stack = createStackNavigator<OffersStackParamList>();
-function OffersNavigator() {
+const Stack = createStackNavigator<DealsStackParamList>();
+function DealsNavigator() {
   const insets = useSafeAreaInsets();
   return (
     <Stack.Navigator
@@ -38,10 +38,10 @@ function OffersNavigator() {
         },
       }}
     >
-      <Stack.Screen name="OffersList" component={OffersList} options={{ title: 'Offers' }} />
-      <Stack.Screen name="OfferDetails" component={OfferDetails} options={{ title: 'Offer' }} />
+      <Stack.Screen name="DealsList" component={DealsList} options={{ title: 'Deals' }} />
+      <Stack.Screen name="DealDetails" component={DealDetails} options={{ title: 'Deal' }} />
     </Stack.Navigator>
   );
 }
 
-export default OffersNavigator;
+export default DealsNavigator;

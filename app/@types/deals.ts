@@ -1,4 +1,4 @@
-interface Offer {
+interface Deal {
   id: string;
   title: string;
   image: string;

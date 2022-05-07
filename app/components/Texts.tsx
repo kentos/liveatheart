@@ -8,6 +8,6 @@ export function Title(props: TextProps) {
   return <Text style={{ fontSize: 18, textTransform: 'capitalize' }} {...props} />;
 }
 
-export function Body(props: TextProps) {
-  return <Text style={{ fontSize: 16, lineHeight: 22 }} {...props} />;
+export function Body(props: { color?: string } & TextProps) {
+  return <Text style={{ fontSize: 16, lineHeight: 22, color: props.color }} {...props} />;
 }

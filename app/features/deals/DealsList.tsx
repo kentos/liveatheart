@@ -1,14 +1,14 @@
 import { useNavigation } from '@react-navigation/native';
 import { Image, View, FlatList, Pressable } from 'react-native';
 import { Text } from '../../components/Themed';
-import useOffers from './useOffers';
+import useDeals from './useDeals';
 
-function OfferItem({ offer }: { offer: Offer }) {
+function DealItem({ deal }: { deal: Deal }) {
   const navigation = useNavigation();
   return (
-    <Pressable onPress={() => navigation.navigate('OfferDetails', { offerid: offer.id })}>
+    <Pressable onPress={() => navigation.navigate('DealDetails', { dealid: deal.id })}>
       <View style={{ width: '100%', height: 200 }}>
-        <Image source={{ uri: offer.image }} style={{ width: '100%', height: 200 }} />
+        <Image source={{ uri: deal.image }} style={{ width: '100%', height: 200 }} />
         <View
           style={{
             position: 'absolute',
@@ -20,7 +20,7 @@ function OfferItem({ offer }: { offer: Offer }) {
           }}
         >
           <Text style={{ textTransform: 'capitalize', color: '#fff', fontSize: 16 }}>
-            {offer.title}
+            {deal.title}
           </Text>
         </View>
       </View>
@@ -28,15 +28,15 @@ function OfferItem({ offer }: { offer: Offer }) {
   );
 }
 
-function OffersList() {
-  const { offers } = useOffers();
+function DealsList() {
+  const { deals } = useDeals();
   return (
     <FlatList
-      data={offers}
+      data={deals}
       keyExtractor={(item) => item.id}
-      renderItem={({ item }) => <OfferItem offer={item} />}
+      renderItem={({ item }) => <DealItem deal={item} />}
     />
   );
 }
 
-export default OffersList;
+export default DealsList;

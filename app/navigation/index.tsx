@@ -7,21 +7,22 @@ import { Image } from 'react-native';
 
 import Colors from '../constants/Colors';
 import ModalScreen from '../screens/ModalScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
 
 import ArtistDetails from '../features/artists/details/ArtistDetails';
 import { RootStackParamList, RootTabParamList } from '../types';
 import FavoritesList from '../features/favorites/FavoritesList';
 import MapView from '../features/mapview/MapView';
 import Schedule from '../features/schedule/Schedule';
-import OffersNavigator from '../features/offers/OffersNavigator';
+import DealsNavigator from '../features/deals/DealsNavigator';
 import ArtistsList from '../features/artists/list/ArtistsList';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HEADER_HEIGHT } from '../helpers/header';
 import useFeatureToggle from '../features/toggles/useFeatureToggle';
 import NewsList from '../features/news/NewsList';
-import NewsDetails from '../features/news/NewsDetails';
 import CloseButton from '../components/CloseButton';
+import More from '../features/more/More';
+import Tickets from '../features/more/Tickets/Tickets';
+import WebView from '../features/webview/WebView';
 
 export default function Navigation() {
   return (
@@ -80,10 +81,16 @@ function RootNavigator() {
           options={{ headerShown: false }}
           component={ArtistDetails}
         />
-        <Stack.Screen name="NewsDetails" component={NewsDetails} />
       </Stack.Group>
-      <Stack.Group screenOptions={{ presentation: 'modal' }}>
+      <Stack.Group
+        screenOptions={{
+          presentation: 'modal',
+          headerLeft: () => <CloseButton style={{ marginLeft: 8 }} />,
+        }}
+      >
         <Stack.Screen name="Modal" component={ModalScreen} />
+        <Stack.Screen name="Tickets" component={Tickets} />
+        <Stack.Screen name="WebView" component={WebView} />
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -164,12 +171,12 @@ function BottomTabNavigator() {
           }}
         />
       )}
-      {features.offers && (
+      {features.deals && (
         <BottomTab.Screen
-          name="Offers"
-          component={OffersNavigator}
+          name="Deals"
+          component={DealsNavigator}
           options={{
-            title: 'Offers',
+            title: 'Deals',
             tabBarIcon: ({ color }) => <TabBarIcon name="newspaper-o" color={color} />,
             headerShown: false,
             lazy: false,
@@ -187,7 +194,7 @@ function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="More"
-        component={TabTwoScreen}
+        component={More}
         options={{
           title: 'More',
           tabBarIcon: ({ color }) => <TabBarIcon name="bars" color={color} />,
