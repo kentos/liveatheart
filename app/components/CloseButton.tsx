@@ -23,7 +23,7 @@ function CloseButton({ back = false, style, onPress }: CloseButtonProps) {
       <View style={styles.wrapper}>
         <FontAwesome
           size={20}
-          style={[back && { marginLeft: 2 }, { width: 20, height: 20 }]}
+          style={[{ marginLeft: 2 }, { width: 20, height: 20 }]}
           name={back ? 'chevron-left' : 'close'}
         />
       </View>
