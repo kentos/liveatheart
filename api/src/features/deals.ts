@@ -1,9 +1,7 @@
 import { ulid } from 'ulid';
 
-const allDeals = require('../data/deals.json')
-
 function getAllDeals() {
-  return allDeals;
+  return require('../data/deals.json');
 }
 
 export {

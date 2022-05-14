@@ -1,7 +1,5 @@
-const mock = require('../data/news.json')
-
 async function getAllNews() {
-  return mock
+  return require('../data/news.json')
 }
 
 export { getAllNews };

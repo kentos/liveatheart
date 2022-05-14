@@ -17,7 +17,11 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": false
+      "supportsTablet": false,
+      "bundleIdentifier": "se.liveatheart.app",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "To be able to navigate the map we need to find out your location."
+      }
     },
     "android": {
       "adaptiveIcon": {

@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { useCallback } from 'react';
-import { FlatList, Image, Pressable, View } from 'react-native';
+import { FlatList, Image, Pressable, RefreshControl, View } from 'react-native';
 import { Headline } from '../../components/Texts';
 import useNews from './useNews';
 
@@ -16,7 +16,7 @@ function NewsItem({ news }: NewsItemProps) {
   return (
     <Pressable onPress={goTo}>
       <Image source={{ uri: news.image }} style={{ width: '100%', height: 200 }} />
-      <View style={{ marginHorizontal: 8, marginVertical: 16 }}>
+      <View style={{ marginHorizontal: 8, marginTop: 8, marginBottom: 16 }}>
         <Headline>{news.title}</Headline>
       </View>
     </Pressable>
@@ -24,12 +24,13 @@ function NewsItem({ news }: NewsItemProps) {
 }
 
 function NewsList() {
-  const { allNews } = useNews();
+  const { allNews, isRefreshing, refresh } = useNews();
   return (
     <FlatList
       data={allNews}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => <NewsItem news={item} />}
+      refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refresh} />}
     />
   );
 }
