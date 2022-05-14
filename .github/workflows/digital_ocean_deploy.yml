@@ -14,7 +14,9 @@ jobs:
       - name: Build image
         env:
           DC_REPO: ${{ secrets.DC_REPO }}
-        run: docker build --target=production -t $DC_REPO .
+        run: |
+          cd ./api
+          docker build --target=production -t $DC_REPO .
       - name: Push image
         env:
           DC_REPO: ${{ secrets.DC_REPO }}
