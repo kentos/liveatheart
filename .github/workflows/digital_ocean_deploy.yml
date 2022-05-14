@@ -1,0 +1,21 @@
+name: Deploy to Digital Ocean
+on: workflow_dispatch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Log in to Digital Ocean repo
+        env:
+          DC_APIKEY: ${{ secrets.DC_APIKEY }}
+        run: docker login -p $DC_APIKEY -u $DC_APIKEY registry.digitalocean.com
+      - name: Build image
+        env:
+          DC_REPO: ${{ secrets.DC_REPO }}
+        run: docker build --target=production -t $DC_REPO .
+      - name: Push image
+        env:
+          DC_REPO: ${{ secrets.DC_REPO }}
+        run: docker push $DC_REPO
