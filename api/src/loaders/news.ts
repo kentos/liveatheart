@@ -6,7 +6,7 @@ import path from 'path'
 
 export async function loadNews() {
   try {
-    const result = await axios.get('https://liveatheart.se/news22/');
+    const result = await axios.get('https://liveatheart.se/');
     const html = parse(result.data);
     const data = html.querySelectorAll('article.category-news22').map(a => {
       return {
@@ -17,6 +17,7 @@ export async function loadNews() {
         published: a.querySelector('span.published')?.innerText,
       }
     })
+    console.log(data)
     fs.writeFileSync(path.join(__dirname, '..', 'data', 'news.json'), JSON.stringify(data, null, 2))
   } catch (e) {
     console.log(e)
