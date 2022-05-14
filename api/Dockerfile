@@ -14,12 +14,14 @@ FROM base AS build
 COPY package*.json ./
 COPY src ./src
 COPY tsconfig.json ./
+RUN npm i
 RUN npm run build
 
 FROM base AS production
 COPY --from=build /app/dist ./
 COPY --from=build /app/package*.json ./
+RUN mkdir -m777 /app/data
 RUN npm i --production
 ENV NODE_ENV=production
 USER node
-CMD [ "node", "./dist/server.js" ]
+CMD [ "node", "./server.js" ]
