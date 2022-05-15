@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "liveatheart",
+    "name": "Live at Heart",
     "slug": "liveatheart",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -17,6 +17,7 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
+      "buildNumber": "2",
       "supportsTablet": false,
       "bundleIdentifier": "se.liveatheart.app",
       "infoPlist": {
@@ -29,8 +30,21 @@
         "backgroundColor": "#ffffff"
       }
     },
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "lah22",
+            "project": "react-native",
+            "authToken": "cb5d968cd41911ec96c8663e9dfece75"
+          }
+        }
+      ]
+    },
     "web": {
       "favicon": "./assets/images/favicon.png"
-    }
+    },
+    "plugins": ["sentry-expo"]
   }
 }
