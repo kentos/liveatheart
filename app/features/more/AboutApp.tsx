@@ -8,7 +8,7 @@ function AboutApp() {
         <Headline>About this app</Headline>
         <View style={{ height: 16 }} />
         <Body>
-          This app is brought to you by a collaboration between Live At Heart and Kent Cederström
+          This app is brought to you by a collaboration between Live at Heart and Kent Cederström
           (@kentos).
         </Body>
         <View style={{ height: 16 }} />

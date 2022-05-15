@@ -34,7 +34,7 @@ function More() {
         onPress={() =>
           navigation.navigate('WebView', {
             url: 'https://liveatheart.se/about/',
-            title: 'About Live At Heart',
+            title: 'About Live at Heart',
           })
         }
       />
