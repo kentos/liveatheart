@@ -30,21 +30,8 @@
         "backgroundColor": "#ffffff"
       }
     },
-    "hooks": {
-      "postPublish": [
-        {
-          "file": "sentry-expo/upload-sourcemaps",
-          "config": {
-            "organization": "lah22",
-            "project": "react-native",
-            "authToken": "482fb5b9a8804d99a1a13f1f99990b0ec37857d9c19f412f83f3048eeed856b2"
-          }
-        }
-      ]
-    },
     "web": {
       "favicon": "./assets/images/favicon.png"
-    },
-    "plugins": ["sentry-expo"]
+    }
   }
 }
