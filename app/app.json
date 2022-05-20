@@ -18,7 +18,7 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "buildNumber": "9",
+      "buildNumber": "10",
       "supportsTablet": false,
       "bundleIdentifier": "se.liveatheart.app",
       "infoPlist": {
