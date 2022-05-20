@@ -13,6 +13,12 @@
     "production": {}
   },
   "submit": {
-    "production": {}
+    "production": {
+      "ios": {
+        "appleId": "kent@kentcederstrom.se",
+        "ascAppId": "1623129356",
+        "appleTeamId": "QAKY8DL7CE"
+      }
+    }
   }
 }
