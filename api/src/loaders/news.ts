@@ -17,7 +17,6 @@ export async function loadNews() {
         published: a.querySelector('span.published')?.innerText,
       }
     })
-    console.log(data)
     fs.writeFileSync(path.join(__dirname, '..', 'data', 'news.json'), JSON.stringify(data, null, 2))
   } catch (e) {
     console.log(e)

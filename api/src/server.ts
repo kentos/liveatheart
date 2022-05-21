@@ -12,9 +12,10 @@ async function start() {
   const server = await createServer({
     name: 'lah-api',
     routes: path.join(__dirname, 'endpoints'),
+    plugins: path.join(__dirname, 'plugins'),
   })
   
-  startServer({
+  await startServer({
     server,
     port: 8080,
   })
