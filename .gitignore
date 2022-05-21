@@ -1,6 +1,6 @@
 node_modules
 .DS_Store
 .node_history
-.expo
-app/.expo/*
+app/.expo
 api/src/data/*
+dist
