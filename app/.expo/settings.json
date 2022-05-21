@@ -5,6 +5,6 @@
   "minify": false,
   "urlRandomness": null,
   "https": false,
-  "scheme": "se.liveatheart.app",
-  "devClient": true
+  "devClient": true,
+  "scheme": "se.liveatheart.app"
 }
