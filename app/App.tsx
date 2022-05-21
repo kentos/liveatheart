@@ -1,5 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import SessionContextProvider from './contexts/session/Context';
 import FeatureToggleProvider from './features/toggles/FeatureToggle';
 import useCachedResources from './hooks/useCachedResources';
 import Navigation from './navigation';
@@ -20,10 +21,12 @@ export default function App() {
   } else {
     return (
       <QueryClientProvider client={queryClient}>
-        <FeatureToggleProvider>
-          <Navigation />
-          <StatusBar />
-        </FeatureToggleProvider>
+        <SessionContextProvider>
+          <FeatureToggleProvider>
+            <Navigation />
+            <StatusBar />
+          </FeatureToggleProvider>
+        </SessionContextProvider>
       </QueryClientProvider>
     );
   }

@@ -5,3 +5,4 @@ api/src/data/*
 dist
 .tmp
 .expo
+.env
