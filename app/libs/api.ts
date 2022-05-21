@@ -11,4 +11,8 @@ async function get<T>(url: string | QueryKey) {
   return instance.get<T>(String(url));
 }
 
-export { get };
+async function post<T>(url: string | QueryKey, data: any) {
+  return instance.post<T>(String(url), data);
+}
+
+export { get, post };
