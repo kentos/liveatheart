@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { QueryKey } from 'react-query';
 
+const base = __DEV__ ? 'http://10.0.1.49:8080' : 'https://lah22.bastardcreative.se';
+
 const instance = axios.create({
-  baseURL: __DEV__ ? 'http://10.0.1.49:8080' : 'https://lah22-app-zy78m.ondigitalocean.app',
+  baseURL: base,
 });
 
 async function get<T>(url: string | QueryKey) {
