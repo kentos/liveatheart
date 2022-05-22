@@ -28,10 +28,8 @@ function SessionContextProvider({ children }: SessionContextProviderProps) {
       } else {
         try {
           const newid = await fetchNewId();
-          console.log(newid);
           await AsyncStorage.setItem(KEY, newid);
-          const result = await claimUserId(newid);
-          console.log(result);
+          await claimUserId(newid);
           setUserid(() => newid);
         } catch (e) {
           console.log(e);
