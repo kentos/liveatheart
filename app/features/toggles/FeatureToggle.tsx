@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import { useQuery } from 'react-query';
+import SplashLoading from '../../components/SplashLoading';
 import { get } from '../../libs/api';
 
 interface FeatureToggle {
@@ -29,10 +30,12 @@ function FeatureToggleProvider({ children }: FeatureToggleProviderProps) {
       const result = await get<FeatureToggle>(queryKey);
       return result.data;
     },
+    retry: true,
+    retryDelay: 3000,
   });
   return (
     <FeatureToggleContext.Provider value={data || defaultState}>
-      {status === 'success' && children}
+      {status === 'success' ? children : <SplashLoading />}
     </FeatureToggleContext.Provider>
   );
 }
