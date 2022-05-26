@@ -1,14 +1,15 @@
 import _ from 'lodash';
-import { useQuery } from 'react-query';
+import { useQuery, QueryStatus } from 'react-query';
 import * as api from '../../libs/api';
 
 interface UseArtists {
   artists?: Artist[];
   artist?: Artist;
+  status: QueryStatus;
 }
 
 function useArtists(ids?: string | string[]): UseArtists {
-  const { data } = useQuery({
+  const { data, status } = useQuery({
     initialData: [] as Artist[],
     queryKey: '/artists',
     queryFn: async ({ queryKey }) => {
@@ -21,13 +22,15 @@ function useArtists(ids?: string | string[]): UseArtists {
     if (_.isArray(ids)) {
       return {
         artists: data.filter((a) => ids.includes(a._id)),
+        status,
       };
     }
-    return { artist: data.filter((a) => a._id === ids).at(0) };
+    return { artist: data.filter((a) => a._id === ids).at(0), status };
   }
 
   return {
     artists: data,
+    status,
   };
 }
 
