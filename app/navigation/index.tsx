@@ -179,7 +179,7 @@ function BottomTabNavigator() {
           component={DealsNavigator}
           options={{
             title: 'Deals',
-            tabBarIcon: ({ color }) => <TabBarIcon name="newspaper-o" color={color} />,
+            tabBarIcon: ({ color }) => <TabBarIcon name="money" color={color} />,
             headerShown: false,
             lazy: false,
           }}
