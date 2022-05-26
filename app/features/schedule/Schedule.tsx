@@ -1,7 +1,7 @@
 import { useLayoutEffect, useMemo, useState } from 'react';
 import { SectionList, TouchableOpacity, View } from 'react-native';
 import _ from 'lodash';
-import { useArtistsData } from '../artists/hooks';
+import { useArtists } from '../artists/useArtists';
 import ScheduleSectionHeader from './ScheduleSectionHeader';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import Slot from './Slot';
@@ -23,7 +23,7 @@ const mockVenues: Record<string, { name: string }> = {
 function Schedule() {
   const [selectedDay, setSelectedDay] = useState(0);
   const [showFavorites, setShowFavorites] = useState(false);
-  const artists = useArtistsData();
+  const { artists } = useArtists();
   const faves = useFavorites((state) => state.favoriteIds);
   const selectedDate = useMemo(() => days[selectedDay], [selectedDay]);
   const navigation = useNavigation();
@@ -46,12 +46,12 @@ function Schedule() {
     () =>
       _(artists)
         .filter((a) => !!a.slots)
-        .filter((a) => (showFavorites ? faves.includes(a.id) : true))
+        .filter((a) => (showFavorites ? faves.includes(a._id) : true))
         .flatMap(
           (a) =>
             a.slots
               ?.filter((s) => isSameDay(s.date, selectedDate))
-              .map<SlotCombined>((b) => ({ ..._.pick(a, ['id', 'name']), ...b })) ?? []
+              .map<SlotCombined>((b) => ({ ..._.pick(a, ['_id', 'name']), ...b })) ?? []
         )
         .sortBy((a) => a.date)
         .groupBy((a) => a.venue_id)
@@ -77,7 +77,7 @@ function Schedule() {
       <SectionList
         style={{ flex: 1 }}
         sections={data}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item._id}
         renderItem={({ item }) => <Slot slot={item} />}
         renderSectionHeader={({ section }) => <ScheduleSectionHeader title={section.title} />}
         stickySectionHeadersEnabled={false}

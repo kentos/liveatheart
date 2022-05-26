@@ -27,9 +27,9 @@ function useNews(id?: string): UseNewsProps {
 
   let single;
   if (id) {
-    single = data?.find((d) => d.id === id);
+    single = data?.find((d) => d._id === id);
   }
-  console.log(data);
+
   return {
     allNews: data || [],
     single,

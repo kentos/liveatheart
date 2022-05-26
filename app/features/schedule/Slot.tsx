@@ -24,7 +24,7 @@ function Slot({ slot }: SlotProps) {
         </View>
       </View>
       <View style={styles.heart}>
-        <Heart artistid={slot.id} />
+        <Heart artistid={slot._id} />
       </View>
     </View>
   );

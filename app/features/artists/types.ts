@@ -1,4 +1,4 @@
-type SlotCombined = Slot & Pick<Artist, 'id' | 'name'>;
+type SlotCombined = Slot & Pick<Artist, '_id' | 'name'>;
 
 interface Slot {
   venue_id: string;
@@ -6,7 +6,7 @@ interface Slot {
 }
 
 interface Artist {
-  id: string;
+  _id: string;
   name: string;
   genre: string;
   image: string;

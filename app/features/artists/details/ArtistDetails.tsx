@@ -2,7 +2,7 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import { ScrollView, ImageBackground, View, StyleSheet } from 'react-native';
 import { Text } from '../../../components/Themed';
 import CloseButton from '../../../components/CloseButton';
-import { useArtistsData } from '../hooks';
+import { useArtists } from '../useArtists';
 import Heart from '../../favorites/Heart';
 import Layout from '../../../constants/Layout';
 
@@ -15,7 +15,7 @@ export interface ArtistDetailsParams {
 function ArtistDetails() {
   const navigation = useNavigation();
   const { params } = useRoute() as { params: ArtistDetailsParams };
-  const [artist] = useArtistsData(params.artistid);
+  const { artist } = useArtists(params.artistid);
 
   return (
     <>
@@ -27,7 +27,7 @@ function ArtistDetails() {
             {artist?.city}, {artist?.country}
           </Text>
           <View style={{ marginTop: 16 }}>
-            <Heart artistid={artist?.id} size={36} />
+            {artist && <Heart artistid={artist?._id} size={36} />}
           </View>
         </ImageBackground>
 

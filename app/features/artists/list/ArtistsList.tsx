@@ -1,11 +1,10 @@
 import { useState, useMemo } from 'react';
-import { FlatList, SectionList, LayoutAnimation, View } from 'react-native';
+import { SectionList, LayoutAnimation, View } from 'react-native';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import _ from 'lodash';
 import ArtistListItem, { ITEM_HEIGHT } from './ArtistListItem';
-import { useArtistsData } from '../hooks';
+import { useArtists } from '../useArtists';
 import useFavorites from '../../favorites/useFavorites';
-import { Text } from '../../../components/Themed';
 import SectionHeader from './SectionHeader';
 
 const selectedEnum = {
@@ -17,7 +16,7 @@ const selectedEnum = {
 function ArtistsList() {
   const [selected, setSelected] = useState(0);
   const favorites = useFavorites((state) => state.favoriteIds);
-  const allArtists = useArtistsData();
+  const { artists: allArtists } = useArtists();
 
   const data = useMemo(() => {
     let all = allArtists;
@@ -34,7 +33,7 @@ function ArtistsList() {
         .value();
     }
     if (selected === selectedEnum.FAVES) {
-      all = all.filter((a) => favorites.includes(a.id));
+      all = all?.filter((a) => favorites.includes(a._id));
     }
     return [{ title: 'All', data: _.sortBy(all, (a) => a.name) }];
   }, [allArtists, selected]);
@@ -49,7 +48,7 @@ function ArtistsList() {
         />
       </View>
       <SectionList
-        keyExtractor={(i) => i.id}
+        keyExtractor={(i) => i._id}
         sections={data}
         renderItem={({ item }) => <ArtistListItem artist={item} />}
         getItemLayout={(_data, index) => ({

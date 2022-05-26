@@ -12,7 +12,7 @@ function NewsItem({ news }: NewsItemProps) {
   const navigation = useNavigation();
   const goTo = useCallback(() => {
     navigation.navigate('WebView', { url: news.link, title: news.title });
-  }, [navigation, news.id]);
+  }, [navigation, news._id]);
   return (
     <Pressable onPress={goTo}>
       <Image source={{ uri: news.image }} style={{ width: '100%', height: 200 }} />
@@ -28,7 +28,7 @@ function NewsList() {
   return (
     <FlatList
       data={allNews}
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item) => item._id}
       renderItem={({ item }) => <NewsItem news={item} />}
       refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refresh} />}
     />

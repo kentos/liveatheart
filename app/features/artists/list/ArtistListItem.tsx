@@ -14,8 +14,8 @@ export const ITEM_HEIGHT = 80;
 function ArtistListItem({ artist }: ArtistListItemProps) {
   const navigation = useNavigation();
   const onPress = useCallback(() => {
-    navigation.navigate('ArtistDetails', { artistid: artist.id });
-  }, [navigation, artist.id]);
+    navigation.navigate('ArtistDetails', { artistid: artist._id });
+  }, [navigation, artist._id]);
 
   return (
     <Pressable onPress={onPress}>
@@ -29,7 +29,7 @@ function ArtistListItem({ artist }: ArtistListItemProps) {
           </Text>
         </View>
         <View style={styles.right}>
-          <Heart artistid={artist.id} size={20} />
+          <Heart artistid={artist._id} size={20} />
         </View>
       </View>
     </Pressable>
