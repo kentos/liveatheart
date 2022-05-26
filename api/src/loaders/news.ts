@@ -4,6 +4,7 @@ import axios from 'axios'
 import fs from 'fs'
 import path from 'path'
 import * as datefns from 'date-fns'
+import { collection } from '@heja/shared/mongodb'
 
 function parseDate(str: string | undefined): Date {
   if (!str) {
@@ -13,6 +14,7 @@ function parseDate(str: string | undefined): Date {
 }
 
 export async function loadNews() {
+  return
   try {
     const result = await axios.get('https://liveatheart.se/')
     const html = parse(result.data)
@@ -29,6 +31,25 @@ export async function loadNews() {
     fs.writeFileSync(
       path.join(__dirname, '..', 'data', 'news.json'),
       JSON.stringify(data, null, 2),
+    )
+
+    await Promise.all(
+      data.map(async (a) => {
+        const existing = await collection<News>('news').findOne({
+          articleid: a.articleid,
+        })
+        if (existing) {
+          return
+        }
+        return collection<Partial<News>>('news').insertOne({
+          articleid: a.articleid || ulid().toString(),
+          title: a.title,
+          link: a.link,
+          image: a.image,
+          published: a.published,
+          createdAt: new Date(),
+        })
+      }),
     )
   } catch (e) {
     console.log(e)
