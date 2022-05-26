@@ -1,5 +1,4 @@
 import { FastifyInstance } from '@heja/shared/fastify'
-import { getAllNews } from '../../features/news'
 
 async function handler(fastify: FastifyInstance) {
   fastify.route({
@@ -7,7 +6,7 @@ async function handler(fastify: FastifyInstance) {
     url: '/features',
     handler: async () => {
       return {
-        artists: false,
+        artists: true,
         schedule: false,
         news: true,
         deals: true,

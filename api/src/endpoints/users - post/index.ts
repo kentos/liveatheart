@@ -1,5 +1,5 @@
 import { FastifyInstance, FastifyRequest } from '@heja/shared/fastify'
-import { collection } from '@heja/shared/mongodb'
+import { createUser } from '../../features/users/create'
 
 async function handler(fastify: FastifyInstance) {
   fastify.route({
@@ -9,16 +9,12 @@ async function handler(fastify: FastifyInstance) {
       body: {
         type: 'object',
         properties: {
-          _id: {type:'string'},
-        }
-      }
+          _id: { type: 'string' },
+        },
+      },
     },
-    handler: async (req: FastifyRequest<{Body:{_id:string;}}>) => {
-      await collection<User>('users').insertOne({
-        _id: req.body._id,
-        firstName: null,
-        lastName: null,
-      })
+    handler: async (req: FastifyRequest<{ Body: { _id: string } }>) => {
+      await createUser({ _id: req.body._id })
       return {}
     },
   })
