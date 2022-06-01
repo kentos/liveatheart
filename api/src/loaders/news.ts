@@ -14,7 +14,6 @@ function parseDate(str: string | undefined): Date {
 }
 
 export async function loadNews() {
-  return
   try {
     const result = await axios.get('https://liveatheart.se/')
     const html = parse(result.data)

@@ -1,12 +1,14 @@
 import path from 'path'
 import { createServer, startServer } from '@heja/shared/fastify'
 import { loadDeals } from './loaders/deals'
-import { loadNews } from './loaders/news'
+import { loadArtists } from './loaders/artists'
 import { connect } from '@heja/shared/mongodb'
+
+import './worker/worker'
 
 async function start() {
   await connect({})
-  await Promise.all([loadDeals(), loadNews()])
+  // await Promise.all([loadArtists(), loadDeals()])
 
   const server = await createServer({
     name: 'lah-api',

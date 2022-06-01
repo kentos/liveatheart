@@ -7,6 +7,8 @@ async function handler(fastify: FastifyInstance) {
     handler: async () => {
       return {
         artists: true,
+        myArtists: false,
+        map: false,
         schedule: false,
         news: true,
         deals: true,
