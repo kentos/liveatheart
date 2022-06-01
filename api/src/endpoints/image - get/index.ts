@@ -13,8 +13,15 @@ import sharp from 'sharp'
 
 const pipeline = util.promisify(stream.pipeline)
 
+const dir = path.join(__dirname, '../../data/images')
+try {
+  fs.mkdirSync(dir)
+} catch (e: any) {
+  console.log(e)
+}
+
 async function downloadImage(url: string) {
-  const outputFile = path.join(__dirname, '../../data/images', md5(url))
+  const outputFile = path.join(dir, md5(url))
   if (fs.existsSync(outputFile)) {
     return outputFile
   }
