@@ -6,6 +6,8 @@ import { useArtists } from '../useArtists';
 import Heart from '../../favorites/Heart';
 import Layout from '../../../constants/Layout';
 import Colors from '../../../constants/Colors';
+import config from '../../../constants/config';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const HEIGHT = Layout.window.height * 0.85;
 
@@ -17,21 +19,22 @@ function ArtistDetails() {
   const navigation = useNavigation();
   const { params } = useRoute() as { params: ArtistDetailsParams };
   const { artist } = useArtists(params.artistid);
+  const insets = useSafeAreaInsets();
 
   return (
     <>
       <StatusBar barStyle={'light-content'} animated />
-      <ScrollView style={styles.view}>
+      <ScrollView style={[styles.view]}>
         <View style={[styles.page]}>
           <Image
-            source={{ uri: 'http://10.0.1.49:8080/image?url=' + artist?.image }}
+            source={{
+              uri: config.api + '/image?type=gray&url=' + artist?.image,
+              cache: 'force-cache',
+            }}
             style={[styles.artistImage]}
           />
           <View style={styles.overlay} />
           <View style={styles.text}>
-            <View style={{ marginRight: 16 }}>
-              {artist && <Heart inverted artistid={artist?._id} size={32} />}
-            </View>
             <View>
               <Text style={styles.artist}>{artist?.name}</Text>
               <Text style={styles.genre}>{artist?.genre}</Text>
@@ -49,8 +52,9 @@ function ArtistDetails() {
         </View>
       </ScrollView>
 
-      <View style={styles.actionBar}>
+      <View style={[styles.actionBar, { paddingTop: insets.top }]}>
         <CloseButton back onPress={() => navigation.goBack()} />
+        {artist && <Heart inverted artistid={artist?._id} size={32} />}
       </View>
     </>
   );
@@ -75,18 +79,13 @@ const styles = StyleSheet.create({
     right: 0,
     height: HEIGHT,
     backgroundColor: Colors.light.tint,
-    opacity: 0.75,
+    opacity: 0.65,
   },
   text: {
     position: 'absolute',
-    bottom: 32,
-    right: 0,
-    // backgroundColor: Colors.light.background,
-    // opacity: 0.75,
-    padding: 8,
+    bottom: 24,
+    right: 8,
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
   },
   artist: {
     fontSize: 32,
@@ -105,8 +104,9 @@ const styles = StyleSheet.create({
   },
   actionBar: {
     position: 'absolute',
-    top: 32,
+    top: 8,
     left: 16,
+    right: 16,
     shadowRadius: 10,
     shadowColor: 'rgba(0, 0, 0, .25)',
     shadowOffset: {
@@ -114,6 +114,8 @@ const styles = StyleSheet.create({
       height: 1,
     },
     shadowOpacity: 0.75,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });
 

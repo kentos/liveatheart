@@ -4,6 +4,7 @@ import { Text } from '../../../components/Themed';
 import Heart from '../../favorites/Heart';
 import { useEffect, useRef } from 'react';
 import _ from 'lodash';
+import config from '../../../constants/config';
 
 export const ITEM_HEIGHT = 80;
 
@@ -49,7 +50,10 @@ function ArtistListItemSkeleton({
   return (
     <View style={styles.wrapper}>
       {!!imageUri ? (
-        <Image source={{ uri: imageUri }} style={styles.image} />
+        <Image
+          source={{ uri: config.api + '/image?type=thumb&url=' + imageUri, cache: 'force-cache' }}
+          style={styles.image}
+        />
       ) : (
         <Animated.View style={[styles.image, styles.skeleton, { opacity: fadeAnim }]} />
       )}

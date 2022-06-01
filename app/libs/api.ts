@@ -1,11 +1,10 @@
 import axios from 'axios';
 import { QueryKey } from 'react-query';
+import config from '../constants/config';
 import { requestInterceptor } from './apiInterceptors';
 
-const base = __DEV__ ? 'http://10.0.1.49:8080' : 'https://lah22.bastardcreative.se';
-
 const instance = axios.create({
-  baseURL: base,
+  baseURL: config.api,
 });
 
 instance.interceptors.request.use(requestInterceptor);
