@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-import { Image } from 'react-native';
+import { Image, Platform } from 'react-native';
 
 import Colors from '../constants/Colors';
 import ModalScreen from '../screens/ModalScreen';
@@ -49,7 +49,7 @@ function RootNavigator() {
         },
         headerTitleStyle: {
           color: Colors.light.tint,
-          fontFamily: 'HelveticaNeue',
+          fontFamily: Platform.select({ ios: 'HelveticaNeue' }),
           fontWeight: '400',
         },
       }}
@@ -72,7 +72,7 @@ function RootNavigator() {
           },
           headerTitleStyle: {
             color: Colors.light.tint,
-            fontFamily: 'HelveticaNeue',
+            fontFamily: Platform.select({ ios: 'HelveticaNeue' }),
             fontWeight: '400',
           },
         }}
@@ -105,7 +105,6 @@ function BottomTabNavigator() {
   const features = useFeatureToggle();
   return (
     <BottomTab.Navigator
-      initialRouteName="ArtistsList"
       screenOptions={{
         headerLeft: () => (
           <Image
@@ -120,7 +119,7 @@ function BottomTabNavigator() {
         },
         headerTitleStyle: {
           color: Colors.light.tint,
-          fontFamily: 'HelveticaNeue',
+          fontFamily: Platform.select({ ios: 'HelveticaNeue' }),
           fontWeight: '400',
         },
         tabBarActiveTintColor: Colors.light.tint,
@@ -128,7 +127,7 @@ function BottomTabNavigator() {
           borderTopWidth: 0,
         },
         tabBarLabelStyle: {
-          fontFamily: 'HelveticaNeue',
+          fontFamily: Platform.select({ ios: 'HelveticaNeue' }),
           fontWeight: '400',
         },
       }}

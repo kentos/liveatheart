@@ -10,7 +10,12 @@ export function Title(props: TextProps) {
 }
 
 export function Body(props: { color?: string } & TextProps) {
-  return <Text style={{ fontSize: 16, lineHeight: 22, color: props.color }} {...props} />;
+  return (
+    <Text
+      style={{ fontSize: 16, lineHeight: 22, color: props.color || Colors.light.text }}
+      {...props}
+    />
+  );
 }
 
 export function Caption(props: { color?: string } & TextProps) {

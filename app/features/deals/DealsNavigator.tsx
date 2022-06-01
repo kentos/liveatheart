@@ -1,5 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import { Image } from 'react-native';
+import { Image, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CloseButton from '../../components/CloseButton';
 import Colors from '../../constants/Colors';
@@ -33,7 +33,7 @@ function DealsNavigator() {
         },
         headerTitleStyle: {
           color: Colors.light.tint,
-          fontFamily: 'HelveticaNeue',
+          fontFamily: Platform.select({ ios: 'HelveticaNeue' }),
           fontWeight: '400',
         },
       }}
