@@ -24,7 +24,6 @@ import More from '../features/more/More';
 import Tickets from '../features/more/Tickets/Tickets';
 import WebView from '../features/webview/WebView';
 import AboutApp from '../features/more/AboutApp';
-import { SvgCss, SvgXml } from 'react-native-svg';
 
 export default function Navigation() {
   return (

@@ -6,7 +6,7 @@ function EmptyFaveList() {
   return (
     <View style={styles.wrapper}>
       <Title center color="white">
-        You're favorites list is empty
+        Your favorites list is empty
       </Title>
       <View style={{ height: 16 }} />
       <Body color="white">You can add artist as your favorite and see them all here.</Body>
