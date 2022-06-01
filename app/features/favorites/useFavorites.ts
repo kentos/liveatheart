@@ -1,5 +1,6 @@
 import create from 'zustand';
 import { get, store } from '../../helpers/storage';
+import * as api from '../../libs/api';
 
 interface Favorites {
   favoriteIds: string[];
@@ -13,9 +14,11 @@ const useFavorites = create<Favorites>((set) => ({
 
   addFavorite: (id: string) => {
     set((state) => ({ favoriteIds: [...state.favoriteIds, id] }));
+    api.post(`/me/artists/${id}`, {});
   },
   removeFavorite: (id: string) => {
     set((state) => ({ favoriteIds: state.favoriteIds.filter((fid) => fid !== id) }));
+    api.del(`/me/artists/${id}`);
   },
 }));
 

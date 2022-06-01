@@ -1,11 +1,12 @@
 import { useState, useMemo } from 'react';
-import { SectionList, LayoutAnimation, View } from 'react-native';
+import { SectionList, LayoutAnimation, View, RefreshControl } from 'react-native';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import _ from 'lodash';
 import ArtistListItem, { ITEM_HEIGHT } from './ArtistListItem';
 import { useArtists } from '../useArtists';
 import useFavorites from '../../favorites/useFavorites';
 import SectionHeader from './SectionHeader';
+import ArtistListItemSkeleton from './ArtistListItemSkeleton';
 
 const selectedEnum = {
   NAME: 0,
@@ -16,10 +17,27 @@ const selectedEnum = {
 function ArtistsList() {
   const [selected, setSelected] = useState(0);
   const favorites = useFavorites((state) => state.favoriteIds);
-  const { artists: allArtists } = useArtists();
+  const { artists: allArtists, reload, isReloading } = useArtists();
 
   const data = useMemo(() => {
     let all = allArtists;
+
+    if (allArtists?.length === 0) {
+      return [
+        {
+          title: 'All',
+          data: [
+            { _id: 'skeleton_1' },
+            { _id: 'skeleton_2' },
+            { _id: 'skeleton_3' },
+            { _id: 'skeleton_4' },
+            { _id: 'skeleton_5' },
+            { _id: 'skeleton_6' },
+            { _id: 'skeleton_7' },
+          ],
+        },
+      ];
+    }
     LayoutAnimation.configureNext(LayoutAnimation.create(150, 'easeOut', 'opacity'));
     if (selected === selectedEnum.GENRE) {
       return _(all)
@@ -50,7 +68,14 @@ function ArtistsList() {
       <SectionList
         keyExtractor={(i) => i._id}
         sections={data}
-        renderItem={({ item }) => <ArtistListItem artist={item} />}
+        refreshControl={<RefreshControl refreshing={isReloading} onRefresh={reload} />}
+        renderItem={({ item }) =>
+          item._id.includes('skeleton_') ? (
+            <ArtistListItemSkeleton />
+          ) : (
+            <ArtistListItem artist={item} />
+          )
+        }
         getItemLayout={(_data, index) => ({
           length: ITEM_HEIGHT,
           offset: ITEM_HEIGHT * index,

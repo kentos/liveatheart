@@ -1,9 +1,8 @@
-import { useState, ReactNode, createContext, useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import fetchNewId from './fetchNewId';
-import claimUserId from './claimUserId';
-
-const KEY = '@LAH/USERID';
+import { ReactNode, createContext, useEffect } from 'react';
+import SplashLoading from '../../components/SplashLoading';
+import useUserState from './useUserState';
+import restoreUserSession from './restoreUserSession';
+import ping from './ping';
 
 interface SessionContext {
   userid?: string;
@@ -18,27 +17,22 @@ interface SessionContextProviderProps {
 }
 
 function SessionContextProvider({ children }: SessionContextProviderProps) {
-  const [userid, setUserid] = useState<string>();
+  const isLoaded = useUserState((state) => state.isLoaded);
+  const userid = useUserState((state) => state._id);
 
   useEffect(() => {
-    async function load() {
-      const storedId = await AsyncStorage.getItem(KEY);
-      if (storedId) {
-        setUserid(() => storedId);
-      } else {
-        try {
-          const newid = await fetchNewId();
-          await AsyncStorage.setItem(KEY, newid);
-          await claimUserId(newid);
-          setUserid(() => newid);
-        } catch (e) {
-          console.log(e);
-          AsyncStorage.removeItem(KEY);
-        }
-      }
-    }
-    load();
+    restoreUserSession();
   }, []);
+
+  useEffect(() => {
+    if (isLoaded) {
+      ping();
+    }
+  }, [isLoaded]);
+
+  if (!isLoaded) {
+    return <SplashLoading />;
+  }
 
   return <SessionContext.Provider value={{ userid }}>{children}</SessionContext.Provider>;
 }

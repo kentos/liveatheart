@@ -3,20 +3,16 @@ import { useQuery } from 'react-query';
 import SplashLoading from '../../components/SplashLoading';
 import { get } from '../../libs/api';
 
-interface FeatureToggle {
-  artists: boolean;
-  schedule: boolean;
-  deals: boolean;
-  news: boolean;
-}
-
 const defaultState = {
   artists: true,
+  myArtists: false,
+  map: false,
   schedule: true,
   deals: true,
   news: true,
 };
 
+type FeatureToggle = typeof defaultState;
 export const FeatureToggleContext = React.createContext<FeatureToggle>(defaultState);
 
 interface FeatureToggleProviderProps {

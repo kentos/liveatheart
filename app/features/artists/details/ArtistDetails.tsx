@@ -1,10 +1,11 @@
 import { useRoute, useNavigation } from '@react-navigation/native';
-import { ScrollView, ImageBackground, View, StyleSheet } from 'react-native';
+import { ScrollView, Image, View, StyleSheet } from 'react-native';
 import { Text } from '../../../components/Themed';
 import CloseButton from '../../../components/CloseButton';
 import { useArtists } from '../useArtists';
 import Heart from '../../favorites/Heart';
 import Layout from '../../../constants/Layout';
+import Colors from '../../../constants/Colors';
 
 const HEIGHT = Layout.window.height - 40;
 
@@ -20,23 +21,25 @@ function ArtistDetails() {
   return (
     <>
       <ScrollView pagingEnabled decelerationRate={0} style={styles.view}>
-        <ImageBackground source={{ uri: artist?.image }} style={[styles.page, styles.artistImage]}>
-          <Text style={styles.artist}>{artist?.name}</Text>
-          <Text style={styles.genre}>{artist?.genre}</Text>
-          <Text>
-            {artist?.city}, {artist?.country}
-          </Text>
-          <View style={{ marginTop: 16 }}>
-            {artist && <Heart artistid={artist?._id} size={36} />}
+        <View style={[styles.page]}>
+          <Image source={{ uri: artist?.image }} style={[styles.artistImage]} />
+          <View style={styles.text}>
+            <View style={{ marginRight: 16 }}>
+              {artist && <Heart artistid={artist?._id} size={32} />}
+            </View>
+            <View>
+              <Text style={styles.artist}>{artist?.name}</Text>
+              <Text style={styles.genre}>{artist?.genre}</Text>
+              {/* <Text>
+                {artist?.city}, {artist?.country}
+              </Text> */}
+            </View>
           </View>
-        </ImageBackground>
+        </View>
 
         <View style={styles.page}>
           <View style={styles.descriptionWrapper}>
             <Text style={styles.description}>{artist?.description}</Text>
-          </View>
-          <View>
-            <Text>Apa</Text>
           </View>
         </View>
       </ScrollView>
@@ -58,8 +61,19 @@ const styles = StyleSheet.create({
   artistImage: {
     width: '100%',
     height: HEIGHT,
+    position: 'absolute',
+  },
+  text: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: Colors.light.tint,
+    opacity: 0.9,
+    padding: 8,
+    flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: HEIGHT / 5,
+    justifyContent: 'flex-end',
   },
   artist: {
     fontSize: 26,

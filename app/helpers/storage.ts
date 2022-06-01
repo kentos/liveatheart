@@ -10,8 +10,12 @@ export const store = async (key: string, value: string) => {
 
 export const get = async (key: string) => {
   try {
-    return await AsyncStorage.getItem(key);
+    return AsyncStorage.getItem(key);
   } catch (e) {
     console.log(e);
   }
+};
+
+export const remove = async (key: string) => {
+  await AsyncStorage.removeItem(key);
 };

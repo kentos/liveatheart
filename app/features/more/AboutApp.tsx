@@ -1,7 +1,10 @@
 import { View, StyleSheet } from 'react-native';
-import { Body, Headline, Title } from '../../components/Texts';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Body, Caption, Headline } from '../../components/Texts';
+import useUserState from '../../contexts/session/useUserState';
 
 function AboutApp() {
+  const userid = useUserState((state) => state._id);
   return (
     <View style={styles.wrapper}>
       <View style={{ width: '80%' }}>
@@ -20,6 +23,15 @@ function AboutApp() {
         <Body bold>Contributors:</Body>
         <Body>Kent Cederström</Body>
         <Body>David Littorin</Body>
+        {userid && (
+          <>
+            <View style={{ height: 16 }} />
+            <Body bold>Your ID</Body>
+            <TouchableOpacity>
+              <Caption>{userid}</Caption>
+            </TouchableOpacity>
+          </>
+        )}
       </View>
     </View>
   );

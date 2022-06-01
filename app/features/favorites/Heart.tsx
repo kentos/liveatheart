@@ -20,7 +20,10 @@ function Heart({ artistid, size = 18 }: HeartProps) {
     }
   }, [isFaved, artistid]);
   return (
-    <TouchableOpacity onPress={toggle}>
+    <TouchableOpacity
+      onPress={toggle}
+      hitSlop={{ left: size / 2, right: size / 2, bottom: size / 2, top: size / 2 }}
+    >
       <FontAwesome
         name={isFaved ? 'heart' : 'heart-o'}
         size={size}

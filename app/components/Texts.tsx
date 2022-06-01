@@ -2,7 +2,7 @@ import Colors from '../constants/Colors';
 import { Text, TextProps } from './Themed';
 
 export function Headline(props: TextProps) {
-  return <Text style={{ fontSize: 24, lineHeight: 32, color: Colors.light.tint }} {...props} />;
+  return <Text style={{ fontSize: 20, lineHeight: 24, color: Colors.light.tint }} {...props} />;
 }
 
 export function Title(props: TextProps) {
@@ -11,4 +11,13 @@ export function Title(props: TextProps) {
 
 export function Body(props: { color?: string } & TextProps) {
   return <Text style={{ fontSize: 16, lineHeight: 22, color: props.color }} {...props} />;
+}
+
+export function Caption(props: { color?: string } & TextProps) {
+  return (
+    <Text
+      style={{ fontSize: 12, textTransform: 'uppercase', lineHeight: 18, color: props.color }}
+      {...props}
+    />
+  );
 }

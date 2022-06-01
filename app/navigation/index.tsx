@@ -133,6 +133,15 @@ function BottomTabNavigator() {
         },
       }}
     >
+      <BottomTab.Screen
+        name="News"
+        component={NewsList}
+        options={{
+          title: 'News',
+          tabBarIcon: ({ color }) => <TabBarIcon name="newspaper-o" color={color} />,
+          lazy: false,
+        }}
+      />
       {features.artists && (
         <BottomTab.Screen
           name="ArtistsList"
@@ -143,7 +152,7 @@ function BottomTabNavigator() {
           }}
         />
       )}
-      {features.schedule && (
+      {features.map && (
         <BottomTab.Screen
           name="MapView"
           component={MapView}
@@ -153,7 +162,7 @@ function BottomTabNavigator() {
           }}
         />
       )}
-      {features.artists && (
+      {features.myArtists && (
         <BottomTab.Screen
           name="MyFavorites"
           component={FavoritesList}
@@ -168,7 +177,7 @@ function BottomTabNavigator() {
           name="Schedule"
           component={Schedule}
           options={{
-            title: 'Schedule',
+            title: 'Program',
             tabBarIcon: ({ color }) => <TabBarIcon name="clock-o" color={color} />,
           }}
         />
@@ -185,15 +194,6 @@ function BottomTabNavigator() {
           }}
         />
       )}
-      <BottomTab.Screen
-        name="News"
-        component={NewsList}
-        options={{
-          title: 'News',
-          tabBarIcon: ({ color }) => <TabBarIcon name="newspaper-o" color={color} />,
-          lazy: false,
-        }}
-      />
       <BottomTab.Screen
         name="More"
         component={More}
