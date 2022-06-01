@@ -33,7 +33,7 @@ function DealsNavigator() {
         },
         headerTitleStyle: {
           color: Colors.light.tint,
-          fontFamily: Platform.select({ ios: 'HelveticaNeue' }),
+          fontFamily: 'Archia-Thin',
           fontWeight: '400',
         },
       }}

@@ -1,4 +1,4 @@
-import { Image, Platform } from 'react-native';
+import { Image } from 'react-native';
 import Colors from '../constants/Colors';
 
 export const defaultNavigatorScreenOptions = {
@@ -22,11 +22,11 @@ export const tabsScreenOptions = {
   },
   headerTitleStyle: {
     color: Colors.light.tint,
-    fontFamily: Platform.select({ ios: 'HelveticaNeue' }),
+    fontFamily: 'Archia-Thin',
     fontWeight: '400',
   },
   tabBarLabelStyle: {
-    fontFamily: Platform.select({ ios: 'HelveticaNeue' }),
+    fontFamily: 'Archia-Thin',
     fontWeight: '400',
   },
 };

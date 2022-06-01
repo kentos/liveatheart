@@ -2,7 +2,7 @@ import axios from 'axios';
 import { QueryKey } from 'react-query';
 import { requestInterceptor } from './apiInterceptors';
 
-const base = __DEV__ ? 'http://192.168.1.173:8080' : 'https://lah22.bastardcreative.se';
+const base = __DEV__ ? 'http://10.0.1.49:8080' : 'https://lah22.bastardcreative.se';
 
 const instance = axios.create({
   baseURL: base,

@@ -1,5 +1,5 @@
 import { useRoute, useNavigation } from '@react-navigation/native';
-import { ScrollView, Image, View, StyleSheet } from 'react-native';
+import { ScrollView, Image, View, StyleSheet, StatusBar } from 'react-native';
 import { Text } from '../../../components/Themed';
 import CloseButton from '../../../components/CloseButton';
 import { useArtists } from '../useArtists';
@@ -7,7 +7,7 @@ import Heart from '../../favorites/Heart';
 import Layout from '../../../constants/Layout';
 import Colors from '../../../constants/Colors';
 
-const HEIGHT = Layout.window.height - 40;
+const HEIGHT = Layout.window.height * 0.85;
 
 export interface ArtistDetailsParams {
   artistid: string;
@@ -20,12 +20,17 @@ function ArtistDetails() {
 
   return (
     <>
-      <ScrollView pagingEnabled decelerationRate={0} style={styles.view}>
+      <StatusBar barStyle={'light-content'} animated />
+      <ScrollView style={styles.view}>
         <View style={[styles.page]}>
-          <Image source={{ uri: artist?.image }} style={[styles.artistImage]} />
+          <Image
+            source={{ uri: 'http://10.0.1.49:8080/image?url=' + artist?.image }}
+            style={[styles.artistImage]}
+          />
+          <View style={styles.overlay} />
           <View style={styles.text}>
             <View style={{ marginRight: 16 }}>
-              {artist && <Heart artistid={artist?._id} size={32} />}
+              {artist && <Heart inverted artistid={artist?._id} size={32} />}
             </View>
             <View>
               <Text style={styles.artist}>{artist?.name}</Text>
@@ -45,7 +50,7 @@ function ArtistDetails() {
       </ScrollView>
 
       <View style={styles.actionBar}>
-        <CloseButton onPress={() => navigation.goBack()} />
+        <CloseButton back onPress={() => navigation.goBack()} />
       </View>
     </>
   );
@@ -63,24 +68,33 @@ const styles = StyleSheet.create({
     height: HEIGHT,
     position: 'absolute',
   },
+  overlay: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    right: 0,
+    height: HEIGHT,
+    backgroundColor: Colors.light.tint,
+    opacity: 0.75,
+  },
   text: {
     position: 'absolute',
-    bottom: 0,
-    left: 0,
+    bottom: 32,
     right: 0,
-    backgroundColor: Colors.light.tint,
-    opacity: 0.9,
+    // backgroundColor: Colors.light.background,
+    // opacity: 0.75,
     padding: 8,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
   },
   artist: {
-    fontSize: 26,
-    fontWeight: '600',
+    fontSize: 32,
+    color: Colors.light.background,
   },
   genre: {
     fontSize: 16,
+    color: Colors.light.background,
   },
   description: {
     fontSize: 16,
@@ -91,7 +105,7 @@ const styles = StyleSheet.create({
   },
   actionBar: {
     position: 'absolute',
-    bottom: 32,
+    top: 32,
     left: 16,
     shadowRadius: 10,
     shadowColor: 'rgba(0, 0, 0, .25)',

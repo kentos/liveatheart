@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-import { Image, Platform } from 'react-native';
+import { Image } from 'react-native';
 
 import Colors from '../constants/Colors';
 import ModalScreen from '../screens/ModalScreen';
@@ -24,6 +24,7 @@ import More from '../features/more/More';
 import Tickets from '../features/more/Tickets/Tickets';
 import WebView from '../features/webview/WebView';
 import AboutApp from '../features/more/AboutApp';
+import { SvgCss, SvgXml } from 'react-native-svg';
 
 export default function Navigation() {
   return (
@@ -49,7 +50,7 @@ function RootNavigator() {
         },
         headerTitleStyle: {
           color: Colors.light.tint,
-          fontFamily: Platform.select({ ios: 'HelveticaNeue' }),
+          fontFamily: 'Archia-Thin',
           fontWeight: '400',
         },
       }}
@@ -72,7 +73,7 @@ function RootNavigator() {
           },
           headerTitleStyle: {
             color: Colors.light.tint,
-            fontFamily: Platform.select({ ios: 'HelveticaNeue' }),
+            fontFamily: 'Archia-Thin',
             fontWeight: '400',
           },
         }}
@@ -100,6 +101,8 @@ function RootNavigator() {
 
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
+import Logo from '../assets/images/lah-sv.svg';
+
 function BottomTabNavigator() {
   const insets = useSafeAreaInsets();
   const features = useFeatureToggle();
@@ -107,19 +110,20 @@ function BottomTabNavigator() {
     <BottomTab.Navigator
       screenOptions={{
         headerLeft: () => (
-          <Image
-            source={require('../assets/images/lah-logo.png')}
-            style={{ width: 52, height: 40, marginLeft: 8 }}
-          />
+          // <Image
+          //   source={require('../assets/images/lah-sv.svg')}
+          //   style={{ width: 52, height: 40, marginLeft: 8 }}
+          // />
+          <Logo width={64} height={50} style={{ marginLeft: 8 }} fill={Colors.light.tint} />
         ),
         headerStyle: {
-          // backgroundColor: '#fff',
+          // backgroundColor: Colors.light.tint,
           // shadowColor: 'transparent',
           height: insets.top + HEADER_HEIGHT,
         },
         headerTitleStyle: {
           color: Colors.light.tint,
-          fontFamily: Platform.select({ ios: 'HelveticaNeue' }),
+          fontFamily: 'Archia-Regular',
           fontWeight: '400',
         },
         tabBarActiveTintColor: Colors.light.tint,
@@ -127,7 +131,7 @@ function BottomTabNavigator() {
           borderTopWidth: 0,
         },
         tabBarLabelStyle: {
-          fontFamily: Platform.select({ ios: 'HelveticaNeue' }),
+          fontFamily: 'Archia-Regular',
           fontWeight: '400',
         },
       }}
@@ -148,6 +152,7 @@ function BottomTabNavigator() {
           options={{
             title: 'Artists',
             tabBarIcon: ({ color }) => <TabBarIcon name="music" color={color} />,
+            lazy: false,
           }}
         />
       )}

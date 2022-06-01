@@ -3,6 +3,15 @@ import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
 
+const customFonts = {
+  'Archia-Bold': require('../assets/fonts/Archia-Bold.otf'),
+  'Archia-Light': require('../assets/fonts/Archia-Light.otf'),
+  'Archia-Medium': require('../assets/fonts/Archia-Medium.otf'),
+  'Archia-Regular': require('../assets/fonts/Archia-Regular.otf'),
+  'Archia-SemiBold': require('../assets/fonts/Archia-SemiBold.otf'),
+  'Archia-Thin': require('../assets/fonts/Archia-Thin.otf'),
+};
+
 export default function useCachedResources() {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
 
@@ -14,6 +23,7 @@ export default function useCachedResources() {
         // Load fonts
         await Font.loadAsync({
           ...FontAwesome.font,
+          ...customFonts,
         });
       } catch (e) {
         console.warn(e);

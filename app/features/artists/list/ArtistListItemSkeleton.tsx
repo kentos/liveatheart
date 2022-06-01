@@ -111,6 +111,7 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     fontWeight: '600',
     fontSize: 14,
+    fontFamily: 'Archia-Medium',
   },
   genre: {
     color: 'rgba(0,0,0,.45)',

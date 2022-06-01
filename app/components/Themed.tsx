@@ -2,9 +2,7 @@
  * Learn more about Light and Dark modes:
  * https://docs.expo.io/guides/color-schemes/
  */
-
-import { Platform, Text as DefaultText, View as DefaultView } from 'react-native';
-
+import { Text as DefaultText, View as DefaultView } from 'react-native';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 
@@ -26,6 +24,7 @@ type ThemeProps = {
   bold?: boolean;
   lightColor?: string;
   darkColor?: string;
+  center?: boolean;
 };
 
 export type TextProps = ThemeProps & DefaultText['props'];
@@ -38,8 +37,9 @@ export function Text(props: TextProps) {
   return (
     <DefaultText
       style={[
-        { color, fontFamily: Platform.select({ ios: 'HelveticaNeue' }) },
+        { color, fontFamily: 'Archia-Regular' },
         style,
+        props.center && { textAlign: 'center' },
         props.bold && { fontWeight: 'bold' },
       ]}
       {...otherProps}

@@ -7,6 +7,7 @@ import { useArtists } from '../useArtists';
 import useFavorites from '../../favorites/useFavorites';
 import SectionHeader from './SectionHeader';
 import ArtistListItemSkeleton from './ArtistListItemSkeleton';
+import EmptyFaveList from './EmptyFaveList';
 
 const selectedEnum = {
   NAME: 0,
@@ -60,7 +61,7 @@ function ArtistsList() {
     <>
       <View style={{ backgroundColor: 'white', padding: 8 }}>
         <SegmentedControl
-          values={['A-Ö', 'Genre', 'Faves']}
+          values={['A-Z', 'Genre', 'Faves']}
           selectedIndex={selected}
           onChange={(e) => setSelected(() => e.nativeEvent.selectedSegmentIndex)}
         />
@@ -69,6 +70,12 @@ function ArtistsList() {
         keyExtractor={(i) => i._id}
         sections={data}
         refreshControl={<RefreshControl refreshing={isReloading} onRefresh={reload} />}
+        ListHeaderComponent={() => {
+          if (selected === 2 && data[0]?.data?.length === 0) {
+            return <EmptyFaveList />;
+          }
+          return null;
+        }}
         renderItem={({ item }) =>
           item._id.includes('skeleton_') ? (
             <ArtistListItemSkeleton />
