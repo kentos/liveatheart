@@ -60,32 +60,29 @@ async function handler(fastify: FastifyInstance) {
     ) => {
       const result = await downloadImage(req.query.url)
 
-      if (req.query.type === 'thumb') {
-        const thumb = result + '_thumb'
-        if (!fs.existsSync(thumb)) {
-          await sharp(result).resize({ height: 160 }).toFile(thumb)
+      let buffer: Buffer
+      switch (req.query.type) {
+        case 'thumb': {
+          const thumb = result + '_thumb'
+          if (!fs.existsSync(thumb)) {
+            await sharp(result).resize({ height: 160 }).toFile(thumb)
+          }
+          buffer = fs.readFileSync(thumb)
+          break
         }
-        const buffer = fs.readFileSync(thumb)
-        const imgStream = new stream.Readable({
-          read() {
-            this.push(buffer)
-            this.push(null)
-          },
-        })
-
-        return reply.send(imgStream)
+        default: {
+          const grayscaled = result + '_gray'
+          if (!fs.existsSync(grayscaled)) {
+            await sharp(result)
+              .resize({ height: 650 })
+              .gamma(1.0)
+              .grayscale()
+              .toFile(grayscaled)
+          }
+          buffer = fs.readFileSync(grayscaled)
+        }
       }
 
-      const grayscaled = result + '_gray'
-      if (!fs.existsSync(grayscaled)) {
-        await sharp(result)
-          .resize({ height: 650 })
-          .gamma(1.0)
-          .grayscale()
-          .toFile(grayscaled)
-      }
-
-      const buffer = fs.readFileSync(grayscaled)
       const imgStream = new stream.Readable({
         read() {
           this.push(buffer)
