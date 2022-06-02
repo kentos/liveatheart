@@ -29,7 +29,6 @@ function ArtistDetails() {
           <Image
             source={{
               uri: config.api + '/image?type=gray&url=' + artist?.image,
-              cache: 'force-cache',
             }}
             style={[styles.artistImage]}
           />

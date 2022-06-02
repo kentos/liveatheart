@@ -51,7 +51,7 @@ function ArtistListItemSkeleton({
     <View style={styles.wrapper}>
       {!!imageUri ? (
         <Image
-          source={{ uri: config.api + '/image?type=thumb&url=' + imageUri, cache: 'force-cache' }}
+          source={{ uri: config.api + '/image?type=thumb&url=' + imageUri }}
           style={styles.image}
         />
       ) : (
