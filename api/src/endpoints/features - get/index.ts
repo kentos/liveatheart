@@ -11,7 +11,7 @@ async function handler(fastify: FastifyInstance) {
         map: false,
         schedule: false,
         news: true,
-        deals: true,
+        deals: false,
       }
     },
   })
