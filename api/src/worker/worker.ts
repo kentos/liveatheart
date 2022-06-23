@@ -1,10 +1,8 @@
 import schedule from 'node-schedule'
+import { loadArtists } from '../loaders/artists'
 import { loadNews } from '../loaders/news'
 
-schedule.scheduleJob('dummy', '*/15 * * * *', async function dummy() {
-  console.log(new Date(), 'DUMMY running')
-})
-
 schedule.scheduleJob('fetch news', '*/5 * * * *', loadNews)
+schedule.scheduleJob('fetch artists', '*/10 * * * *', loadArtists)
 
 console.log(Object.keys(schedule.scheduledJobs))
