@@ -15,5 +15,6 @@ declare global {
     image?: string
     description?: string
     spotify?: string
+    youtube?: string
   }
 }

@@ -1,16 +1,24 @@
 import * as cheerio from 'cheerio'
 import axios from 'axios'
 import { collection } from '@heja/shared/mongodb'
+import _ from 'lodash'
+import { getOriginalImage } from '../features/images/getOriginalImage'
 
 const mainUrl = 'https://liveatheart.se/artists-2022/'
 
+function cleanCategory(category: string): string {
+  return category.replace(/-2$/, '')
+}
+
 async function loadArtists() {
+  console.log('loading artists')
+
   const result = await axios.get(mainUrl)
   const html = cheerio.load(result.data)
   const all = html('div.et_pb_portfolio_item')
 
-  const items = await Promise.all(
-    all.map(async (i, el) => {
+  await Promise.all(
+    all.map(async (_i, el) => {
       const h2 = html(el).find('h2 a')
       if (!h2) {
         return
@@ -24,7 +32,7 @@ async function loadArtists() {
         throw new Error('No artist link found' + artist.name)
       }
 
-      const page = await axios.get(artist.link)
+      const page = await axios.get(encodeURI(artist.link))
       const data = cheerio.load(page.data)
 
       if (!data) {
@@ -32,8 +40,20 @@ async function loadArtists() {
       }
 
       artist.image = data('span.et_pb_image_wrap img').attr('src')
-      artist.description = data('div.et_pb_text_inner p span').text()
-      artist.spotify = data('div.et_pb_code_inner iframe').attr('src')
+      if (artist.image) {
+        getOriginalImage(artist.image)
+      }
+      artist.description = data('div.et_pb_module.et_pb_text.et_pb_text_2')
+        .text()
+        .trimStart()
+      data('div.et_pb_code_inner iframe').map((_ix, el) => {
+        const src = data(el).attr('src')
+        if (src?.includes('open.spotify')) {
+          artist.spotify = src
+        } else if (src?.includes('youtube.com')) {
+          artist.youtube = src
+        }
+      })
 
       const article = data('div#main-content article')
       if (article) {
@@ -41,7 +61,7 @@ async function loadArtists() {
         if (classes) {
           artist.categories = [
             ...classes.matchAll(/project_category-([a-z\-0-9]*)/gi),
-          ].map((c) => ({ name: c[1], hidden: false }))
+          ].map((c) => ({ name: cleanCategory(c[1]), hidden: false }))
         }
         const id = article.attr('id')
         if (id) {
@@ -51,14 +71,15 @@ async function loadArtists() {
       try {
         await collection<Partial<Artist>>('artists').insertOne(artist)
       } catch (e: any) {
-        console.log('silent failes to insert new artist')
+        if (artist.externalid) {
+          await collection<Partial<Artist>>('artists').updateOne(
+            { externalid: artist.externalid },
+            { $set: _.omit<Partial<Artist>>(artist, ['_id', 'externalid']) },
+          )
+        }
       }
-
-      return artist
     }),
   )
-
-  console.dir(items, { depth: 10 })
 }
 
 export { loadArtists }

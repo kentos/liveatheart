@@ -1,37 +1,12 @@
 import * as stream from 'stream'
 import fs from 'fs'
-import path from 'path'
-import util from 'util'
 import {
   FastifyInstance,
   FastifyReply,
   FastifyRequest,
 } from '@heja/shared/fastify'
-import axios from 'axios'
-import md5 from 'md5'
 import sharp from 'sharp'
-
-const pipeline = util.promisify(stream.pipeline)
-
-const dir = path.join(__dirname, '../../data/images')
-try {
-  fs.mkdirSync(dir)
-} catch (e: any) {
-  console.log(e)
-}
-
-async function downloadImage(url: string) {
-  const outputFile = path.join(dir, md5(url))
-  if (fs.existsSync(outputFile)) {
-    return outputFile
-  }
-  const writer = fs.createWriteStream(outputFile)
-  const request = await axios.get(url, {
-    responseType: 'stream',
-  })
-  await pipeline(request.data, writer)
-  return outputFile
-}
+import { getOriginalImage } from '../../features/images/getOriginalImage'
 
 async function handler(fastify: FastifyInstance) {
   fastify.route({
@@ -58,7 +33,7 @@ async function handler(fastify: FastifyInstance) {
       }>,
       reply: FastifyReply,
     ) => {
-      const result = await downloadImage(req.query.url)
+      const result = await getOriginalImage(req.query.url)
 
       let buffer: Buffer
       switch (req.query.type) {
