@@ -1,4 +1,4 @@
-import { parse } from 'node-html-parser'
+import * as cheerio from 'cheerio'
 import axios from 'axios'
 import { collection } from '@heja/shared/mongodb'
 
@@ -6,14 +6,18 @@ const mainUrl = 'https://liveatheart.se/artists-2022/'
 
 async function loadArtists() {
   const result = await axios.get(mainUrl)
-  const html = parse(result.data)
+  const html = cheerio.load(result.data)
+  const all = html('div.et_pb_portfolio_item')
 
   const items = await Promise.all(
-    html.querySelectorAll('div.et_pb_portfolio_item').map(async (i) => {
-      const h2 = i.querySelector('h2 a')
+    all.map(async (i, el) => {
+      const h2 = html(el).find('h2 a')
+      if (!h2) {
+        return
+      }
       const artist: Partial<Artist> = {
-        link: h2?.getAttribute('href'),
-        name: h2?.innerText,
+        link: h2.attr('href'),
+        name: h2.text(),
       }
 
       if (!artist.link) {
@@ -21,29 +25,25 @@ async function loadArtists() {
       }
 
       const page = await axios.get(artist.link)
-      const data = parse(page.data)
+      const data = cheerio.load(page.data)
 
-      artist.image = data
-        .querySelector('span.et_pb_image_wrap img')
-        ?.getAttribute('src')
+      if (!data) {
+        throw new Error('WA WA could not parse' + artist.link)
+      }
 
-      artist.description = data.querySelector(
-        'div.et_pb_text_inner p span',
-      )?.innerHTML
+      artist.image = data('span.et_pb_image_wrap img').attr('src')
+      artist.description = data('div.et_pb_text_inner p span').text()
+      artist.spotify = data('div.et_pb_code_inner iframe').attr('src')
 
-      artist.spotify = data
-        .querySelector('div.et_pb_code_inner iframe')
-        ?.getAttribute('src')
-
-      const article = data.querySelector('article')
+      const article = data('div#main-content article')
       if (article) {
-        const classes = article.getAttribute('class')
+        const classes = article.attr('class')
         if (classes) {
           artist.categories = [
             ...classes.matchAll(/project_category-([a-z\-0-9]*)/gi),
           ].map((c) => ({ name: c[1], hidden: false }))
         }
-        const id = article.getAttribute('id')
+        const id = article.attr('id')
         if (id) {
           artist.externalid = id.replace('post-', '')
         }
