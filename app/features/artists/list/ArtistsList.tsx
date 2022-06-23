@@ -9,11 +9,11 @@ import SectionHeader from './SectionHeader';
 import ArtistListItemSkeleton from './ArtistListItemSkeleton';
 import EmptyFaveList from './EmptyFaveList';
 
-const selectedEnum = {
-  NAME: 0,
-  GENRE: 1,
-  FAVES: 2,
-};
+enum selectedEnum {
+  NAME = 0,
+  GENRE = 1,
+  FAVES = 2,
+}
 
 function ArtistsList() {
   const [selected, setSelected] = useState(0);
@@ -66,35 +66,37 @@ function ArtistsList() {
           onChange={(e) => setSelected(() => e.nativeEvent.selectedSegmentIndex)}
         />
       </View>
-      <SectionList
-        keyExtractor={(i) => i._id}
-        sections={data}
-        refreshControl={<RefreshControl refreshing={isReloading} onRefresh={reload} />}
-        ListHeaderComponent={() => {
-          if (selected === 2 && data[0]?.data?.length === 0) {
-            return <EmptyFaveList />;
-          }
-          return null;
-        }}
-        renderItem={({ item }) =>
-          item._id.includes('skeleton_') ? (
-            <ArtistListItemSkeleton />
-          ) : (
-            <ArtistListItem artist={item} />
-          )
-        }
-        getItemLayout={(_data, index) => ({
-          length: ITEM_HEIGHT,
-          offset: ITEM_HEIGHT * index,
-          index,
-        })}
-        renderSectionHeader={(info) => {
-          if (info.section.title === 'All') {
+      {data?.length > 0 && (
+        <SectionList
+          keyExtractor={(i) => i._id}
+          sections={data}
+          refreshControl={<RefreshControl refreshing={isReloading} onRefresh={reload} />}
+          ListHeaderComponent={() => {
+            if (selected === 2 && data[0]?.data?.length === 0) {
+              return <EmptyFaveList />;
+            }
             return null;
+          }}
+          renderItem={({ item }) =>
+            item._id.includes('skeleton_') ? (
+              <ArtistListItemSkeleton />
+            ) : (
+              <ArtistListItem artist={item} />
+            )
           }
-          return <SectionHeader title={info.section.title} />;
-        }}
-      />
+          getItemLayout={(_data, index) => ({
+            length: ITEM_HEIGHT,
+            offset: ITEM_HEIGHT * index,
+            index,
+          })}
+          renderSectionHeader={(info) => {
+            if (info.section.title === 'All') {
+              return null;
+            }
+            return <SectionHeader title={info.section.title} />;
+          }}
+        />
+      )}
     </>
   );
 }
