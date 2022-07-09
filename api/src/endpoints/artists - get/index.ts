@@ -19,6 +19,8 @@ async function handler(fastify: FastifyInstance) {
         country: '?',
         description: a.description,
         slots: [],
+        spotify: a.spotify,
+        youtube: a.youtube,
       }))
     },
   })
