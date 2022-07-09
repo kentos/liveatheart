@@ -7,7 +7,7 @@ function SplashLoading() {
       <Animatable.Image
         animation="pulse"
         iterationCount="infinite"
-        source={require('../assets/images/icon.png')}
+        source={require('../assets/images/loading-clean.png')}
         resizeMode="contain"
         style={{ width: '100%', height: '100%' }}
       />
