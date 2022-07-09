@@ -2,7 +2,7 @@
  * Learn more about Light and Dark modes:
  * https://docs.expo.io/guides/color-schemes/
  */
-import { Text as DefaultText, View as DefaultView } from 'react-native';
+import { Text as DefaultText, TextStyle, View as DefaultView } from 'react-native';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 
@@ -33,11 +33,11 @@ export type ViewProps = ThemeProps & DefaultView['props'];
 export function Text(props: TextProps) {
   const { style, lightColor, darkColor, ...otherProps } = props;
   const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
-
+  const s = style as TextStyle;
   return (
     <DefaultText
       style={[
-        { color, fontFamily: 'Archia-Regular' },
+        { color: s.color || color, fontFamily: s.fontFamily || 'Archia-Regular' },
         style,
         props.center && { textAlign: 'center' },
         props.bold && { fontWeight: 'bold' },

@@ -14,4 +14,6 @@ interface Artist {
   country: string;
   description: string;
   slots?: Slot[];
+  spotify?: string;
+  youtube?: string;
 }

@@ -1,6 +1,6 @@
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { ScrollView, Image, View, StyleSheet, StatusBar } from 'react-native';
-import { Text } from '../../../components/Themed';
+import { Headline, Body } from '../../../components/Texts';
 import CloseButton from '../../../components/CloseButton';
 import { useArtists } from '../useArtists';
 import Heart from '../../favorites/Heart';
@@ -8,6 +8,9 @@ import Layout from '../../../constants/Layout';
 import Colors from '../../../constants/Colors';
 import config from '../../../constants/config';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import SpotifyEmbed from './SpotifyEmbed';
+import ConcertRow from './ConcertRow';
+import YoutubeEmbed from './YoutubeEmbed';
 
 const HEIGHT = Layout.window.height * 0.85;
 
@@ -25,7 +28,7 @@ function ArtistDetails() {
     <>
       <StatusBar barStyle={'light-content'} animated />
       <ScrollView style={[styles.view]}>
-        <View style={[styles.page]}>
+        <View>
           <Image
             source={{
               uri: config.api + '/image?type=gray&url=' + artist?.image,
@@ -34,20 +37,31 @@ function ArtistDetails() {
           />
           <View style={styles.overlay} />
           <View style={styles.text}>
-            <View>
-              <Text style={styles.artist}>{artist?.name}</Text>
-              <Text style={styles.genre}>{artist?.genre}</Text>
-              {/* <Text>
-                {artist?.city}, {artist?.country}
-              </Text> */}
+            <Headline style={styles.artist}>{artist?.name}</Headline>
+            <Body style={styles.genre}>{artist?.genre}</Body>
+            <View style={styles.concerts}>
+              <ConcertRow venue="Satin" day="Wednesday" time="20:00" />
+              <ConcertRow venue="Scandic Garage" day="Thursday" time="13:00" />
+              <ConcertRow venue="Makeriet" day="Friday" time="22:00" />
+              <ConcertRow venue="Kvarteret & Co" day="Saturday" time="23:00" />
             </View>
           </View>
         </View>
 
-        <View style={styles.page}>
+        <View>
           <View style={styles.descriptionWrapper}>
-            <Text style={styles.description}>{artist?.description}</Text>
+            <Body>{artist?.description?.trim()}</Body>
           </View>
+          {artist?.youtube && (
+            <View style={{ marginHorizontal: 12, marginBottom: 12 }}>
+              <YoutubeEmbed uri={artist.youtube} />
+            </View>
+          )}
+          {artist?.spotify && (
+            <View style={{ marginHorizontal: 12 }}>
+              <SpotifyEmbed uri={artist?.spotify} />
+            </View>
+          )}
         </View>
       </ScrollView>
 
@@ -69,7 +83,6 @@ const styles = StyleSheet.create({
   artistImage: {
     width: '100%',
     height: HEIGHT,
-    position: 'absolute',
   },
   overlay: {
     position: 'absolute',
@@ -83,22 +96,21 @@ const styles = StyleSheet.create({
   text: {
     position: 'absolute',
     bottom: 24,
-    right: 8,
-    flexDirection: 'row',
+    left: 24,
+    right: 24,
+    flexDirection: 'column',
   },
   artist: {
-    fontSize: 32,
+    fontSize: 28,
+    fontFamily: 'Archia-Bold',
     color: Colors.light.background,
   },
   genre: {
-    fontSize: 16,
+    // fontSize: 16,
     color: Colors.light.background,
   },
-  description: {
-    fontSize: 16,
-  },
   descriptionWrapper: {
-    padding: 16,
+    padding: 24,
     flex: 1,
   },
   actionBar: {
@@ -115,6 +127,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.75,
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  concerts: {
+    borderTopColor: Colors.light.background,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    marginTop: 16,
+    paddingTop: 16,
   },
 });
 
