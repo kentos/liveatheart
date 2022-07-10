@@ -2,5 +2,4 @@
 
 # Releasing
 
-`npx esa-cli build`
-`npx esa-cli submit --platform ios|android`
+`npx eas-cli build -p ios|android --auto-submit`
