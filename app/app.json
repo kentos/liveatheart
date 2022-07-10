@@ -23,7 +23,7 @@
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "To be able to navigate the map we need to find out your location."
       },
-      "runtimeVersion": "1.0.0"
+      "runtimeVersion": "2.0"
     },
     "android": {
       "adaptiveIcon": {
