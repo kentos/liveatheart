@@ -14,8 +14,8 @@ function task(fn: () => Promise<void>) {
   }
 }
 
-schedule.scheduleJob('fetch news', '*/5 * * * *', task(loadNews))
-schedule.scheduleJob('fetch artists', '*/10 * * * *', task(loadArtists))
-schedule.scheduleJob('fetch deals', '*/15 * * * *', task(loadDeals))
+schedule.scheduleJob('fetch news', '*/3 * * * *', task(loadNews))
+schedule.scheduleJob('fetch artists', '*/7 * * * *', task(loadArtists))
+schedule.scheduleJob('fetch deals', '*/13 * * * *', task(loadDeals))
 
 console.log(Object.keys(schedule.scheduledJobs))
