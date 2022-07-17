@@ -2,6 +2,7 @@ import { Pressable, View, StyleSheet, ViewStyle } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useCallback } from 'react';
+import Colors from '../constants/Colors';
 
 interface CloseButtonProps {
   back?: boolean;
@@ -23,7 +24,8 @@ function CloseButton({ back = false, style, onPress }: CloseButtonProps) {
       <View style={styles.wrapper}>
         <FontAwesome
           size={20}
-          style={[{ marginLeft: 2 }, { width: 20, height: 20 }]}
+          color={Colors.light.text}
+          style={[{ marginLeft: 2, width: 20, height: 20 }]}
           name={back ? 'chevron-left' : 'close'}
         />
       </View>
@@ -33,8 +35,8 @@ function CloseButton({ back = false, style, onPress }: CloseButtonProps) {
 
 const styles = StyleSheet.create({
   wrapper: {
-    backgroundColor: '#efefef',
-    borderRadius: 32,
+    backgroundColor: Colors.light.background,
+    borderRadius: 100,
     padding: 8,
   },
 });
