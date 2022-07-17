@@ -3,12 +3,15 @@ import axios from 'axios'
 import { collection } from '@heja/shared/mongodb'
 import _ from 'lodash'
 import { getOriginalImage } from '../features/images/getOriginalImage'
+import { nameParser } from '../lib/nameParser'
 
 const mainUrl = 'https://liveatheart.se/artists-2022/'
 
 function cleanCategory(category: string): string {
   return category.replace(/-2$/, '')
 }
+
+const delay = (ms: number) => new Promise((res) => setTimeout(res, ms))
 
 async function loadArtists() {
   console.log('loading artists')
@@ -18,7 +21,7 @@ async function loadArtists() {
   const all = html('div.et_pb_portfolio_item')
 
   await Promise.all(
-    all.map(async (_i, el) => {
+    all.map(async (ix, el) => {
       const h2 = html(el).find('h2 a')
       if (!h2) {
         return
@@ -31,6 +34,18 @@ async function loadArtists() {
       if (!artist.link) {
         throw new Error('No artist link found' + artist.name)
       }
+
+      const [name, countryCode] = nameParser(artist.name)
+
+      if (name) {
+        artist.name = name
+      }
+
+      if (countryCode) {
+        artist.countryCode = countryCode
+      }
+
+      await delay(1500 * ix)
 
       const page = await axios.get(encodeURI(artist.link))
       const data = cheerio.load(page.data)

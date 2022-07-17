@@ -21,6 +21,16 @@ async function handler(fastify: FastifyInstance) {
         slots: [],
         spotify: a.spotify,
         youtube: a.youtube,
+        countryCode: a.countryCode,
+        // concerts: [
+        //   {
+        //     _id: new ObjectId(),
+        //     venue: venues.satin,
+        //     day: 'wednesday',
+        //     time: '23:00',
+        //     eventAt: parseISO('2022-08-31T22:00:00Z'),
+        //   },
+        // ],
       }))
     },
   })
