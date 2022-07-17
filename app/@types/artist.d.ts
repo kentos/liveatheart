@@ -1,9 +1,4 @@
-type SlotCombined = Slot & Pick<Artist, '_id' | 'name'>;
-
-interface Slot {
-  venue_id: string;
-  date: string;
-}
+type ConcertCombined = Concert & Pick<Artist, '_id' | 'name'>;
 
 interface Concert {
   _id: ObjectId;
@@ -24,7 +19,6 @@ interface Artist {
   city: string;
   country: string;
   description: string;
-  slots?: Slot[];
   spotify?: string;
   youtube?: string;
   concerts?: Concert[];

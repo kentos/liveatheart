@@ -45,18 +45,18 @@ function Schedule() {
   const data = useMemo(
     () =>
       _(artists)
-        .filter((a) => !!a.slots)
+        .filter((a) => !!a.concerts)
         .filter((a) => (showFavorites ? faves.includes(a._id) : true))
         .flatMap(
           (a) =>
-            a.slots
-              ?.filter((s) => isSameDay(s.date, selectedDate))
-              .map<SlotCombined>((b) => ({ ..._.pick(a, ['_id', 'name']), ...b })) ?? []
+            a.concerts
+              ?.filter((s) => isSameDay(s.eventAt, selectedDate))
+              .map<ConcertCombined>((b) => ({ ..._.pick(a, ['_id', 'name']), ...b })) ?? []
         )
-        .sortBy((a) => a.date)
-        .groupBy((a) => a.venue_id)
-        .map((val, key) => ({
-          title: mockVenues[key].name,
+        .sortBy((a) => a.eventAt)
+        .groupBy((a) => a.venue._id)
+        .map((val) => ({
+          title: val[0].venue.name,
           data: val,
         }))
         .value(),
@@ -66,22 +66,26 @@ function Schedule() {
   return (
     <View style={{ flex: 1 }}>
       <View style={{ backgroundColor: '#fff', paddingHorizontal: 8 }}>
-        <SegmentedControl
-          selectedIndex={selectedDay}
-          values={_.map(days, (d) => _.upperFirst(format(d, 'shortday')))}
-          onChange={(e) => {
-            setSelectedDay(() => e.nativeEvent.selectedSegmentIndex);
-          }}
-        />
+        {data?.length > 0 && (
+          <SegmentedControl
+            selectedIndex={selectedDay}
+            values={_.map(days, (d) => _.upperFirst(format(d, 'shortday')))}
+            onChange={(e) => {
+              setSelectedDay(() => e.nativeEvent.selectedSegmentIndex);
+            }}
+          />
+        )}
       </View>
-      <SectionList
-        style={{ flex: 1 }}
-        sections={data}
-        keyExtractor={(item) => item._id}
-        renderItem={({ item }) => <Slot slot={item} />}
-        renderSectionHeader={({ section }) => <ScheduleSectionHeader title={section.title} />}
-        stickySectionHeadersEnabled={false}
-      />
+      {data?.length > 0 && (
+        <SectionList
+          style={{ flex: 1 }}
+          sections={data}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item }) => <Slot slot={item} />}
+          renderSectionHeader={({ section }) => <ScheduleSectionHeader title={section.title} />}
+          stickySectionHeadersEnabled={false}
+        />
+      )}
     </View>
   );
 }

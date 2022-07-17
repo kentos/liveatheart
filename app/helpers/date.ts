@@ -1,5 +1,4 @@
 import * as fns from 'date-fns';
-import { sv } from 'date-fns/locale';
 import _ from 'lodash';
 
 function convert(raw: string | Date): Date {
@@ -26,7 +25,7 @@ function getFormat(f: Format): string {
 }
 
 export function format(date: string | Date, type: Format): string {
-  return fns.format(convert(date), getFormat(type), { locale: sv });
+  return fns.format(convert(date), getFormat(type));
 }
 
 export function isSameDay(date1: string | Date, date2: string | Date): boolean {
