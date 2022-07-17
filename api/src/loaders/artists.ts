@@ -45,7 +45,7 @@ async function loadArtists() {
         artist.countryCode = countryCode
       }
 
-      await delay(1500 * ix)
+      await delay(2500 * ix)
 
       const page = await axios.get(encodeURI(artist.link))
       const data = cheerio.load(page.data)

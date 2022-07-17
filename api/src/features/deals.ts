@@ -1,5 +1,8 @@
+import { collection } from '@heja/shared/mongodb'
+
 async function getAllDeals() {
-  return require('../data/deals.json')
+  const deals = await collection<Deal>('deals').find({}).toArray()
+  return deals
 }
 
 export { getAllDeals }
