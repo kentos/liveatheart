@@ -11,6 +11,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import SpotifyEmbed from './SpotifyEmbed';
 import ConcertRow from './ConcertRow';
 import YoutubeEmbed from './YoutubeEmbed';
+import _ from 'lodash';
 
 const HEIGHT = Layout.window.height * 0.85;
 
@@ -37,18 +38,29 @@ function ArtistDetails() {
           />
           <View style={styles.overlay} />
           <View style={styles.text}>
-            <Headline style={styles.artist}>{artist?.name}</Headline>
-            <Body style={styles.genre}>{artist?.genre}</Body>
-            <View style={styles.concerts}>
-              <ConcertRow venue="Satin" day="Wednesday" time="20:00" />
-              <ConcertRow venue="Scandic Garage" day="Thursday" time="13:00" />
-              <ConcertRow venue="Makeriet" day="Friday" time="22:00" />
-              <ConcertRow venue="Kvarteret & Co" day="Saturday" time="23:00" />
+            <View style={styles.artistName}>
+              <Headline style={styles.artist}>{artist?.name}</Headline>
+              {artist?.countryCode && (
+                <Body style={styles.artistCountry}>{artist.countryCode}</Body>
+              )}
             </View>
+            <Body style={styles.genre}>{artist?.genre}</Body>
+            {Number(artist?.concerts?.length) > 0 && (
+              <View style={styles.concerts}>
+                {artist?.concerts?.map((c) => (
+                  <ConcertRow
+                    key={c._id}
+                    venue={c.venue.name}
+                    day={_.upperFirst(c.day)}
+                    time={c.time}
+                  />
+                ))}
+              </View>
+            )}
           </View>
         </View>
 
-        <View>
+        <View style={{ paddingBottom: insets.bottom }}>
           <View style={styles.descriptionWrapper}>
             <Body>{artist?.description?.trim()}</Body>
           </View>
@@ -99,6 +111,14 @@ const styles = StyleSheet.create({
     left: 24,
     right: 24,
     flexDirection: 'column',
+  },
+  artistName: {
+    flexDirection: 'row',
+  },
+  artistCountry: {
+    color: Colors.light.background,
+    marginLeft: 4,
+    fontSize: 18,
   },
   artist: {
     fontSize: 28,
