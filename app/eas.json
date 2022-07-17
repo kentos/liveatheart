@@ -1,7 +1,4 @@
 {
-  "cache": {
-    "key": "3.0"
-  },
   "cli": {
     "version": ">= 0.52.0"
   },
@@ -13,7 +10,17 @@
     "preview": {
       "distribution": "internal"
     },
-    "production": {}
+    "production": {
+      "cache": {
+        "key": "3.0"
+      },
+      "android": {
+        "autoIncrement": "version"
+      },
+      "ios": {
+        "autoIncrement": "version"
+      }
+    }
   },
   "submit": {
     "production": {
