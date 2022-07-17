@@ -23,7 +23,7 @@ function DealDetails() {
         <Image source={{ uri: deal?.image }} style={styles.image} />
         <View style={styles.textWrapper}>
           <Headline>{deal?.title}</Headline>
-          <Body>{deal?.text}</Body>
+          <Body>{deal?.description}</Body>
         </View>
       </ScrollView>
     </>
