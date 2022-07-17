@@ -8,7 +8,7 @@ function SplashLoading() {
         animation="pulse"
         iterationCount="infinite"
         source={require('../assets/images/loading-clean.png')}
-        resizeMode="contain"
+        resizeMode="cover"
         style={{ width: '100%', height: '100%' }}
       />
     </View>
