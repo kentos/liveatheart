@@ -23,7 +23,10 @@
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "To be able to navigate the map we need to find out your location."
       },
-      "runtimeVersion": "2.0"
+      "runtimeVersion": "2.0",
+      "config": {
+        "googleMapsApiKey": "AIzaSyChoP5w_8aAHhWp5D4TNh1pLcnWDa4JCEE"
+      }
     },
     "android": {
       "adaptiveIcon": {
