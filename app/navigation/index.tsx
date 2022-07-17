@@ -109,15 +109,9 @@ function BottomTabNavigator() {
     <BottomTab.Navigator
       screenOptions={{
         headerLeft: () => (
-          // <Image
-          //   source={require('../assets/images/lah-sv.svg')}
-          //   style={{ width: 52, height: 40, marginLeft: 8 }}
-          // />
           <Logo width={64} height={50} style={{ marginLeft: 8 }} fill={Colors.light.tint} />
         ),
         headerStyle: {
-          // backgroundColor: Colors.light.tint,
-          // shadowColor: 'transparent',
           height: insets.top + HEADER_HEIGHT,
         },
         headerTitleStyle: {
@@ -155,6 +149,16 @@ function BottomTabNavigator() {
           }}
         />
       )}
+      {features.schedule && (
+        <BottomTab.Screen
+          name="Schedule"
+          component={Schedule}
+          options={{
+            title: 'Program',
+            tabBarIcon: ({ color }) => <TabBarIcon name="clock-o" color={color} />,
+          }}
+        />
+      )}
       {features.map && (
         <BottomTab.Screen
           name="MapView"
@@ -172,16 +176,6 @@ function BottomTabNavigator() {
           options={{
             title: 'My artists',
             tabBarIcon: ({ color }) => <TabBarIcon name="heart-o" color={color} />,
-          }}
-        />
-      )}
-      {features.schedule && (
-        <BottomTab.Screen
-          name="Schedule"
-          component={Schedule}
-          options={{
-            title: 'Program',
-            tabBarIcon: ({ color }) => <TabBarIcon name="clock-o" color={color} />,
           }}
         />
       )}
