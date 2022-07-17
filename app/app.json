@@ -2,7 +2,7 @@
   "expo": {
     "name": "Live at Heart",
     "slug": "liveatheart",
-    "version": "2.0",
+    "version": "3.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "lah",
@@ -17,7 +17,7 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "buildNumber": "16",
+      "buildNumber": "17",
       "supportsTablet": false,
       "bundleIdentifier": "se.liveatheart.app",
       "infoPlist": {
