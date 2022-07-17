@@ -6,7 +6,7 @@ import useDeals from './useDeals';
 function DealItem({ deal }: { deal: Deal }) {
   const navigation = useNavigation();
   return (
-    <Pressable onPress={() => navigation.navigate('DealDetails', { dealid: deal.id })}>
+    <Pressable onPress={() => navigation.navigate('DealDetails', { dealid: deal._id })}>
       <View style={{ width: '100%', height: 200 }}>
         <Image source={{ uri: deal.image }} style={{ width: '100%', height: 200 }} />
         <View
@@ -33,7 +33,7 @@ function DealsList() {
   return (
     <FlatList
       data={deals}
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item) => item._id}
       renderItem={({ item }) => <DealItem deal={item} />}
     />
   );

@@ -1,5 +1,5 @@
 interface Deal {
-  id: string;
+  _id: string;
   title: string;
   image: string;
   description: string;

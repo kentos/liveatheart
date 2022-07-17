@@ -1,5 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import { Image, Platform } from 'react-native';
+import { Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CloseButton from '../../components/CloseButton';
 import Colors from '../../constants/Colors';

@@ -12,7 +12,7 @@ function useDeals(id?: string): { deals?: Deal[]; deal?: Deal } {
   });
   return {
     deals: data,
-    deal: data?.find((d) => d.id === id),
+    deal: data?.find((d) => d._id === id),
   };
 }
 
