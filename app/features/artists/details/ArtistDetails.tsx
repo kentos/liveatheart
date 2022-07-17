@@ -39,7 +39,9 @@ function ArtistDetails() {
           <View style={styles.overlay} />
           <View style={styles.text}>
             <View style={styles.artistName}>
-              <Headline style={styles.artist}>{artist?.name}</Headline>
+              <Headline style={styles.artist} numberOfLines={1} adjustsFontSizeToFit>
+                {artist?.name}
+              </Headline>
               {artist?.countryCode && (
                 <Body style={styles.artistCountry}>{artist.countryCode}</Body>
               )}
@@ -65,12 +67,12 @@ function ArtistDetails() {
             <Body>{artist?.description?.trim()}</Body>
           </View>
           {artist?.youtube && (
-            <View style={{ marginHorizontal: 12, marginBottom: 12 }}>
+            <View style={{ marginHorizontal: 8, marginBottom: 8 }}>
               <YoutubeEmbed uri={artist.youtube} />
             </View>
           )}
           {artist?.spotify && (
-            <View style={{ marginHorizontal: 12 }}>
+            <View style={{ marginHorizontal: 8 }}>
               <SpotifyEmbed uri={artist?.spotify} />
             </View>
           )}
@@ -107,18 +109,19 @@ const styles = StyleSheet.create({
   },
   text: {
     position: 'absolute',
-    bottom: 24,
-    left: 24,
-    right: 24,
+    bottom: 32,
+    paddingHorizontal: 32,
     flexDirection: 'column',
   },
   artistName: {
+    flex: 1,
     flexDirection: 'row',
+    marginRight: 32,
   },
   artistCountry: {
     color: Colors.light.background,
-    marginLeft: 4,
     fontSize: 18,
+    marginLeft: 4,
   },
   artist: {
     fontSize: 28,
@@ -126,11 +129,10 @@ const styles = StyleSheet.create({
     color: Colors.light.background,
   },
   genre: {
-    // fontSize: 16,
     color: Colors.light.background,
   },
   descriptionWrapper: {
-    padding: 24,
+    padding: 32,
     flex: 1,
   },
   actionBar: {
