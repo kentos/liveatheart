@@ -14,8 +14,6 @@ function cleanCategory(category: string): string {
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms))
 
 async function loadArtists() {
-  console.log('loading artists')
-
   const result = await axios.get(mainUrl)
   const html = cheerio.load(result.data)
   const all = html('div.et_pb_portfolio_item')

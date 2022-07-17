@@ -8,8 +8,6 @@ const dealsUrl = 'https://liveatheart.se/deals-2022/'
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms))
 
 export async function loadDeals() {
-  console.log('loading deals')
-
   const result = await axios.get(dealsUrl)
   const html = cheerio.load(result.data)
   const all = html('div.et_pb_portfolio_item')
@@ -55,7 +53,6 @@ export async function loadDeals() {
           )
         }
       }
-      console.log(deal)
     }),
   )
 }
