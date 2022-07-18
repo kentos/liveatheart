@@ -2,7 +2,7 @@
   "expo": {
     "name": "Live at Heart",
     "slug": "liveatheart",
-    "version": "3.0.1",
+    "version": "3.0.3",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "lah",
@@ -17,24 +17,25 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "buildNumber": "18",
+      "buildNumber": "19",
       "supportsTablet": false,
       "bundleIdentifier": "se.liveatheart.app",
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "To be able to navigate the map we need to find out your location."
       },
-      "runtimeVersion": "2.0",
+      "runtimeVersion": "exposdk:45.0.0",
       "config": {
         "googleMapsApiKey": "AIzaSyChoP5w_8aAHhWp5D4TNh1pLcnWDa4JCEE"
       }
     },
     "android": {
+      "versionCode": "19",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
       },
       "runtimeVersion": {
-        "policy": "sdkVersion"
+        "policy": "exposdk:45.0.0"
       },
       "package": "se.liveatheart.app"
     },
