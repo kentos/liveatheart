@@ -12,13 +12,12 @@ async function handler(fastify: FastifyInstance) {
         name: a.name,
         image: a.image,
         genre: a.categories
-          ?.filter((c) => c.name !== 'artists-2022')
+          ?.filter((c) => ![c.name, c.slug].includes('artists-2022'))
           .map((c) => c.name.replace('-', ' '))
           .join(', '),
         city: '?',
         country: '?',
         description: a.description,
-        slots: [],
         spotify: a.spotify,
         youtube: a.youtube,
         countryCode: a.countryCode,

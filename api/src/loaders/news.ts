@@ -1,56 +1,33 @@
-import { parse } from 'node-html-parser'
-import { ulid } from 'ulid'
-import axios from 'axios'
-import fs from 'fs'
-import path from 'path'
 import * as datefns from 'date-fns'
 import { collection } from '@heja/shared/mongodb'
+import { decode } from 'html-entities'
+import { loader, WPAPIResponse } from './jsonloader'
 
-function parseDate(str: string | undefined): Date {
-  if (!str) {
-    return new Date()
-  }
-  return datefns.parse(str, 'MMM dd, yyyy', new Date())
+async function parseResult(result: WPAPIResponse[]) {
+  await Promise.all(
+    result.map(async (row: any) => {
+      const existing = await collection<News>('news').findOne({
+        articleid: String(row.id),
+      })
+      if (existing) {
+        return
+      }
+      const data = {
+        articleid: String(row.id),
+        title: decode(row.title.rendered),
+        link: row.link,
+        image: row.jetpack_featured_media_url,
+        published: datefns.parseISO(row.date_gmt),
+        createdAt: new Date(),
+      }
+      await collection<Partial<News>>('news').insertOne(data)
+    }),
+  )
 }
 
-export async function loadNews() {
-  try {
-    const result = await axios.get('https://liveatheart.se/')
-    const html = parse(result.data)
-    const data = html.querySelectorAll('article.category-news22').map((a) => {
-      return {
-        id: ulid(),
-        articleid: a.getAttribute('id'),
-        title: a.querySelector('h2')?.innerText,
-        link: a.querySelector('a')?.getAttribute('href'),
-        image: a.querySelector('img')?.getAttribute('src'),
-        published: parseDate(a.querySelector('span.published')?.innerText),
-      }
-    })
-    fs.writeFileSync(
-      path.join(__dirname, '..', 'data', 'news.json'),
-      JSON.stringify(data, null, 2),
-    )
+const url =
+  'https://liveatheart.se/wp-json/wp/v2/posts?per_page=20&page={{page}}&categories=207&_fields=id,date_gmt,link,title,jetpack_featured_media_url'
 
-    await Promise.all(
-      data.map(async (a) => {
-        const existing = await collection<News>('news').findOne({
-          articleid: a.articleid,
-        })
-        if (existing) {
-          return
-        }
-        return collection<Partial<News>>('news').insertOne({
-          articleid: a.articleid || ulid().toString(),
-          title: a.title,
-          link: a.link,
-          image: a.image,
-          published: a.published,
-          createdAt: new Date(),
-        })
-      }),
-    )
-  } catch (e) {
-    console.log(e)
-  }
+export async function loadNews() {
+  await loader(url, parseResult)
 }

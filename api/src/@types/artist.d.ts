@@ -16,6 +16,7 @@ declare global {
 
   interface Category {
     name: string
+    slug: string
     hidden: boolean
   }
 
@@ -31,5 +32,7 @@ declare global {
     spotify?: string
     youtube?: string
     concerts: Concert[]
+    createdAt: Date
+    updatedAt: Date
   }
 }

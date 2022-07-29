@@ -1,98 +1,62 @@
-import * as cheerio from 'cheerio'
-import axios from 'axios'
 import { collection } from '@heja/shared/mongodb'
 import _ from 'lodash'
 import { getOriginalImage } from '../features/images/getOriginalImage'
 import { nameParser } from '../lib/nameParser'
+import { stripHtml } from 'string-strip-html'
+import { decode } from 'html-entities'
+import { loader, WPAPIResponse } from './jsonloader'
 
-const mainUrl = 'https://liveatheart.se/artists-2022/'
-
-function cleanCategory(category: string): string {
-  return category.replace(/-2$/, '')
-}
-
-const delay = (ms: number) => new Promise((res) => setTimeout(res, ms))
-
-async function loadArtists() {
-  const result = await axios.get(mainUrl)
-  const html = cheerio.load(result.data)
-  const all = html('div.et_pb_portfolio_item')
-
+async function parseResult(result: WPAPIResponse[]) {
   await Promise.all(
-    all.map(async (ix, el) => {
-      const h2 = html(el).find('h2 a')
-      if (!h2) {
-        return
-      }
+    result.map(async (row: any) => {
+      const [name, countryCode] = nameParser(row.title.rendered)
+
       const artist: Partial<Artist> = {
-        link: h2.attr('href'),
-        name: h2.text(),
+        externalid: String(row.id),
+        name: decode(name),
+        countryCode,
+        image:
+          row._embedded?.['wp:featuredmedia']?.[0]?.media_details?.sizes?.[
+            'et-pb-gallery-module-image-portrait'
+          ]?.source_url,
+        description: stripHtml(row.acf.bio).result,
+        categories: row._embedded?.['wp:term']?.[0]?.map((term: any) => ({
+          name: term.name,
+          slug: term.slug,
+        })),
+        spotify: row.acf?.spotify?.replace('/artist/', '/embed/artist/'),
+        youtube: row.acf?.youtube
+          ?.replace('watch?v=', 'embed/')
+          .replace('https://youtu.be/', 'https://www.youtube.com/embed/'),
+        createdAt: new Date(),
+        updatedAt: new Date(),
       }
 
-      if (!artist.link) {
-        throw new Error('No artist link found' + artist.name)
-      }
-
-      const [name, countryCode] = nameParser(artist.name)
-
-      if (name) {
-        artist.name = name
-      }
-
-      if (countryCode) {
-        artist.countryCode = countryCode
-      }
-
-      await delay(2500 * ix)
-
-      const page = await axios.get(encodeURI(artist.link))
-      const data = cheerio.load(page.data)
-
-      if (!data) {
-        throw new Error('WA WA could not parse' + artist.link)
-      }
-
-      artist.image = data('span.et_pb_image_wrap img').attr('src')
       if (artist.image) {
         getOriginalImage(artist.image)
       }
-      artist.description = data('div.et_pb_module.et_pb_text.et_pb_text_2')
-        .text()
-        .trimStart()
-      data('div.et_pb_code_inner iframe').map((_ix, el) => {
-        const src = data(el).attr('src')
-        if (src?.includes('open.spotify')) {
-          artist.spotify = src
-        } else if (src?.includes('youtube.com')) {
-          artist.youtube = src
-        }
-      })
 
-      const article = data('div#main-content article')
-      if (article) {
-        const classes = article.attr('class')
-        if (classes) {
-          artist.categories = [
-            ...classes.matchAll(/project_category-([a-z\-0-9]*)/gi),
-          ].map((c) => ({ name: cleanCategory(c[1]), hidden: false }))
-        }
-        const id = article.attr('id')
-        if (id) {
-          artist.externalid = id.replace('post-', '')
-        }
+      const existing = await collection<Artist>('artists').findOne({
+        externalid: artist.externalid,
+      })
+      if (existing) {
+        return collection<Partial<Artist>>('artists').updateOne(
+          { _id: existing._id },
+          {
+            $set: _.omit(artist, ['_id', 'externalid', 'createdAt']),
+          },
+        )
       }
-      try {
-        await collection<Partial<Artist>>('artists').insertOne(artist)
-      } catch (e: any) {
-        if (artist.externalid) {
-          await collection<Partial<Artist>>('artists').updateOne(
-            { externalid: artist.externalid },
-            { $set: _.omit<Partial<Artist>>(artist, ['_id', 'externalid']) },
-          )
-        }
-      }
+      return collection<Partial<Artist>>('artists').insertOne(artist)
     }),
   )
+}
+
+const url =
+  'https://liveatheart.se/wp-json/wp/v2/project?per_page=20&page={{page}}&_fields=id,date,status,title,content,project_category,acf,featured_media,_links&project_category=212&_embed=wp:featuredmedia,wp:term'
+
+async function loadArtists() {
+  await loader(url, parseResult)
 }
 
 export { loadArtists }

@@ -3,6 +3,7 @@ import schedule from 'node-schedule'
 import { loadArtists } from '../loaders/artists'
 import { loadDeals } from '../loaders/deals'
 import { loadNews } from '../loaders/news'
+import { loadSpeakers } from '../loaders/speakers'
 
 function task(fn: () => Promise<void>) {
   return async (fireDate: Date) => {
@@ -16,9 +17,10 @@ function task(fn: () => Promise<void>) {
 }
 
 if (getenv('NODE_ENV', 'development') === 'production') {
-  schedule.scheduleJob('fetch news', '*/3 * * * *', task(loadNews))
-  schedule.scheduleJob('fetch artists', '*/7 * * * *', task(loadArtists))
-  schedule.scheduleJob('fetch deals', '*/13 * * * *', task(loadDeals))
+  schedule.scheduleJob('fetch news', '*/5 * * * *', task(loadNews))
+  schedule.scheduleJob('fetch artists', '*/2 * * * *', task(loadArtists))
+  schedule.scheduleJob('fetch deals', '5 * * * *', task(loadDeals))
+  schedule.scheduleJob('fetch speakers', '0 * * * *', task(loadSpeakers))
 }
 
 console.log(Object.keys(schedule.scheduledJobs))
