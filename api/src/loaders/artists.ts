@@ -1,4 +1,4 @@
-import { collection } from '@heja/shared/mongodb'
+import { collection, ObjectId } from '@heja/shared/mongodb'
 import _ from 'lodash'
 import { getOriginalImage } from '../features/images/getOriginalImage'
 import { nameParser } from '../lib/nameParser'
@@ -7,6 +7,8 @@ import { decode } from 'html-entities'
 import { loader, WPAPIResponse } from './jsonloader'
 
 async function parseResult(result: WPAPIResponse[]) {
+  const storedIds: ObjectId[] = []
+
   await Promise.all(
     result.map(async (row: any) => {
       const [name, countryCode] = nameParser(row.title.rendered)
@@ -48,6 +50,7 @@ async function parseResult(result: WPAPIResponse[]) {
         externalid: artist.externalid,
       })
       if (existing) {
+        storedIds.push(existing._id)
         return collection<Partial<Artist>>('artists').updateOne(
           { _id: existing._id },
           {
@@ -55,16 +58,29 @@ async function parseResult(result: WPAPIResponse[]) {
           },
         )
       }
-      return collection<Partial<Artist>>('artists').insertOne(artist)
+      const result = await collection<Partial<Artist>>('artists').insertOne(
+        artist,
+      )
+      storedIds.push(result.insertedId)
+      return result
     }),
   )
+
+  return storedIds
 }
 
 const url =
   'https://liveatheart.se/wp-json/wp/v2/project?per_page=20&page={{page}}&_fields=id,date,status,title,content,project_category,acf,featured_media,_links&project_category=212&_embed=wp:featuredmedia,wp:term'
 
 async function loadArtists() {
-  await loader(url, parseResult)
+  const storedIds = await loader(url, parseResult)
+
+  if (storedIds && storedIds.length > 0) {
+    await collection<Artist>('artists').updateMany(
+      { _id: { $nin: storedIds }, deletedAt: { $exists: false } },
+      { $set: { deletedAt: new Date() } },
+    )
+  }
 }
 
 export { loadArtists }
