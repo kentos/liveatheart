@@ -1,3 +1,4 @@
+import { ObjectId } from '@heja/shared/mongodb'
 import axios from 'axios'
 
 export interface WPAPIResponse {
@@ -31,10 +32,12 @@ async function loadUrl(url: string): Promise<LoaderTuple> {
 
 async function loader(
   url: string,
-  callback: (result: WPAPIResponse[]) => Promise<void>,
+  callback: (result: WPAPIResponse[]) => Promise<ObjectId[] | void>,
 ) {
   let page = 1
   let status = 200
+  let storedIds: ObjectId[] = []
+
   while (status < 300) {
     try {
       const [thisStatus, thisResult] = await loadUrl(
@@ -42,8 +45,11 @@ async function loader(
       )
       status = thisStatus
       if (status < 300) {
-        await callback(thisResult)
+        const result = await callback(thisResult)
         page += 1
+        if (result) {
+          storedIds = [...storedIds, ...result]
+        }
       }
     } catch (e: any) {
       if (e.code === 'ERR_BAD_REQUEST') {
@@ -53,6 +59,8 @@ async function loader(
       }
     }
   }
+
+  return storedIds
 }
 
 export { loader }
