@@ -17,8 +17,8 @@ function task(fn: () => Promise<void>) {
 }
 
 if (getenv('NODE_ENV', 'development') === 'production') {
-  schedule.scheduleJob('fetch news', '*/5 * * * *', task(loadNews))
-  schedule.scheduleJob('fetch artists', '*/2 * * * *', task(loadArtists))
+  schedule.scheduleJob('fetch news', '*/10 * * * *', task(loadNews))
+  schedule.scheduleJob('fetch artists', '*/5 * * * *', task(loadArtists))
   schedule.scheduleJob('fetch deals', '5 * * * *', task(loadDeals))
   schedule.scheduleJob('fetch speakers', '0 * * * *', task(loadSpeakers))
 }
