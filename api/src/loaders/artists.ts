@@ -36,6 +36,14 @@ async function parseResult(result: WPAPIResponse[]) {
         getOriginalImage(artist.image)
       }
 
+      if (artist.spotify && artist.spotify.length === 0) {
+        delete artist.spotify
+      }
+
+      if (artist.youtube && artist.youtube.length === 0) {
+        delete artist.youtube
+      }
+
       const existing = await collection<Artist>('artists').findOne({
         externalid: artist.externalid,
       })
