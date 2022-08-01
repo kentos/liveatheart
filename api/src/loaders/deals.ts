@@ -1,4 +1,4 @@
-import { collection } from '@heja/shared/mongodb'
+import { collection, ObjectId } from '@heja/shared/mongodb'
 import { decode } from 'html-entities'
 import _ from 'lodash'
 import { stripHtml } from 'string-strip-html'
@@ -8,29 +8,43 @@ const url =
   'https://liveatheart.se/wp-json/wp/v2/project?per_page=20&page={{page}}&_fields=id,date,status,title,content,project_category,acf,featured_media,_links&project_category=224&_embed=wp:featuredmedia,wp:term'
 
 async function parseResult(result: WPAPIResponse[]) {
-  result.map(async (row) => {
-    const data: Partial<Deal> = {
-      externalid: String(row.id),
-      title: decode(row.title.rendered),
-      image:
-        row._embedded['wp:featuredmedia']?.[0]?.media_details?.sizes?.[
-          'et-pb-image--responsive--phone'
-        ]?.source_url,
-      description: stripHtml(row.acf.bio).result,
-    }
-    const existing = await collection<Deal>('deals').findOne({
-      externalid: data.externalid,
-    })
-    if (existing) {
-      return collection<Deal>('deals').updateOne(
-        { _id: existing._id },
-        { $set: _.omit(data, ['externalid']) },
-      )
-    }
-    return collection<Partial<Deal>>('deals').insertOne(data)
-  })
+  const storedIds: ObjectId[] = []
+
+  await Promise.all(
+    result.map(async (row) => {
+      const data: Partial<Deal> = {
+        externalid: String(row.id),
+        title: decode(row.title.rendered),
+        image:
+          row._embedded['wp:featuredmedia']?.[0]?.media_details?.sizes?.[
+            'et-pb-image--responsive--phone'
+          ]?.source_url,
+        description: stripHtml(row.acf.bio).result,
+      }
+      const existing = await collection<Deal>('deals').findOne({
+        externalid: data.externalid,
+      })
+      if (existing) {
+        storedIds.push(existing._id)
+        return collection<Deal>('deals').updateOne(
+          { _id: existing._id },
+          { $set: _.omit(data, ['externalid']) },
+        )
+      }
+      const result = await collection<Partial<Deal>>('deals').insertOne(data)
+      storedIds.push(result.insertedId)
+      return result
+    }),
+  )
 }
 
 export async function loadDeals() {
-  await loader(url, parseResult)
+  const storedIds = await loader(url, parseResult)
+
+  if (storedIds && storedIds.length > 0) {
+    await collection<Deal>('deals').updateMany(
+      { _id: { $nin: storedIds }, deletedAt: { $exists: false } },
+      { $set: { deletedAt: new Date() } },
+    )
+  }
 }

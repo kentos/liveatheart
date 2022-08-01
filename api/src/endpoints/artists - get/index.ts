@@ -6,7 +6,9 @@ async function handler(fastify: FastifyInstance) {
     method: 'GET',
     url: '/artists',
     handler: async () => {
-      const artists = await collection<Artist>('artists').find({}).toArray()
+      const artists = await collection<Artist>('artists')
+        .find({ deletedAt: { $exists: false } })
+        .toArray()
       return artists.map((a) => ({
         _id: a._id,
         name: a.name,

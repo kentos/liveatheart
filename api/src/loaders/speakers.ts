@@ -1,4 +1,4 @@
-import { collection } from '@heja/shared/mongodb'
+import { collection, ObjectId } from '@heja/shared/mongodb'
 import { decode } from 'html-entities'
 import _ from 'lodash'
 import { loader, WPAPIResponse } from './jsonloader'
@@ -7,6 +7,8 @@ const url =
   'https://liveatheart.se/wp-json/wp/v2/project?per_page=20&page={{page}}&_fields=id,date,status,title,content,project_category,acf,featured_media,link,_links&project_category=218&_embed=wp:featuredmedia,wp:term'
 
 async function parseData(result: WPAPIResponse[]) {
+  const storedIds: ObjectId[] = []
+
   await Promise.all(
     result.map(async (row: any) => {
       const data: Partial<Speaker> = {
@@ -29,6 +31,7 @@ async function parseData(result: WPAPIResponse[]) {
         externalid: data.externalid,
       })
       if (existing) {
+        storedIds.push(existing._id)
         return collection<Speaker>('speakers').updateOne(
           { _id: existing._id },
           {
@@ -36,13 +39,24 @@ async function parseData(result: WPAPIResponse[]) {
           },
         )
       }
-      return collection<Partial<Speaker>>('speakers').insertOne(data)
+      const result = await collection<Partial<Speaker>>('speakers').insertOne(
+        data,
+      )
+      storedIds.push(result.insertedId)
+      return result
     }),
   )
 }
 
 async function loadSpeakers() {
-  await loader(url, parseData)
+  const storedIds = await loader(url, parseData)
+
+  if (storedIds && storedIds.length > 0) {
+    await collection<Speaker>('speakers').updateMany(
+      { _id: { $nin: storedIds }, deletedAt: { $exists: false } },
+      { $set: { deletedAt: new Date() } },
+    )
+  }
 }
 
 export { loadSpeakers }
