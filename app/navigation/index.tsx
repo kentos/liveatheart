@@ -10,14 +10,13 @@ import ModalScreen from '../screens/ModalScreen';
 
 import ArtistDetails from '../features/artists/details/ArtistDetails';
 import { RootStackParamList, RootTabParamList } from '../types';
-import FavoritesList from '../features/favorites/FavoritesList';
+// import FavoritesList from '../features/favorites/FavoritesList';
 import MapView from '../features/mapview/MapView';
-import Schedule from '../features/schedule/Schedule';
-import DealsNavigator from '../features/deals/DealsNavigator';
+// import Schedule from '../features/schedule/Schedule';
+// import DealsNavigator from '../features/deals/DealsNavigator';
 import ArtistsList from '../features/artists/list/ArtistsList';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HEADER_HEIGHT } from '../helpers/header';
-import useFeatureToggle from '../features/toggles/useFeatureToggle';
 import NewsList from '../features/news/NewsList';
 import CloseButton from '../components/CloseButton';
 import More from '../features/more/More';
@@ -104,7 +103,6 @@ import Logo from '../assets/images/lah-sv.svg';
 
 function BottomTabNavigator() {
   const insets = useSafeAreaInsets();
-  const features = useFeatureToggle();
   return (
     <BottomTab.Navigator
       screenOptions={{
@@ -138,49 +136,40 @@ function BottomTabNavigator() {
           lazy: false,
         }}
       />
-      {features.artists && (
-        <BottomTab.Screen
-          name="ArtistsList"
-          component={ArtistsList}
-          options={{
-            title: 'Artists',
-            tabBarIcon: ({ color }) => <TabBarIcon name="music" color={color} />,
-            lazy: false,
-          }}
-        />
-      )}
-      {features.schedule && (
-        <BottomTab.Screen
+      <BottomTab.Screen
+        name="ArtistsList"
+        component={ArtistsList}
+        options={{
+          title: 'Artists',
+          tabBarIcon: ({ color }) => <TabBarIcon name="music" color={color} />,
+          lazy: false,
+        }}
+      />
+      {/* <BottomTab.Screen
           name="Schedule"
           component={Schedule}
           options={{
             title: 'Program',
             tabBarIcon: ({ color }) => <TabBarIcon name="clock-o" color={color} />,
           }}
-        />
-      )}
-      {features.map && (
-        <BottomTab.Screen
-          name="MapView"
-          component={MapView}
-          options={{
-            title: 'Map',
-            tabBarIcon: ({ color }) => <TabBarIcon name="map" color={color} />,
-          }}
-        />
-      )}
-      {features.myArtists && (
-        <BottomTab.Screen
+        /> */}
+      <BottomTab.Screen
+        name="MapView"
+        component={MapView}
+        options={{
+          title: 'Map',
+          tabBarIcon: ({ color }) => <TabBarIcon name="map" color={color} />,
+        }}
+      />
+      {/* <BottomTab.Screen
           name="MyFavorites"
           component={FavoritesList}
           options={{
             title: 'My artists',
             tabBarIcon: ({ color }) => <TabBarIcon name="heart-o" color={color} />,
           }}
-        />
-      )}
-      {features.deals && (
-        <BottomTab.Screen
+        /> */}
+      {/* <BottomTab.Screen
           name="Deals"
           component={DealsNavigator}
           options={{
@@ -189,8 +178,7 @@ function BottomTabNavigator() {
             headerShown: false,
             lazy: false,
           }}
-        />
-      )}
+        /> */}
       <BottomTab.Screen
         name="More"
         component={More}

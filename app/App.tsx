@@ -1,7 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import SessionContextProvider from './contexts/session/Context';
-import FeatureToggleProvider from './features/toggles/FeatureToggle';
 import useCachedResources from './hooks/useCachedResources';
 import Navigation from './navigation';
 // import * as Sentry from 'sentry-expo';
@@ -28,10 +27,8 @@ export default function App() {
     return (
       <QueryClientProvider client={queryClient}>
         <SessionContextProvider>
-          <FeatureToggleProvider>
-            <Navigation />
-            <StatusBar />
-          </FeatureToggleProvider>
+          <Navigation />
+          <StatusBar />
         </SessionContextProvider>
       </QueryClientProvider>
     );
