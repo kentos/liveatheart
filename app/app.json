@@ -17,7 +17,7 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "buildNumber": "21",
+      "buildNumber": "22",
       "supportsTablet": false,
       "bundleIdentifier": "se.liveatheart.app",
       "infoPlist": {
@@ -26,17 +26,22 @@
       },
       "runtimeVersion": "exposdk:45.0.0",
       "config": {
-        "googleMapsApiKey": "AIzaSyChoP5w_8aAHhWp5D4TNh1pLcnWDa4JCEE"
+        "googleMapsApiKey": "AIzaSyAh_GO5dIJYYqi_5ctVPFXqC_mzw9wxBoo"
       }
     },
     "android": {
-      "versionCode": "21",
+      "versionCode": "22",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
       },
       "runtimeVersion": {
         "policy": "exposdk:45.0.0"
+      },
+      "config": {
+        "googleMap": {
+          "apiKey": "AIzaSyCgPOsPx0S4POFp52Xr0ELMorNhtqpc_Bg"
+        }
       },
       "package": "se.liveatheart.app"
     },
