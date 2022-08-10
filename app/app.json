@@ -2,7 +2,7 @@
   "expo": {
     "name": "Live at Heart",
     "slug": "liveatheart",
-    "version": "5.0.0",
+    "version": "5.0.2",
     "orientation": "portrait",
     "icon": "./assets/images/icon-1024x1024-clean.png",
     "scheme": "lah",
@@ -21,7 +21,8 @@
       "supportsTablet": false,
       "bundleIdentifier": "se.liveatheart.app",
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "To be able to navigate the map we need to find out your location."
+        "NSLocationWhenInUseUsageDescription": "To be able to navigate the map we need to find out your location.",
+        "ITSAppUsesNonExemptEncryption": false
       },
       "runtimeVersion": "exposdk:45.0.0",
       "config": {
