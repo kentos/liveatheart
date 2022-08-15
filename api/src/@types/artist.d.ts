@@ -6,7 +6,7 @@ declare global {
     name: string
   }
 
-  interface Concert {
+  interface Slot {
     _id: ObjectId
     venue: Venue
     day: 'wednesday' | 'thursday' | 'friday' | 'saturday'
@@ -31,7 +31,7 @@ declare global {
     description?: string
     spotify?: string
     youtube?: string
-    concerts: Concert[]
+    slots: Slot[]
     createdAt: Date
     updatedAt: Date
   }
