@@ -1,5 +1,26 @@
 import { FastifyInstance } from '@heja/shared/fastify'
 import { collection } from '@heja/shared/mongodb'
+import _ from 'lodash'
+
+function omitSpotify(a: Artist) {
+  return a.spotify?.length === 0 ? _.omit(a, 'spotify') : a
+}
+
+function omitYoutube(a: Artist) {
+  return a.youtube?.length === 0 ? _.omit(a, 'youtube') : a
+}
+
+function cleanCategories(a: Artist) {
+  return {
+    ...a,
+    genre: a.categories
+      ?.filter((c) => ![c.name, c.slug].includes('artists-2022'))
+      .map((c) => c.name.replace('-', ' '))
+      .join(', '),
+  }
+}
+
+const handleArtist = _.flow(omitSpotify, omitYoutube, cleanCategories)
 
 async function handler(fastify: FastifyInstance) {
   fastify.route({
@@ -9,30 +30,7 @@ async function handler(fastify: FastifyInstance) {
       const artists = await collection<Artist>('artists')
         .find({ deletedAt: { $exists: false } })
         .toArray()
-      return artists.map((a) => ({
-        _id: a._id,
-        name: a.name,
-        image: a.image,
-        genre: a.categories
-          ?.filter((c) => ![c.name, c.slug].includes('artists-2022'))
-          .map((c) => c.name.replace('-', ' '))
-          .join(', '),
-        city: '?',
-        country: '?',
-        description: a.description,
-        spotify: a.spotify,
-        youtube: a.youtube,
-        countryCode: a.countryCode,
-        // concerts: [
-        //   {
-        //     _id: new ObjectId(),
-        //     venue: venues.satin,
-        //     day: 'wednesday',
-        //     time: '23:00',
-        //     eventAt: parseISO('2022-08-31T22:00:00Z'),
-        //   },
-        // ],
-      }))
+      return artists.map(handleArtist)
     },
   })
 }
