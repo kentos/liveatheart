@@ -12,7 +12,7 @@ import ArtistDetails from '../features/artists/details/ArtistDetails';
 import { RootStackParamList, RootTabParamList } from '../types';
 // import FavoritesList from '../features/favorites/FavoritesList';
 import MapView from '../features/mapview/MapView';
-// import Schedule from '../features/schedule/Schedule';
+import Schedule from '../features/schedule/Schedule';
 // import DealsNavigator from '../features/deals/DealsNavigator';
 import ArtistsList from '../features/artists/list/ArtistsList';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -145,14 +145,14 @@ function BottomTabNavigator() {
           lazy: false,
         }}
       />
-      {/* <BottomTab.Screen
-          name="Schedule"
-          component={Schedule}
-          options={{
-            title: 'Program',
-            tabBarIcon: ({ color }) => <TabBarIcon name="clock-o" color={color} />,
-          }}
-        /> */}
+      <BottomTab.Screen
+        name="Schedule"
+        component={Schedule}
+        options={{
+          title: 'Program',
+          tabBarIcon: ({ color }) => <TabBarIcon name="clock-o" color={color} />,
+        }}
+      />
       <BottomTab.Screen
         name="MapView"
         component={MapView}

@@ -1,5 +1,5 @@
 import { View, StyleSheet } from 'react-native';
-import { Text } from '../../components/Themed';
+import { Title } from '../../components/Texts';
 
 interface ScheduleSectionHeaderProps {
   title: string;
@@ -8,7 +8,7 @@ interface ScheduleSectionHeaderProps {
 function ScheduleSectionHeader({ title }: ScheduleSectionHeaderProps) {
   return (
     <View style={styles.wrapper}>
-      <Text style={styles.title}>{title}</Text>
+      <Title>{title}</Title>
     </View>
   );
 }

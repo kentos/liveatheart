@@ -1,27 +1,36 @@
-import { FontAwesome } from '@expo/vector-icons';
 import { View, StyleSheet } from 'react-native';
-import { Text } from '../../components/Themed';
+import { FontAwesome } from '@expo/vector-icons';
 import Colors from '../../constants/Colors';
 import { format } from '../../helpers/date';
 import Heart from '../favorites/Heart';
+import { Body, Caption } from '../../components/Texts';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useCallback } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 interface SlotProps {
   slot: SlotCombined;
 }
 
 function Slot({ slot }: SlotProps) {
+  const navigation = useNavigation();
+  const onOpenArtist = useCallback(() => {
+    if (slot._id) {
+      navigation.navigate('ArtistDetails', { artistid: slot._id });
+    }
+  }, [navigation]);
   return (
     <View style={styles.wrapper}>
       <View style={{ flex: 1 }}>
-        <Text style={styles.artist}>{slot.name}</Text>
-        <View style={styles.date}>
-          <Text style={styles.textDate}>
-            <FontAwesome name="calendar-o" color={Colors.light.tint} /> {format(slot.date, 'short')}
-          </Text>
-          <Text style={styles.textTime}>
-            <FontAwesome name="clock-o" color={Colors.light.tint} /> {format(slot.date, 'time')}
-          </Text>
-        </View>
+        <TouchableOpacity onPress={onOpenArtist}>
+          <Body>{slot.name}</Body>
+          <View style={styles.date}>
+            <Caption>
+              <FontAwesome name="clock-o" color={Colors.light.tint} />{' '}
+              {format(slot.eventAt, 'time')}
+            </Caption>
+          </View>
+        </TouchableOpacity>
       </View>
       <View style={styles.heart}>
         <Heart artistid={slot._id} />
@@ -50,7 +59,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   textTime: {
-    marginLeft: 16,
     fontSize: 12,
   },
   heart: {

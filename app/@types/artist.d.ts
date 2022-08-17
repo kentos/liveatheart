@@ -1,6 +1,4 @@
-type ConcertCombined = Concert & Pick<Artist, '_id' | 'name'>;
-
-interface Concert {
+interface Slot {
   _id: ObjectId;
   venue: {
     _id: ObjectId;
@@ -21,6 +19,8 @@ interface Artist {
   description: string;
   spotify?: string;
   youtube?: string;
-  concerts?: Concert[];
+  slots?: Slot[];
   countryCode?: string;
 }
+
+type SlotCombined = Slot & Pick<Artist, '_id' | 'name'>;
