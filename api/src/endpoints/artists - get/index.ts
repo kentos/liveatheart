@@ -27,10 +27,20 @@ async function handler(fastify: FastifyInstance) {
     method: 'GET',
     url: '/artists',
     handler: async () => {
-      const artists = await collection<Artist>('artists')
-        .find({ deletedAt: { $exists: false } })
-        .toArray()
-      return artists.map(handleArtist)
+      const [artists, events] = await Promise.all([
+        collection<Artist>('artists')
+          .find({ deletedAt: { $exists: false } })
+          .toArray(),
+        collection<LAHEvent>('events')
+          .find({ artistid: { $exists: true }, deletedAt: { $exists: false } })
+          .toArray(),
+      ])
+      return artists
+        .map((a) => ({
+          ...a,
+          slots: events.filter((e) => e.artistid.equals(a._id)),
+        }))
+        .map(handleArtist)
     },
   })
 }

@@ -8,8 +8,8 @@ async function handler(fastify: FastifyInstance) {
       return {
         artists: true,
         myArtists: false,
-        map: false,
-        schedule: false,
+        map: true,
+        schedule: true,
         news: true,
         deals: false,
       }
