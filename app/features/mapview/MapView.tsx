@@ -53,55 +53,63 @@ function Venue({ title }: Props) {
 const markers = [
   {
     title: 'Örebro teater',
-    coordinates: { latitude: 59.27461647679096, longitude: 15.213255222933574 },
+    coordinates: { latitude: 59.274509593553844, longitude: 15.213212972468996 },
   },
   {
     title: 'Makeriet',
-    coordinates: { latitude: 59.27216401271949, longitude: 15.215540916046939 },
+    coordinates: { latitude: 59.27203222090211, longitude: 15.215537543764597 },
   },
   {
     title: 'Kvarteret',
-    coordinates: { latitude: 59.27307546729554, longitude: 15.21427405041228 },
+    coordinates: { latitude: 59.27271519120328, longitude: 15.214318300570216 },
   },
   {
     title: 'Konserthuset',
-    coordinates: { latitude: 59.27266903648588, longitude: 15.208752743337156 },
+    coordinates: { latitude: 59.27258213865932, longitude: 15.208667570841358 },
   },
   {
     title: 'Clarion hotel',
-    coordinates: { latitude: 59.27060660875714, longitude: 15.21376690702946 },
-  },
-  {
-    title: 'STÅ',
-    coordinates: { latitude: 59.27593982889238, longitude: 15.217216377442716 },
-  },
-  {
-    title: 'Nikolaikyrkan',
-    coordinates: { latitude: 59.27246458547095, longitude: 15.211301842541536 },
-  },
-  {
-    title: 'Coco Thai',
-    coordinates: { latitude: 59.27636130165615, longitude: 15.215104262655535 },
-  },
-  {
-    title: 'Kulturkvarteret',
-    coordinates: { latitude: 59.27210310365262, longitude: 15.20749212908522 },
-  },
-  {
-    title: 'Clarion Borgen',
-    coordinates: { latitude: 59.27449395868637, longitude: 15.212154752184869 },
-  },
-  {
-    title: 'Björnes',
-    coordinates: { latitude: 59.27088125491953, longitude: 15.211366473396788 },
-  },
-  {
-    title: 'Ingeborgs',
-    coordinates: { latitude: 59.272439487775166, longitude: 15.217359195661455 },
+    coordinates: { latitude: 59.27058467943606, longitude: 15.213788363004081 },
   },
   {
     title: 'Boulebar',
-    coordinates: { latitude: 59.27587162309436, longitude: 15.217074126249816 },
+    coordinates: { latitude: 59.27580300273234, longitude: 15.217097594526175 },
+  },
+  {
+    title: 'STÅ',
+    coordinates: { latitude: 59.27588145543049, longitude: 15.217379897410652 },
+  },
+  {
+    title: 'Nikolaikyrkan',
+    coordinates: { latitude: 59.272371057072995, longitude: 15.211253553718388 },
+  },
+  {
+    title: 'Coco Thai',
+    coordinates: { latitude: 59.27629163408403, longitude: 15.215083277502819 },
+  },
+  {
+    title: 'Kulturkvarteret',
+    coordinates: { latitude: 59.27201329633869, longitude: 15.207447876576431 },
+  },
+  {
+    title: 'Clarion Borgen',
+    coordinates: { latitude: 59.27437919357558, longitude: 15.2121017660555 },
+  },
+  {
+    title: 'Björnes',
+    coordinates: { latitude: 59.27075669311238, longitude: 15.211335855921645 },
+  },
+  {
+    title: 'Ingeborgs',
+    coordinates: { latitude: 59.272340133490324, longitude: 15.217320294499059 },
+  },
+  {
+    title: 'Satin',
+    coordinates: { latitude: 59.271159645769885, longitude: 15.215619710383715 },
+  },
+  {
+    title: 'Saluhallen',
+    coordinates: { latitude: 59.27046495573426, longitude: 15.214211127080972 },
   },
 ];
 
