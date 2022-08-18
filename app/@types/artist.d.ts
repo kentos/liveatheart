@@ -1,7 +1,7 @@
 interface Slot {
   _id: ObjectId;
   venue: {
-    _id: ObjectId;
+    externalid: string;
     name: string;
   };
   day: 'wednesday' | 'thursday' | 'friday' | 'saturday';
