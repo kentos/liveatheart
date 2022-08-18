@@ -2,7 +2,7 @@
   "expo": {
     "name": "Live at Heart",
     "slug": "liveatheart",
-    "version": "6.0.1",
+    "version": "6.0.2",
     "orientation": "portrait",
     "icon": "./assets/images/icon-1024x1024-clean.png",
     "scheme": "lah",
@@ -32,7 +32,7 @@
     "android": {
       "versionCode": "23",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/icon.png",
+        "foregroundImage": "./assets/images/icon-1024x1024-clean.png",
         "backgroundColor": "#ffffff"
       },
       "runtimeVersion": {
