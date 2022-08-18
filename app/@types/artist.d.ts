@@ -5,6 +5,7 @@ interface Slot {
     name: string;
   };
   day: 'wednesday' | 'thursday' | 'friday' | 'saturday';
+  date: string;
   time: string;
   eventAt: Date;
 }

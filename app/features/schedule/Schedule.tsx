@@ -80,8 +80,6 @@ function Schedule() {
     [showFavorites, artists, selectedDate]
   );
 
-  console.log(artists);
-
   return (
     <View style={{ flex: 1 }}>
       <View style={{ backgroundColor: '#fff', paddingHorizontal: 8 }}>

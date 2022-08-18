@@ -1,5 +1,4 @@
 import { View, StyleSheet, Image, Animated } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
 import { Text } from '../../../components/Themed';
 import Heart from '../../favorites/Heart';
 import { useEffect, useRef } from 'react';
@@ -17,14 +16,7 @@ interface ArtistListItemSkeletonProps {
   country?: string;
 }
 
-function ArtistListItemSkeleton({
-  imageUri,
-  name,
-  genre,
-  city,
-  country,
-  _id,
-}: ArtistListItemSkeletonProps) {
+function ArtistListItemSkeleton({ imageUri, name, genre, _id }: ArtistListItemSkeletonProps) {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const dur = useRef(_.random(500, 750));
 
@@ -51,7 +43,7 @@ function ArtistListItemSkeleton({
     <View style={styles.wrapper}>
       {!!imageUri ? (
         <Image
-          source={{ uri: config.api + '/image?type=thumb&url=' + imageUri }}
+          source={{ uri: config.api + '/image?type=thumb&url=' + imageUri, cache: 'force-cache' }}
           style={styles.image}
         />
       ) : (

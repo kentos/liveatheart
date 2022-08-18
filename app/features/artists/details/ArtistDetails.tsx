@@ -47,9 +47,9 @@ function ArtistDetails() {
               )}
             </View>
             <Body style={styles.genre}>{artist?.genre}</Body>
-            {Number(artist?.concerts?.length) > 0 && (
+            {Number(artist?.slots?.length) > 0 && (
               <View style={styles.concerts}>
-                {artist?.concerts?.map((c) => (
+                {artist?.slots?.map((c) => (
                   <ConcertRow
                     key={c._id}
                     venue={c.venue.name}
@@ -111,6 +111,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 32,
     paddingHorizontal: 32,
+    width: '100%',
     flexDirection: 'column',
   },
   artistName: {

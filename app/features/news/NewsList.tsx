@@ -15,7 +15,7 @@ function NewsItem({ news }: NewsItemProps) {
   }, [navigation, news._id]);
   return (
     <Pressable onPress={goTo}>
-      <Image source={{ uri: news.image }} style={styles.itemImage} />
+      <Image source={{ uri: news.image, cache: 'force-cache' }} style={styles.itemImage} />
       <View style={styles.itemText}>
         <Headline>{news.title}</Headline>
       </View>
