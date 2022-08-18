@@ -15,9 +15,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "buildNumber": "23",
       "supportsTablet": false,
@@ -40,8 +38,9 @@
       "runtimeVersion": {
         "policy": "exposdk:45.0.0"
       },
+      "permissions": ["ACCESS_COARSE_LOCATION"],
       "config": {
-        "googleMap": {
+        "googleMaps": {
           "apiKey": "AIzaSyCgPOsPx0S4POFp52Xr0ELMorNhtqpc_Bg"
         }
       },
