@@ -8,7 +8,10 @@ function DealItem({ deal }: { deal: Deal }) {
   return (
     <Pressable onPress={() => navigation.navigate('DealDetails', { dealid: deal._id })}>
       <View style={{ width: '100%', height: 200 }}>
-        <Image source={{ uri: deal.image }} style={{ width: '100%', height: 200 }} />
+        <Image
+          source={{ uri: deal.image, cache: 'force-cache' }}
+          style={{ width: '100%', height: 200 }}
+        />
         <View
           style={{
             position: 'absolute',

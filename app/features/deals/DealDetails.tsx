@@ -20,7 +20,7 @@ function DealDetails() {
   return (
     <>
       <ScrollView>
-        <Image source={{ uri: deal?.image }} style={styles.image} />
+        <Image source={{ uri: deal?.image, cache: 'force-cache' }} style={styles.image} />
         <View style={styles.textWrapper}>
           <Headline>{deal?.title}</Headline>
           <Body>{deal?.description}</Body>
@@ -33,7 +33,7 @@ function DealDetails() {
 const styles = StyleSheet.create({
   image: {
     width: '100%',
-    height: 320,
+    height: 200,
   },
   textWrapper: {
     padding: 16,

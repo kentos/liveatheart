@@ -13,7 +13,7 @@ import { RootStackParamList, RootTabParamList } from '../types';
 // import FavoritesList from '../features/favorites/FavoritesList';
 import MapView from '../features/mapview/MapView';
 import Schedule from '../features/schedule/Schedule';
-// import DealsNavigator from '../features/deals/DealsNavigator';
+import DealsNavigator from '../features/deals/DealsNavigator';
 import ArtistsList from '../features/artists/list/ArtistsList';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HEADER_HEIGHT } from '../helpers/header';
@@ -169,16 +169,16 @@ function BottomTabNavigator() {
             tabBarIcon: ({ color }) => <TabBarIcon name="heart-o" color={color} />,
           }}
         /> */}
-      {/* <BottomTab.Screen
-          name="Deals"
-          component={DealsNavigator}
-          options={{
-            title: 'Deals',
-            tabBarIcon: ({ color }) => <TabBarIcon name="money" color={color} />,
-            headerShown: false,
-            lazy: false,
-          }}
-        /> */}
+      <BottomTab.Screen
+        name="Deals"
+        component={DealsNavigator}
+        options={{
+          title: 'Deals',
+          tabBarIcon: ({ color }) => <TabBarIcon name="money" color={color} />,
+          headerShown: false,
+          lazy: false,
+        }}
+      />
       <BottomTab.Screen
         name="More"
         component={More}
