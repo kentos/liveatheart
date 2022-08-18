@@ -10,6 +10,7 @@ declare global {
     _id: ObjectId
     venue: Venue
     day: 'wednesday' | 'thursday' | 'friday' | 'saturday'
+    date: string
     time: string
     eventAt: Date
   }

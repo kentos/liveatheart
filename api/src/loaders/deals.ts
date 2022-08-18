@@ -4,8 +4,11 @@ import _ from 'lodash'
 import { stripHtml } from 'string-strip-html'
 import { loader, WPAPIResponse } from './jsonloader'
 
+// const url =
+//   'https://liveatheart.se/wp-json/wp/v2/project?per_page=20&page={{page}}&_fields=id,date,status,title,content,project_category,acf,featured_media,_links&project_category=224&_embed=wp:featuredmedia,wp:term'
+
 const url =
-  'https://liveatheart.se/wp-json/wp/v2/project?per_page=20&page={{page}}&_fields=id,date,status,title,content,project_category,acf,featured_media,_links&project_category=224&_embed=wp:featuredmedia,wp:term'
+  'https://liveatheart.se/wp-json/wp/v2/erbjudanden?_fields=id,date,status,type,link,title,acf&page={{page}}'
 
 async function parseResult(result: WPAPIResponse[]) {
   const storedIds: ObjectId[] = []
@@ -15,11 +18,9 @@ async function parseResult(result: WPAPIResponse[]) {
       const data: Partial<Deal> = {
         externalid: String(row.id),
         title: decode(row.title.rendered),
-        image:
-          row._embedded['wp:featuredmedia']?.[0]?.media_details?.sizes?.[
-            'et-pb-image--responsive--phone'
-          ]?.source_url,
-        description: stripHtml(row.acf.bio).result,
+        company: decode(row.acf.foretag),
+        image: row.acf?.logotyp?.url,
+        description: stripHtml(row.acf.beskrivning_erbjudande).result,
       }
       const existing = await collection<Deal>('deals').findOne({
         externalid: data.externalid,
@@ -33,18 +34,14 @@ async function parseResult(result: WPAPIResponse[]) {
       }
       const result = await collection<Partial<Deal>>('deals').insertOne(data)
       storedIds.push(result.insertedId)
-      return result
     }),
   )
+  return storedIds
 }
 
 export async function loadDeals() {
   const storedIds = await loader(url, parseResult)
-
   if (storedIds && storedIds.length > 0) {
-    await collection<Deal>('deals').updateMany(
-      { _id: { $nin: storedIds }, deletedAt: { $exists: false } },
-      { $set: { deletedAt: new Date() } },
-    )
+    await collection<Deal>('deals').deleteMany({ _id: { $nin: storedIds } })
   }
 }

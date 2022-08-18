@@ -14,6 +14,11 @@ export interface WPAPIResponse {
     spotify: string
     socials?: any
     artist_events?: any
+    logotyp?: {
+      url: string
+    }
+    foretag: string
+    beskrivning_erbjudande: string
   }
   _embedded: {
     'wp:featuredmedia': any

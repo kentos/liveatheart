@@ -6,6 +6,7 @@ declare global {
     externalid: string
     link: string
     title: string
+    company: string
     description: string
     image: string
   }

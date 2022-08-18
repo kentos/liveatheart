@@ -22,6 +22,13 @@ function cleanCategories(a: Artist) {
 
 const handleArtist = _.flow(omitSpotify, omitYoutube, cleanCategories)
 
+const dayMap: Record<string, string> = {
+  '31/08/2022': 'wednesday',
+  '01/09/2022': 'thursday',
+  '02/09/2022': 'friday',
+  '03/09/2022': 'saturday',
+}
+
 async function handler(fastify: FastifyInstance) {
   fastify.route({
     method: 'GET',
@@ -38,7 +45,12 @@ async function handler(fastify: FastifyInstance) {
       return artists
         .map((a) => ({
           ...a,
-          slots: events.filter((e) => e.artistid.equals(a._id)),
+          slots: events
+            .filter((e) => e.artistid.equals(a._id))
+            .map((e) => ({
+              ...e,
+              day: dayMap[e.date],
+            })),
         }))
         .map(handleArtist)
     },
