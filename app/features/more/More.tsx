@@ -38,6 +38,15 @@ function More() {
           })
         }
       />
+      <Item
+        title="Partners"
+        onPress={() => {
+          navigation.navigate('WebView', {
+            url: 'https://liveatheart.se/partners-2022/',
+            title: 'Partners',
+          });
+        }}
+      />
       <Item title="About the app" onPress={() => navigation.navigate('AboutApp')} />
     </ScrollView>
   );
