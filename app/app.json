@@ -2,7 +2,7 @@
   "expo": {
     "name": "Live at Heart",
     "slug": "liveatheart",
-    "version": "6.0.2",
+    "version": "6.0.4",
     "orientation": "portrait",
     "icon": "./assets/images/icon-1024x1024-clean.png",
     "scheme": "lah",
@@ -17,7 +17,7 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "buildNumber": "23",
+      "buildNumber": "25",
       "supportsTablet": false,
       "bundleIdentifier": "se.liveatheart.app",
       "infoPlist": {
@@ -30,7 +30,7 @@
       }
     },
     "android": {
-      "versionCode": "23",
+      "versionCode": "25",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/icon-1024x1024-clean.png",
         "backgroundColor": "#ffffff"
