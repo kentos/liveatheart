@@ -60,7 +60,7 @@ const markers = [
     coordinates: { latitude: 59.27203222090211, longitude: 15.215537543764597 },
   },
   {
-    title: 'Kvarteret',
+    title: 'Kvarteret & Co',
     coordinates: { latitude: 59.27271519120328, longitude: 15.214318300570216 },
   },
   {
@@ -110,6 +110,18 @@ const markers = [
   {
     title: 'Saluhallen',
     coordinates: { latitude: 59.27046495573426, longitude: 15.214211127080972 },
+  },
+  {
+    title: "O'learys",
+    coordinates: { latitude: 59.27286940010109, longitude: 15.212263184493013 },
+  },
+  {
+    title: 'Örebro Slott',
+    coordinates: { latitude: 59.27398312933889, longitude: 15.215252752823734 },
+  },
+  {
+    title: 'Bio Roxy',
+    coordinates: { latitude: 59.27505518012461, longitude: 15.215984481322486 },
   },
 ];
 
