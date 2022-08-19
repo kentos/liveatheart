@@ -2,7 +2,7 @@
   "expo": {
     "name": "Live at Heart",
     "slug": "liveatheart",
-    "version": "6.0.4",
+    "version": "6.0.6",
     "orientation": "portrait",
     "icon": "./assets/images/icon-1024x1024-clean.png",
     "scheme": "lah",
@@ -15,7 +15,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "buildNumber": "25",
       "supportsTablet": false,
@@ -38,7 +40,9 @@
       "runtimeVersion": {
         "policy": "exposdk:45.0.0"
       },
-      "permissions": ["ACCESS_COARSE_LOCATION"],
+      "permissions": [
+        "ACCESS_COARSE_LOCATION"
+      ],
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyCgPOsPx0S4POFp52Xr0ELMorNhtqpc_Bg"
