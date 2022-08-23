@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useCallback } from 'react';
 import { FlatList, Image, Pressable, RefreshControl, View, StyleSheet } from 'react-native';
 import { Headline } from '../../components/Texts';
+import config from '../../constants/config';
 import useNews from './useNews';
 
 interface NewsItemProps {
@@ -15,7 +16,10 @@ function NewsItem({ news }: NewsItemProps) {
   }, [navigation, news._id]);
   return (
     <Pressable onPress={goTo}>
-      <Image source={{ uri: news.image, cache: 'force-cache' }} style={styles.itemImage} />
+      <Image
+        source={{ uri: config.api + '/image?type=thumb&url=' + news.image, cache: 'force-cache' }}
+        style={styles.itemImage}
+      />
       <View style={styles.itemText}>
         <Headline>{news.title}</Headline>
       </View>
