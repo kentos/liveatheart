@@ -9,5 +9,6 @@ declare global {
     company: string
     description: string
     image: string
+    publishedAt: Date
   }
 }
