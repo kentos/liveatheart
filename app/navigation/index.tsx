@@ -151,6 +151,7 @@ function BottomTabNavigator() {
         options={{
           title: 'Program',
           tabBarIcon: ({ color }) => <TabBarIcon name="clock-o" color={color} />,
+          lazy: false,
         }}
       />
       <BottomTab.Screen

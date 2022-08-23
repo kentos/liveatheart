@@ -10,12 +10,13 @@ import { useNavigation } from '@react-navigation/native';
 
 interface SlotProps {
   slot: SlotCombined;
+  hideHeart: boolean;
 }
 
-function Slot({ slot }: SlotProps) {
+function Slot({ slot, hideHeart }: SlotProps) {
   const navigation = useNavigation();
   const onOpenArtist = useCallback(() => {
-    if (slot._id) {
+    if (slot._id && !hideHeart) {
       navigation.navigate('ArtistDetails', { artistid: slot._id });
     }
   }, [navigation]);
@@ -32,9 +33,11 @@ function Slot({ slot }: SlotProps) {
           </View>
         </TouchableOpacity>
       </View>
-      <View style={styles.heart}>
-        <Heart artistid={slot._id} />
-      </View>
+      {!hideHeart && (
+        <View style={styles.heart}>
+          <Heart artistid={slot._id} />
+        </View>
+      )}
     </View>
   );
 }
