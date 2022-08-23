@@ -111,7 +111,6 @@ function Schedule() {
   useEffect(() => {
     async function restoreSelection() {
       const val = await getStoredSelection();
-      console.log('BAGA', val);
       if (val) {
         setSelectedDay(val);
       }
