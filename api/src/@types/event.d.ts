@@ -4,8 +4,10 @@ declare global {
   interface LAHEvent {
     _id: ObjectId
     externalid: string
-    artistid: ObjectId
-    speakerid: ObjectId
+    artistid?: ObjectId
+    speakerid?: ObjectId
+    seminarid?: ObjectId
+    filmid?: ObjectId
     title: string
     date: string
     time: string

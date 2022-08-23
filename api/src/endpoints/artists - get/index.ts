@@ -46,7 +46,7 @@ async function handler(fastify: FastifyInstance) {
         .map((a) => ({
           ...a,
           slots: events
-            .filter((e) => e.artistid.equals(a._id))
+            .filter((e) => e.artistid!.equals(a._id))
             .map((e) => ({
               ...e,
               day: dayMap[e.date],

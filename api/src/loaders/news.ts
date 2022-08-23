@@ -2,6 +2,7 @@ import * as datefns from 'date-fns'
 import { collection } from '@heja/shared/mongodb'
 import { decode } from 'html-entities'
 import { loader, WPAPIResponse } from './jsonloader'
+import { getOriginalImage } from '../features/images/getOriginalImage'
 
 async function parseResult(result: WPAPIResponse[]) {
   await Promise.all(
@@ -19,6 +20,9 @@ async function parseResult(result: WPAPIResponse[]) {
         image: row.jetpack_featured_media_url,
         published: datefns.parseISO(row.date_gmt),
         createdAt: new Date(),
+      }
+      if (data.image) {
+        getOriginalImage(data.image)
       }
       await collection<Partial<News>>('news').insertOne(data)
     }),

@@ -1,21 +1,26 @@
 import { collection, ObjectId } from '@heja/shared/mongodb'
-import { parse } from 'date-fns'
+import { parse, getHours, addDays } from 'date-fns'
+import { decode } from 'html-entities'
 import _ from 'lodash'
 import { loader, WPAPIResponse } from './jsonloader'
+
+function fixDate(date: Date) {
+  return getHours(date) >= 22 ? addDays(date, 2) : date
+}
 
 async function parseResult(result: WPAPIResponse[]) {
   const storedIds: ObjectId[] = []
 
   await Promise.all(
-    result.map(async (row: any) => {
+    result.map(async (row) => {
       const event: Partial<LAHEvent> = {
-        title: row.title.rendered,
+        title: decode(row.title.rendered),
         externalid: String(row.id),
         date: row.acf.date,
         time: row.acf.starttime,
         venue: {
           externalid: String(row.acf?.event_venue?.ID),
-          name: row.acf?.event_venue?.post_title,
+          name: row.acf?.event_venue?.post_title ?? '',
         },
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -26,27 +31,38 @@ async function parseResult(result: WPAPIResponse[]) {
         'dd/MM/yyyy HH:mm XXX',
         new Date(),
       )
+      event.eventAt = fixDate(event.eventAt)
 
-      const artistid = String(row.acf?.event_artists?.[0]?.ID)
-      const [artist, speaker] = await Promise.all([
+      const externalid = String(row.acf?.event_artists?.[0]?.ID)
+      const matchingTitle = String(row.acf?.event_artists?.[0]?.post_title)
+
+      const [artist, speaker, seminar, film] = await Promise.all([
         collection<Artist>('artists').findOne({
-          externalid: artistid,
+          $or: [{ externalid: externalid }],
         }),
         collection<Speaker>('speakers').findOne({
-          externalid: artistid,
+          $or: [{ externalid: externalid }],
+        }),
+        collection<Seminar>('seminars').findOne({
+          $or: [{ externalid: externalid }, { name: matchingTitle }],
+        }),
+        collection<Film>('films').findOne({
+          $or: [{ externalid: externalid }, { name: matchingTitle }],
         }),
       ])
-      if (!artist && !speaker) {
+      if (!artist && !speaker && !seminar && !film) {
         console.log('event had no artist:', event)
         return
       }
 
       if (artist) {
         event.artistid = artist._id
-      }
-
-      if (speaker) {
+      } else if (speaker) {
         event.speakerid = speaker._id
+      } else if (seminar) {
+        event.seminarid = seminar._id
+      } else if (film) {
+        event.filmid = film._id
       }
 
       const existing = await collection<LAHEvent>('events').findOne({

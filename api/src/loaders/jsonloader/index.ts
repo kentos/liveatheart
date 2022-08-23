@@ -10,15 +10,25 @@ export interface WPAPIResponse {
   project_category: number[]
   acf: {
     bio: string
-    youtube: string
-    spotify: string
+    date: string
+    starttime: string
+    youtube?: string
+    spotify?: string
     socials?: any
     artist_events?: any
     logotyp?: {
       url: string
     }
-    foretag: string
-    beskrivning_erbjudande: string
+    foretag?: string
+    beskrivning_erbjudande?: string
+    event_venue?: {
+      ID: number
+      post_title: string
+    }
+    event_artists: {
+      ID: number
+      post_title: string
+    }[]
   }
   _embedded: {
     'wp:featuredmedia': any
