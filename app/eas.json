@@ -15,10 +15,10 @@
         "key": "3.0"
       },
       "android": {
-        "autoIncrement": "version"
+        "autoIncrement": "versionCode"
       },
       "ios": {
-        "autoIncrement": "version"
+        "autoIncrement": "buildNumber"
       }
     }
   },
