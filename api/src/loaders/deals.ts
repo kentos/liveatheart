@@ -20,7 +20,7 @@ async function parseResult(result: WPAPIResponse[]) {
         title: decode(row.title.rendered),
         company: decode(row.acf.foretag),
         image: row.acf?.logotyp?.url,
-        description: stripHtml(row.acf.beskrivning_erbjudande).result,
+        description: stripHtml(row.acf.beskrivning_erbjudande!).result,
         publishedAt: new Date(row.date),
       }
       const existing = await collection<Deal>('deals').findOne({
