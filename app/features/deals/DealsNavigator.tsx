@@ -1,11 +1,11 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import { Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CloseButton from '../../components/CloseButton';
 import Colors from '../../constants/Colors';
 import { HEADER_HEIGHT } from '../../helpers/header';
 import DealDetails from './DealDetails';
 import DealsList from './DealsList';
+import Logo from '../../assets/images/lah-sv.svg';
 
 export type DealsStackParamList = {
   DealsList: undefined;
@@ -21,10 +21,7 @@ function DealsNavigator() {
         presentation: 'card',
         headerLeft: ({ canGoBack }) =>
           !canGoBack ? (
-            <Image
-              source={require('../../assets/images/lah-logo.png')}
-              style={{ width: 52, height: 40, marginLeft: 8 }}
-            />
+            <Logo width={64} height={50} style={{ marginLeft: 8 }} fill={Colors.light.tint} />
           ) : (
             <CloseButton back style={{ marginLeft: 8 }} />
           ),
