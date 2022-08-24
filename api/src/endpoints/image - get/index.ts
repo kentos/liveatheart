@@ -7,6 +7,9 @@ import {
 } from '@heja/shared/fastify'
 import sharp from 'sharp'
 import { getOriginalImage } from '../../features/images/getOriginalImage'
+import { collection } from '@heja/shared/mongodb'
+
+let newsUrls: string[] = []
 
 async function handler(fastify: FastifyInstance) {
   fastify.route({
@@ -35,12 +38,23 @@ async function handler(fastify: FastifyInstance) {
     ) => {
       const result = await getOriginalImage(req.query.url)
 
+      if (newsUrls.length === 0) {
+        const urls = await collection<News>('news')
+          .aggregate<Pick<News, 'image'>>([{ $project: { image: 1 } }])
+          .toArray()
+        newsUrls = urls.map((u) => u.image)
+      }
+
       let buffer: Buffer
       switch (req.query.type) {
         case 'thumb': {
           const thumb = result + '_thumb'
           if (!fs.existsSync(thumb)) {
-            await sharp(result).resize({ height: 160 }).toFile(thumb)
+            if (newsUrls.includes(req.query.url)) {
+              await sharp(result).resize({ width: 640 }).toFile(thumb)
+            } else {
+              await sharp(result).resize({ height: 160 }).toFile(thumb)
+            }
           }
           buffer = fs.readFileSync(thumb)
           break
