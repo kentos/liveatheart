@@ -51,7 +51,8 @@ async function parseResult(result: WPAPIResponse[]) {
         }),
       ])
       if (!artist && !speaker && !seminar && !film) {
-        console.log('event had no artist:', event)
+        //console.log('event had no match:', event)
+        console.log(event.title)
         return
       }
 
