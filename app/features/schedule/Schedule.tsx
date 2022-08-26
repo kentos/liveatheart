@@ -1,5 +1,13 @@
 import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
-import { Alert, RefreshControl, SectionList, TouchableOpacity, View } from 'react-native';
+import {
+  Alert,
+  Modal,
+  Pressable,
+  RefreshControl,
+  SectionList,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import _ from 'lodash';
 import { useNavigation } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
@@ -12,7 +20,7 @@ import { useArtists } from '../artists/useArtists';
 import ScheduleSectionHeader from './ScheduleSectionHeader';
 import Slot from './Slot';
 import { days } from './constants';
-import { Title } from '../../components/Texts';
+import { Body, Headline, Title } from '../../components/Texts';
 import { useQuery } from 'react-query';
 import { get } from '../../libs/api';
 import { ScheduleCategory } from './types';
@@ -70,20 +78,91 @@ function Schedule() {
   const selectedDate = useMemo(() => days[selectedDay], [selectedDay]);
   const navigation = useNavigation();
   const schedule = useSchedule(category);
+  const [visible, setVisible] = useState(false);
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: () => (
-        <PickAndChoose
-          title={_.upperFirst(category)}
-          onPress={() =>
-            Alert.alert('Choose category', undefined, [
-              { text: 'Concerts', onPress: () => setCategory(ScheduleCategory.CONCERTS) },
-              { text: 'Film', onPress: () => setCategory(ScheduleCategory.FILM) },
-              { text: 'Conference', onPress: () => setCategory(ScheduleCategory.CONFERENCE) },
-            ])
-          }
-        />
+        <>
+          <PickAndChoose
+            title={_.upperFirst(category)}
+            onPress={
+              () => setVisible((v) => !v)
+              // Alert.alert('Choose category', undefined, [
+              //   { text: 'Concerts', onPress: () => setCategory(ScheduleCategory.CONCERTS) },
+              //   { text: 'Film', onPress: () => setCategory(ScheduleCategory.FILM) },
+              //   { text: 'Conference', onPress: () => setCategory(ScheduleCategory.CONFERENCE) },
+              // ])
+            }
+          />
+          <Modal
+            animationType="fade"
+            visible={visible}
+            transparent
+            onRequestClose={(e) => setVisible((v) => !v)}
+          >
+            <View
+              style={{
+                backgroundColor: 'rgba(0,0,0,.25)',
+                flex: 1,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <View
+                style={{ backgroundColor: Colors.light.background, padding: 16, borderRadius: 8 }}
+              >
+                <View style={{ paddingBottom: 8, paddingHorizontal: 16 }}>
+                  <Headline>Choose category</Headline>
+                </View>
+                <TouchableOpacity
+                  onPress={() => {
+                    setVisible((v) => !v);
+                    setCategory(ScheduleCategory.CONCERTS);
+                  }}
+                >
+                  <View
+                    style={{
+                      paddingVertical: 12,
+                      alignItems: 'center',
+                      borderBottomColor: Colors.light.border,
+                      borderBottomWidth: 1,
+                    }}
+                  >
+                    <Title color={Colors.light.tint}>Concerts</Title>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    setVisible((v) => !v);
+                    setCategory(ScheduleCategory.FILM);
+                  }}
+                >
+                  <View
+                    style={{
+                      paddingVertical: 12,
+                      alignItems: 'center',
+                      borderBottomColor: Colors.light.border,
+                      borderBottomWidth: 1,
+                    }}
+                  >
+                    <Title color={Colors.light.tint}>Film</Title>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    setVisible((v) => !v);
+                    setCategory(ScheduleCategory.CONFERENCE);
+                  }}
+                >
+                  <View style={{ paddingVertical: 12, paddingBottom: 4, alignItems: 'center' }}>
+                    <Title color={Colors.light.tint}>Conference</Title>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+        </>
       ),
       headerRight: () =>
         category === ScheduleCategory.CONCERTS && (
@@ -97,7 +176,7 @@ function Schedule() {
           </TouchableOpacity>
         ),
     });
-  }, [showFavorites, selectedDay, category]);
+  }, [showFavorites, selectedDay, category, setVisible, visible, setCategory]);
 
   useEffect(() => {
     storeSelection(selectedDay);
