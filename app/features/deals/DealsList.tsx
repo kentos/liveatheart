@@ -22,9 +22,7 @@ function DealItem({ deal }: { deal: Deal }) {
             padding: 12,
           }}
         >
-          <Text style={{ textTransform: 'capitalize', color: '#fff', fontSize: 16 }}>
-            {deal.title}
-          </Text>
+          <Text style={{ color: '#fff', fontSize: 16 }}>{deal.title}</Text>
         </View>
       </View>
     </Pressable>
