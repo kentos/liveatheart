@@ -23,7 +23,6 @@ export function Title(props: { color?: string } & TextProps) {
       style={{
         fontSize: 17,
         color: props.color || Colors.light.text,
-        textTransform: 'capitalize',
         ...(props.style as TextStyle),
       }}
       {...props}
