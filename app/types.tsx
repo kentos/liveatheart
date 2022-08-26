@@ -8,6 +8,8 @@ import { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/n
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ArtistDetailsParams } from './features/artists/details/ArtistDetails';
 import { DealsStackParamList } from './features/deals/DealsNavigator';
+import { FilmDetailsParams } from './features/films/FilmDetails';
+import { SeminarDetailsParams } from './features/seminars/SeminarDetail';
 import { WebViewProps } from './features/webview/WebView';
 
 declare global {
@@ -21,6 +23,8 @@ export type RootStackParamList = {
   Modal: undefined;
   NotFound: undefined;
   ArtistDetails: ArtistDetailsParams;
+  SeminarDetails: SeminarDetailsParams;
+  FilmDetails: FilmDetailsParams;
   Tickets: undefined;
   WebView: WebViewProps;
   DealDetails: { dealid: string };

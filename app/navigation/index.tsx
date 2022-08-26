@@ -9,6 +9,8 @@ import Colors from '../constants/Colors';
 import ModalScreen from '../screens/ModalScreen';
 
 import ArtistDetails from '../features/artists/details/ArtistDetails';
+import SeminarDetails from '../features/seminars/SeminarDetail';
+import FilmDetails from '../features/films/FilmDetails';
 import { RootStackParamList, RootTabParamList } from '../types';
 // import FavoritesList from '../features/favorites/FavoritesList';
 import MapView from '../features/mapview/MapView';
@@ -81,6 +83,12 @@ function RootNavigator() {
           options={{ headerShown: false }}
           component={ArtistDetails}
         />
+        <Stack.Screen
+          name="SeminarDetails"
+          options={{ headerShown: false }}
+          component={SeminarDetails}
+        />
+        <Stack.Screen name="FilmDetails" options={{ headerShown: false }} component={FilmDetails} />
       </Stack.Group>
       <Stack.Group
         screenOptions={{

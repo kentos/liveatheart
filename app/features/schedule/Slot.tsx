@@ -7,19 +7,30 @@ import { Body, Caption } from '../../components/Texts';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { ScheduleCategory } from './types';
 
 interface SlotProps {
   slot: SlotCombined;
-  hideHeart: boolean;
+  currentCategory: ScheduleCategory;
 }
 
-function Slot({ slot, hideHeart }: SlotProps) {
+function Slot({ slot, currentCategory }: SlotProps) {
   const navigation = useNavigation();
   const onOpenArtist = useCallback(() => {
-    if (slot._id && !hideHeart) {
+    if (!slot._id) {
+      return;
+    }
+    if (currentCategory === ScheduleCategory.CONCERTS) {
       navigation.navigate('ArtistDetails', { artistid: slot._id });
+    } else if (currentCategory === ScheduleCategory.CONFERENCE) {
+      navigation.navigate('SeminarDetails', { seminarid: slot._id });
+    } else if (currentCategory === ScheduleCategory.FILM) {
+      navigation.navigate('FilmDetails', { filmid: slot._id });
     }
   }, [navigation]);
+
+  const hideHeart = currentCategory !== ScheduleCategory.CONCERTS;
+
   return (
     <View style={styles.wrapper}>
       <View style={{ flex: 1 }}>

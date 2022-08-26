@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { format, isSameDay } from '../../helpers/date';
+import { format } from '../../helpers/date';
 import useFavorites from '../favorites/useFavorites';
 import Colors from '../../constants/Colors';
 import { useArtists } from '../artists/useArtists';
@@ -15,6 +15,7 @@ import { days } from './constants';
 import { Title } from '../../components/Texts';
 import { useQuery } from 'react-query';
 import { get } from '../../libs/api';
+import { ScheduleCategory } from './types';
 
 async function storeSelection(selected: number) {
   await AsyncStorage.setItem('SCHEDULE-selectedDay', String(selected));
@@ -41,13 +42,7 @@ function PickAndChoose({ title, onPress }: { title: string; onPress: () => void 
   );
 }
 
-enum ScheduleCategory {
-  CONCERTS = 'concerts',
-  FILM = 'film',
-  CONFERENCE = 'conference',
-}
-
-function useSchedule(category: ScheduleCategory = ScheduleCategory.CONCERTS) {
+function useSchedule(category = ScheduleCategory.CONCERTS) {
   const { data, refetch, isRefetching } = useQuery({
     queryKey: `/program/${category}`,
     queryFn: async ({ queryKey }) => {
@@ -161,9 +156,7 @@ function Schedule() {
           }
           sections={data}
           keyExtractor={(item) => item._id}
-          renderItem={({ item }) => (
-            <Slot slot={item} hideHeart={category !== ScheduleCategory.CONCERTS} />
-          )}
+          renderItem={({ item }) => <Slot slot={item} currentCategory={category} />}
           renderSectionHeader={({ section }) => <ScheduleSectionHeader title={section.title} />}
           stickySectionHeadersEnabled={false}
         />
