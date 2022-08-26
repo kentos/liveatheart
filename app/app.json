@@ -19,7 +19,7 @@
       "**/*"
     ],
     "ios": {
-      "buildNumber": "30",
+      "buildNumber": "31",
       "supportsTablet": false,
       "bundleIdentifier": "se.liveatheart.app",
       "infoPlist": {
@@ -32,7 +32,7 @@
       }
     },
     "android": {
-      "versionCode": 2713,
+      "versionCode": 2714,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/icon-1024x1024-clean.png",
         "backgroundColor": "#ffffff"
