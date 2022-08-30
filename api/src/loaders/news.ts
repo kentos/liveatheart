@@ -17,7 +17,7 @@ async function parseResult(result: WPAPIResponse[]) {
         articleid: String(row.id),
         title: decode(row.title.rendered),
         link: row.link,
-        image: row.jetpack_featured_media_url,
+        image: row._embedded?.['wp:featuredmedia']?.[0]?.source_url,
         published: datefns.parseISO(row.date_gmt),
         createdAt: new Date(),
       }
@@ -30,7 +30,7 @@ async function parseResult(result: WPAPIResponse[]) {
 }
 
 const url =
-  'https://liveatheart.se/wp-json/wp/v2/posts?per_page=20&page={{page}}&categories=207&_fields=id,date_gmt,link,title,jetpack_featured_media_url'
+  'https://liveatheart.se/wp-json/wp/v2/posts?per_page=20&page={{page}}&categories=207&_fields=id,date_gmt,link,title,_links&_embed=wp:featuredmedia'
 
 export async function loadNews() {
   await loader(url, parseResult)
