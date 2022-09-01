@@ -9,8 +9,6 @@ import sharp from 'sharp'
 import { getOriginalImage } from '../../features/images/getOriginalImage'
 import { collection } from '@heja/shared/mongodb'
 
-let newsUrls: string[] = []
-
 async function handler(fastify: FastifyInstance) {
   fastify.route({
     method: 'GET',
@@ -38,12 +36,10 @@ async function handler(fastify: FastifyInstance) {
     ) => {
       const result = await getOriginalImage(req.query.url)
 
-      if (newsUrls.length === 0) {
-        const urls = await collection<News>('news')
-          .aggregate<Pick<News, 'image'>>([{ $project: { image: 1 } }])
-          .toArray()
-        newsUrls = urls.map((u) => u.image)
-      }
+      const urls = await collection<News>('news')
+        .aggregate<Pick<News, 'image'>>([{ $project: { image: 1 } }])
+        .toArray()
+      const newsUrls = urls.map((u) => u.image)
 
       let buffer: Buffer
       switch (req.query.type) {
