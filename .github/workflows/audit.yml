@@ -9,13 +9,11 @@ jobs:
   scan-app:
     name: npm audit
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./app
     steps:
       - uses: actions/checkout@v3
       # - name: install dependencies
       #   run: npm ci
+      - run: cd app
       - uses: oke-py/npm-audit-action@v2
         with:
           audit_level: moderate
