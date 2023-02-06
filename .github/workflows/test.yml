@@ -1,5 +1,4 @@
 name: test action
-description: Action to test stuff
 on:
   workflow_dispatch:
 
