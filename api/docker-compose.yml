@@ -1,7 +1,6 @@
 version: '3.8'
 
-x-logging:
-  &default-logging
+x-logging: &default-logging
   options:
     max-size: '10m'
     max-file: '2'
@@ -15,11 +14,11 @@ services:
       target: development
     logging: *default-logging
     ports:
-      - "8080:8080"
+      - '8080:8080'
     env_file:
       - ./.env
     depends_on:
-      db: 
+      db:
         condition: service_healthy
     volumes:
       - ./:/app:delegated
@@ -30,11 +29,11 @@ services:
     logging: *default-logging
     image: mongo
     ports:
-      - "27018:27017"
+      - '27018:27017'
     volumes:
       - db_data:/data/db
     healthcheck:
-      test: "[ `echo 'db.runCommand(\"ping\").ok' | mongo localhost/heja-test --quiet` ] && echo 0 || echo 1"
+      test: '[ `echo ''db.runCommand("ping").ok'' | mongo localhost/heja-test --quiet` ] && echo 0 || echo 1'
       interval: 2s
       start_period: 2s
       timeout: 1.5s
