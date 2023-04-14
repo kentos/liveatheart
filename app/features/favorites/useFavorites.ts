@@ -1,4 +1,4 @@
-import create from 'zustand';
+import { create } from 'zustand';
 import { get, store } from '../../helpers/storage';
 import * as api from '../../libs/api';
 

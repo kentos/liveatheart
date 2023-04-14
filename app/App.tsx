@@ -23,14 +23,13 @@ export default function App() {
   const isLoadingComplete = useCachedResources();
   if (!isLoadingComplete) {
     return null;
-  } else {
-    return (
-      <QueryClientProvider client={queryClient}>
-        <SessionContextProvider>
-          <Navigation />
-          <StatusBar />
-        </SessionContextProvider>
-      </QueryClientProvider>
-    );
   }
+  return (
+    <QueryClientProvider client={queryClient}>
+      <SessionContextProvider>
+        <Navigation />
+        <StatusBar />
+      </SessionContextProvider>
+    </QueryClientProvider>
+  );
 }

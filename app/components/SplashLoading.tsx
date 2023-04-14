@@ -3,9 +3,9 @@ import * as Animatable from 'react-native-animatable';
 
 function SplashLoading() {
   return (
-    <View style={{ backgroundColor: 'white', flex: 1 }}>
+    <View style={{ backgroundColor: 'black', flex: 1 }}>
       <Animatable.Image
-        animation="pulse"
+        animation="flash"
         iterationCount="infinite"
         source={require('../assets/images/loading-clean.png')}
         resizeMode="cover"
