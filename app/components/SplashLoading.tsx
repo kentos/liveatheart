@@ -5,7 +5,9 @@ function SplashLoading() {
   return (
     <View style={{ backgroundColor: 'black', flex: 1 }}>
       <Animatable.Image
-        animation="flash"
+        animation="pulse"
+        duration={500}
+        iterationDelay={0}
         iterationCount="infinite"
         source={require('../assets/images/loading-clean.png')}
         resizeMode="cover"

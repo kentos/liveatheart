@@ -1,25 +1,39 @@
-import fetchNewId from './fetchNewId';
-import claimUserId from './claimUserId';
 import { get, store, remove } from '../../helpers/storage';
 import useUserState from './useUserState';
+import { renewAuthToken } from '../../libs/tokens';
+import setupNewAccount from './setupNewAccount';
+import { getRefreshToken } from './getRefreshToken';
 
-const KEY = '@LAH/USERID';
+const KEY = 'REFRESH_TOKEN';
+
+async function setupClient() {
+  try {
+    const refreshToken = await setupNewAccount();
+    await store(KEY, refreshToken);
+    await renewAuthToken(refreshToken);
+  } catch (e) {
+    console.log(e);
+    remove(KEY);
+  }
+}
 
 async function restoreUserSession() {
-  const stored = await get(KEY);
+  const stored = await getRefreshToken();
   if (stored) {
-    useUserState.getState().restore({ _id: stored });
-    return;
-  } else {
     try {
-      const newid = await fetchNewId();
-      await store(KEY, newid);
-      await claimUserId(newid);
-      useUserState.getState().restore({ _id: newid });
-    } catch (e) {
-      console.log(e);
-      remove(KEY);
+      const authToken = await renewAuthToken(stored);
+      useUserState.getState().restore({ authToken });
+      return;
+    } catch (e: any) {
+      if (e.message === 'Dead token') {
+        await setupClient();
+      } else {
+        alert(e.message);
+        console.log(e);
+      }
     }
+  } else {
+    await setupClient();
   }
 }
 

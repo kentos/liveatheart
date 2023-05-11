@@ -1,12 +1,12 @@
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import * as api from '../../libs/api';
 
 function useFilms(id?: string) {
-  const { data } = useQuery({
-    initialData: [] as Seminar[],
-    queryKey: '/films',
-    queryFn: async ({ queryKey }) => {
-      const result = await api.get<Film[]>(queryKey);
+  const { data } = useQuery<Seminar[]>({
+    initialData: [],
+    queryKey: ['films'],
+    queryFn: async () => {
+      const result = await api.get<Film[]>('/films');
       return result.data;
     },
   });

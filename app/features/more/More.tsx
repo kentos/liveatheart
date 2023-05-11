@@ -1,22 +1,13 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { ScrollView, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Body } from '../../components/Texts';
 import Colors from '../../constants/Colors';
 
 function Item({ title, onPress }: { title: string; onPress?: () => void }) {
   return (
     <TouchableOpacity onPress={onPress}>
-      <View
-        style={{
-          padding: 16,
-          backgroundColor: 'white',
-          borderBottomColor: Colors.light.border,
-          borderBottomWidth: 1,
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-        }}
-      >
+      <View style={stylesItem.item}>
         <Body color={Colors.light.tint}>{title}</Body>
         <FontAwesome size={20} name="angle-right" color={Colors.light.tint} />
       </View>
@@ -24,16 +15,28 @@ function Item({ title, onPress }: { title: string; onPress?: () => void }) {
   );
 }
 
+const stylesItem = StyleSheet.create({
+  item: {
+    padding: 16,
+    backgroundColor: 'white',
+    borderBottomColor: Colors.light.border,
+    borderBottomWidth: 1,
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+  },
+});
+
 function More() {
   const navigation = useNavigation();
   return (
     <ScrollView>
+      <Item title="Your profile" onPress={() => navigation.navigate('Profile')} />
       <Item title="Buy tickets" onPress={() => navigation.navigate('Tickets')} />
       <Item
         title="About Live at Heart"
         onPress={() =>
           navigation.navigate('WebView', {
-            url: 'https://liveatheart.se/about/',
+            url: 'https://liveatheart.se/about-live-at-heart/?in_app=1',
             title: 'About Live at Heart',
           })
         }
@@ -42,7 +45,7 @@ function More() {
         title="Partners"
         onPress={() => {
           navigation.navigate('WebView', {
-            url: 'https://liveatheart.se/partners-2022/',
+            url: 'https://liveatheart.se/partners-2022/?in_app=1',
             title: 'Partners',
           });
         }}

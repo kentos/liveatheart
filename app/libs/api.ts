@@ -1,24 +1,29 @@
 import axios from 'axios';
-import { QueryKey } from 'react-query';
 import config from '../constants/config';
-import { requestInterceptor } from './apiInterceptors';
+import { requestInterceptor, responseErrorInterceptor } from './apiInterceptors';
 
 const instance = axios.create({
   baseURL: config.api,
+  timeout: 15000,
 });
 
 instance.interceptors.request.use(requestInterceptor);
+instance.interceptors.response.use(undefined, responseErrorInterceptor(instance));
 
-async function get<T>(url: string | QueryKey) {
-  return instance.get<T>(String(url));
+async function get<T>(url: string) {
+  return instance.get<T>(url);
 }
 
-async function post<T>(url: string | QueryKey, data: any) {
-  return instance.post<T>(String(url), data);
+async function post<T>(url: string, data: any) {
+  return instance.post<T>(url, data);
 }
 
-async function del(url: string | QueryKey) {
-  return instance.delete(String(url));
+async function put<T>(url: string, data: any) {
+  return instance.put<T>(url, data);
 }
 
-export { get, post, del };
+async function del(url: string) {
+  return instance.delete(url);
+}
+
+export { get, post, put, del };

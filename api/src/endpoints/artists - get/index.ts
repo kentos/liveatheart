@@ -1,6 +1,7 @@
 import { FastifyInstance } from '@heja/shared/fastify'
 import { collection } from '@heja/shared/mongodb'
 import _ from 'lodash'
+import authenticatedEndpoint from '../../lib/authenticateEndpoint'
 
 function omitSpotify(a: Artist) {
   return a.spotify?.length === 0 ? _.omit(a, 'spotify') : a
@@ -33,6 +34,7 @@ async function handler(fastify: FastifyInstance) {
   fastify.route({
     method: 'GET',
     url: '/artists',
+    preHandler: [authenticatedEndpoint],
     handler: async () => {
       const [artists, events] = await Promise.all([
         collection<Artist>('artists')

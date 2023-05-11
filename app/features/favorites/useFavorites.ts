@@ -24,12 +24,12 @@ const useFavorites = create<Favorites>((set) => ({
 
 // Observe state
 useFavorites.subscribe(({ favoriteIds }) => {
-  store('@favoriteids', favoriteIds.join(';'));
+  store('FAVORITE_IDS', favoriteIds.join(';'));
 });
 
 // Restore state
 (async function () {
-  const stored = await get('@favoriteids');
+  const stored = await get('FAVORITE_IDS');
   if (stored) {
     useFavorites.setState({
       favoriteIds: stored?.split(';') ?? [],

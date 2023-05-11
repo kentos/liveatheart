@@ -45,15 +45,31 @@ export function Body(props: { bold?: boolean; color?: string } & TextProps) {
   );
 }
 
-export function Caption(props: { color?: string } & TextProps) {
+export function BodySmall(props: { color?: string } & TextProps) {
   return (
     <Text
       style={{
         fontSize: 12,
-        textTransform: 'uppercase',
-        lineHeight: 18,
+        lineHeight: 24,
         color: props.color || Colors.light.text,
+        ...(props.style as TextStyle),
       }}
+      {...props}
+    />
+  );
+}
+
+export function Caption(props: { header?: boolean; color?: string } & TextProps) {
+  return (
+    <Text
+      style={[
+        {
+          fontSize: 12,
+          textTransform: 'uppercase',
+          lineHeight: 18,
+          color: props.color || Colors.light.text,
+        },
+      ]}
       {...props}
     />
   );

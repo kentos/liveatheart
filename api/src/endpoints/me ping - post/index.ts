@@ -1,5 +1,6 @@
 import { FastifyInstance, FastifyRequest } from '@heja/shared/fastify'
 import { collection } from '@heja/shared/mongodb'
+import authenticatedEndpoint from '../../lib/authenticateEndpoint'
 
 async function handler(fastify: FastifyInstance) {
   fastify.route({
@@ -16,6 +17,7 @@ async function handler(fastify: FastifyInstance) {
         },
       },
     },
+    preHandler: [authenticatedEndpoint],
     handler: async (
       req: FastifyRequest<{
         Body: { timestamp: string; os: string; osVersion: string }

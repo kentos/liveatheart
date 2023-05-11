@@ -3,5 +3,6 @@ interface News {
   title: string;
   image: string;
   link: string;
-  text: string;
+  content: string;
+  hearts?: string[];
 }

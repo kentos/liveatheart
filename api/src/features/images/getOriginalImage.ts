@@ -14,7 +14,9 @@ try {
   console.log(dir, 'exists')
 }
 
-async function getOriginalImage(url: string) {
+type SourceFile = string
+
+async function getOriginalImage(url: string): Promise<SourceFile> {
   const outputFile = path.join(dir, md5(url))
   if (fs.existsSync(outputFile)) {
     return outputFile

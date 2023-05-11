@@ -30,7 +30,7 @@ function DealsNavigator() {
         },
         headerTitleStyle: {
           color: Colors.light.tint,
-          fontFamily: 'Archia-Thin',
+          fontFamily: 'Archia-Regular',
           fontWeight: '400',
         },
       }}

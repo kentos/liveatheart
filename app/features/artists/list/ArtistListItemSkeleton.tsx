@@ -17,8 +17,8 @@ interface ArtistListItemSkeletonProps {
 }
 
 function ArtistListItemSkeleton({ imageUri, name, genre, _id }: ArtistListItemSkeletonProps) {
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const dur = useRef(_.random(500, 750));
+  const fadeAnim = useRef(new Animated.Value(1)).current;
+  const dur = useRef(_.random(1000, 1250));
 
   useEffect(() => {
     if (!imageUri || !name || !genre) {
@@ -30,7 +30,7 @@ function ArtistListItemSkeleton({ imageUri, name, genre, _id }: ArtistListItemSk
             useNativeDriver: true,
           }),
           Animated.timing(fadeAnim, {
-            toValue: 0.75,
+            toValue: 0,
             duration: dur.current,
             useNativeDriver: true,
           }),
@@ -38,6 +38,11 @@ function ArtistListItemSkeleton({ imageUri, name, genre, _id }: ArtistListItemSk
       ).start();
     }
   }, [fadeAnim]);
+
+  const opacityInterpolated = fadeAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0.35, 1],
+  });
 
   return (
     <View style={styles.wrapper}>
@@ -47,18 +52,22 @@ function ArtistListItemSkeleton({ imageUri, name, genre, _id }: ArtistListItemSk
           style={styles.image}
         />
       ) : (
-        <Animated.View style={[styles.image, styles.skeleton, { opacity: fadeAnim }]} />
+        <Animated.View style={[styles.image, styles.skeleton, { opacity: opacityInterpolated }]} />
       )}
       <View style={styles.info}>
         {!!name ? (
           <Text style={styles.name}>{name}</Text>
         ) : (
-          <Animated.View style={[styles.skeletonrow, { height: 20, opacity: fadeAnim }]} />
+          <Animated.View
+            style={[styles.skeletonrow, { height: 20, opacity: opacityInterpolated }]}
+          />
         )}
         {!!genre ? (
           <Text style={styles.genre}>{genre || 'loading'}</Text>
         ) : (
-          <Animated.View style={[styles.skeletonrow, { height: 14, opacity: fadeAnim }]} />
+          <Animated.View
+            style={[styles.skeletonrow, { height: 14, opacity: opacityInterpolated }]}
+          />
         )}
         {/* <Text style={styles.location}>
           {(city || country) && (

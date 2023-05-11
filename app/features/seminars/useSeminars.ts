@@ -1,12 +1,12 @@
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import * as api from '../../libs/api';
 
 function useSeminars(id?: string) {
   const { data } = useQuery({
     initialData: [] as Seminar[],
-    queryKey: '/seminars',
-    queryFn: async ({ queryKey }) => {
-      const result = await api.get<Seminar[]>(queryKey);
+    queryKey: ['seminars'],
+    queryFn: async () => {
+      const result = await api.get<Seminar[]>('/seminars');
       return result.data;
     },
   });

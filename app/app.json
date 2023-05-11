@@ -15,9 +15,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "buildNumber": "31",
       "supportsTablet": false,
@@ -28,7 +26,8 @@
       },
       "runtimeVersion": "exposdk:45.0.0",
       "config": {
-        "googleMapsApiKey": "AIzaSyAh_GO5dIJYYqi_5ctVPFXqC_mzw9wxBoo"
+        "googleMapsApiKey": "AIzaSyAh_GO5dIJYYqi_5ctVPFXqC_mzw9wxBoo",
+        "usesNonExemptEncryption": false
       }
     },
     "android": {
@@ -40,9 +39,7 @@
       "runtimeVersion": {
         "policy": "exposdk:45.0.0"
       },
-      "permissions": [
-        "ACCESS_COARSE_LOCATION"
-      ],
+      "permissions": ["ACCESS_COARSE_LOCATION"],
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyCgPOsPx0S4POFp52Xr0ELMorNhtqpc_Bg"

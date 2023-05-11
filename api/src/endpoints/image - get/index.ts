@@ -8,6 +8,7 @@ import {
 import sharp from 'sharp'
 import { getOriginalImage } from '../../features/images/getOriginalImage'
 import { collection } from '@heja/shared/mongodb'
+import { applySmartCrop } from '../../features/images/smartCrop'
 
 async function handler(fastify: FastifyInstance) {
   fastify.route({
@@ -47,9 +48,11 @@ async function handler(fastify: FastifyInstance) {
           const thumb = result + '_thumb'
           if (!fs.existsSync(thumb)) {
             if (newsUrls.includes(req.query.url)) {
-              await sharp(result).resize({ width: 640 }).toFile(thumb)
+              await applySmartCrop(result, thumb, 640, 400)
+              // await sharp(result).resize({ width: 640 }).toFile(thumb)
             } else {
-              await sharp(result).resize({ height: 160 }).toFile(thumb)
+              await applySmartCrop(result, thumb, 160)
+              // await sharp(result).resize({ height: 160 }).toFile(thumb)
             }
           }
           buffer = fs.readFileSync(thumb)

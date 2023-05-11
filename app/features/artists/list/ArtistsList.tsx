@@ -1,6 +1,5 @@
-import { useState, useMemo } from 'react';
-import { SectionList, LayoutAnimation, View, RefreshControl } from 'react-native';
-import SegmentedControl from '@react-native-segmented-control/segmented-control';
+import { useState, useMemo, useEffect } from 'react';
+import { LayoutAnimation, View, RefreshControl, StyleSheet } from 'react-native';
 import _ from 'lodash';
 import ArtistListItem, { ITEM_HEIGHT } from './ArtistListItem';
 import { useArtists } from '../useArtists';
@@ -8,97 +7,123 @@ import useFavorites from '../../favorites/useFavorites';
 import SectionHeader from './SectionHeader';
 import ArtistListItemSkeleton from './ArtistListItemSkeleton';
 import EmptyFaveList from './EmptyFaveList';
+import { Body } from '../../../components/Texts';
+import { FlashList } from '@shopify/flash-list';
+import Colors from '../../../constants/Colors';
+import SegmentedButtons from '../../../components/SegmentedButtons';
 
-enum selectedEnum {
-  NAME = 0,
-  GENRE = 1,
-  FAVES = 2,
+const segments = ['A-Z', 'Genres', 'Faves'] as const;
+type Category = (typeof segments)[number];
+
+function emptyList() {
+  return [
+    { _id: 'skeleton_1' },
+    { _id: 'skeleton_2' },
+    { _id: 'skeleton_3' },
+    { _id: 'skeleton_4' },
+    { _id: 'skeleton_5' },
+    { _id: 'skeleton_6' },
+    { _id: 'skeleton_7' },
+    { _id: 'skeleton_8' },
+  ];
+}
+
+function assembleList(
+  all: Artist[],
+  category: (typeof segments)[number],
+  genre: string,
+  favorites?: string[]
+) {
+  if (category === 'Genres') {
+    return _(all)
+      .filter((a) => a.genre === genre)
+      .value();
+  }
+  if (category === 'Faves') {
+    all = all?.filter((a) => favorites?.includes(a._id));
+  }
+  return _(all)
+    .sortBy((a) => a.name)
+    .value();
 }
 
 function ArtistsList() {
-  const [selected, setSelected] = useState(0);
+  const [category, setCategory] = useState<Category>('A-Z');
   const favorites = useFavorites((state) => state.favoriteIds);
-  const { artists: allArtists, reload, isReloading } = useArtists();
+  const { artists: allArtists, reload, isReloading, isEmpty } = useArtists();
 
-  const data = useMemo(() => {
+  const allGenres = useMemo(() => {
+    const s = new Set<string>();
+    allArtists?.forEach((a) => {
+      s.add(a.genre);
+    });
+    return Array.from(s).sort();
+  }, [allArtists]);
+  const [genre, setGenre] = useState('');
+
+  useEffect(() => {
+    setGenre((g) => (!g ? allGenres[0] : g));
+  }, [allArtists]);
+
+  const data = useMemo<(string | Artist | { _id: string })[]>(() => {
     let all = allArtists;
 
-    if (allArtists?.length === 0) {
-      return [
-        {
-          title: 'All',
-          data: [
-            { _id: 'skeleton_1' },
-            { _id: 'skeleton_2' },
-            { _id: 'skeleton_3' },
-            { _id: 'skeleton_4' },
-            { _id: 'skeleton_5' },
-            { _id: 'skeleton_6' },
-            { _id: 'skeleton_7' },
-          ],
-        },
-      ];
-    }
     LayoutAnimation.configureNext(LayoutAnimation.create(150, 'easeOut', 'opacity'));
-    if (selected === selectedEnum.GENRE) {
-      return _(all)
-        .sortBy((a) => a.name)
-        .groupBy((a) => a.genre)
-        .map((val, key) => ({
-          title: key,
-          data: val,
-        }))
-        .sortBy((s) => s.title)
-        .value();
+
+    if (allArtists?.length === 0 && !isEmpty) {
+      return emptyList();
     }
-    if (selected === selectedEnum.FAVES) {
-      all = all?.filter((a) => favorites.includes(a._id));
+    if (all) {
+      return assembleList(all, category, genre, favorites);
     }
-    return [{ title: 'All', data: _.sortBy(all, (a) => a.name) }];
-  }, [allArtists, selected]);
+    return [];
+  }, [allArtists, category, genre]);
+
+  if (isEmpty) {
+    return (
+      <View>
+        <Body>No artist yet, come back later</Body>
+      </View>
+    );
+  }
 
   return (
     <>
-      <View style={{ backgroundColor: 'white', padding: 8 }}>
-        <SegmentedControl
-          values={['A-Z', 'Genre', 'Faves']}
-          selectedIndex={selected}
-          onChange={(e) => setSelected(() => e.nativeEvent.selectedSegmentIndex)}
-        />
+      <View style={styles.top}>
+        <SegmentedButtons<Category> buttons={segments} active={category} onChange={setCategory} />
+        {category === 'Genres' && (
+          <SegmentedButtons buttons={allGenres} active={genre} onChange={setGenre} />
+        )}
       </View>
+      {category === 'Faves' && data.length === 0 && <EmptyFaveList />}
       {data?.length > 0 && (
-        <SectionList
-          keyExtractor={(i) => i._id}
-          sections={data}
+        <FlashList
+          data={data}
+          estimatedItemSize={ITEM_HEIGHT}
           refreshControl={<RefreshControl refreshing={isReloading} onRefresh={reload} />}
-          ListHeaderComponent={() => {
-            if (selected === 2 && data[0]?.data?.length === 0) {
-              return <EmptyFaveList />;
+          renderItem={({ item }) => {
+            if (typeof item === 'string') {
+              return <SectionHeader title={item} />;
             }
-            return null;
-          }}
-          renderItem={({ item }) =>
-            item._id.includes('skeleton_') ? (
+            return item._id.includes('skeleton_') ? (
               <ArtistListItemSkeleton />
             ) : (
               <ArtistListItem artist={item} />
-            )
-          }
-          getItemLayout={(_data, index) => ({
-            length: ITEM_HEIGHT,
-            offset: ITEM_HEIGHT * index,
-            index,
-          })}
-          renderSectionHeader={(info) => {
-            if (info.section.title === 'All') {
-              return null;
-            }
-            return <SectionHeader title={info.section.title} />;
+            );
           }}
+          getItemType={(item) => (typeof item === 'string' ? 'sectionTitle' : 'row')}
         />
       )}
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  top: {
+    backgroundColor: 'white',
+    borderBottomColor: Colors.light.border,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+});
 
 export default ArtistsList;

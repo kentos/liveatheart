@@ -11,6 +11,7 @@ import { DealsStackParamList } from './features/deals/DealsNavigator';
 import { FilmDetailsParams } from './features/films/FilmDetails';
 import { SeminarDetailsParams } from './features/seminars/SeminarDetail';
 import { WebViewProps } from './features/webview/WebView';
+import { NewsStackParamList } from './features/news/NewsNavigator';
 
 declare global {
   namespace ReactNavigation {
@@ -29,6 +30,8 @@ export type RootStackParamList = {
   WebView: WebViewProps;
   DealDetails: { dealid: string };
   AboutApp: undefined;
+  NewsArticle: { articleId: string };
+  Profile: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
@@ -42,8 +45,9 @@ export type RootTabParamList = {
   MapView: undefined;
   Schedule: undefined;
   Deals: DealsStackParamList;
-  News: undefined;
+  News: NewsStackParamList;
   More: undefined;
+  Heartbeat: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<

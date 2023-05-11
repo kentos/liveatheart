@@ -1,25 +1,28 @@
 import _ from 'lodash';
 import { useCallback, useState } from 'react';
-import { useQuery } from 'react-query';
-import * as api from '../../libs/api';
+import { useQuery } from '@tanstack/react-query';
+import { get } from '../../libs/api';
 
 interface UseArtists {
   artists?: Artist[];
   artist?: Artist;
   reload: () => void;
   isReloading: boolean;
+  isEmpty: boolean;
 }
 
 function useArtists(ids?: string | string[]): UseArtists {
-  const { data, refetch } = useQuery({
+  const { data, refetch, isInitialLoading } = useQuery<Artist[]>({
     initialData: [] as Artist[],
-    queryKey: '/artists',
-    queryFn: async ({ queryKey }) => {
-      const result = await api.get<Artist[]>(queryKey);
+    queryKey: ['artists'],
+    queryFn: async () => {
+      const result = await get<Artist[]>('/artists');
       return result.data;
     },
   });
   const [isRefetching, setIsRefetching] = useState(false);
+
+  const isEmpty = !isInitialLoading && data.length === 0;
 
   const reload = useCallback(async () => {
     setIsRefetching(() => true);
@@ -37,6 +40,7 @@ function useArtists(ids?: string | string[]): UseArtists {
   }
 
   return {
+    isEmpty,
     artists,
     artist,
     reload,

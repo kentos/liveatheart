@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { get } from '../../libs/api';
 
 interface UseNewsProps {
@@ -7,14 +7,15 @@ interface UseNewsProps {
   single?: News;
   refresh: () => void;
   isRefreshing: boolean;
+  isLoading: boolean;
 }
 
 function useNews(id?: string): UseNewsProps {
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const { data, refetch } = useQuery<News[]>({
-    queryKey: '/news',
-    queryFn: async ({ queryKey }) => {
-      const result = await get<News[]>(queryKey);
+  const { data, refetch, isLoading, isInitialLoading } = useQuery<News[]>({
+    queryKey: ['news'],
+    queryFn: async () => {
+      const result = await get<News[]>('/news');
       return result.data;
     },
   });
@@ -35,6 +36,7 @@ function useNews(id?: string): UseNewsProps {
     single,
     isRefreshing,
     refresh,
+    isLoading: isLoading && isInitialLoading,
   };
 }
 

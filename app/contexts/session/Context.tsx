@@ -6,11 +6,10 @@ import ping from './ping';
 
 interface SessionContext {
   userid?: string;
+  authtoken?: string;
 }
 
-const SessionContext = createContext<SessionContext>({
-  userid: undefined,
-});
+const SessionContext = createContext<SessionContext>({});
 
 interface SessionContextProviderProps {
   children: ReactNode;

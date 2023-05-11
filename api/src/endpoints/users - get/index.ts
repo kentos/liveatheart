@@ -4,7 +4,7 @@ import { ulid } from 'ulid'
 
 async function getUniqueId(): Promise<string> {
   const newId = ulid()
-  const result = await collection('users').findOne({ _id: newId })
+  const result = await collection<User>('users').findOne({ _id: newId })
   if (result) {
     return getUniqueId()
   }

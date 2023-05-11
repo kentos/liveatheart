@@ -1,7 +1,7 @@
 import WebView from 'react-native-webview';
 
 function Tickets() {
-  return <WebView source={{ uri: 'https://secure.tickster.com/sv/x2798fju8gnauh2/products' }} />;
+  return <WebView source={{ uri: 'https://secure.tickster.com/sv/z6pglxpm32etknc/products' }} />;
 }
 
 export default Tickets;

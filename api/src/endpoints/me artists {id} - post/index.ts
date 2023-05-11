@@ -1,5 +1,6 @@
 import { FastifyInstance, FastifyRequest } from '@heja/shared/fastify'
 import { collection } from '@heja/shared/mongodb'
+import authenticatedEndpoint from '../../lib/authenticateEndpoint'
 
 async function handler(fastify: FastifyInstance) {
   fastify.route({
@@ -14,11 +15,12 @@ async function handler(fastify: FastifyInstance) {
         },
       },
     },
+    preHandler: [authenticatedEndpoint],
     handler: async (req: FastifyRequest<{ Params: { id: string } }>) => {
       const { id } = req.params
       await collection<User>('users').updateOne(
         { _id: req.currentUser._id, 'favorites._id': { $ne: id } },
-        { $push: { favorites: { _id: id } } },
+        { $push: { favorites: { _id: id, createdAt: new Date() } } },
       )
       return ''
     },
