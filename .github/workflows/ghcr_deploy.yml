@@ -10,7 +10,7 @@ jobs:
       - name: Log in to GHCR
         env:
           DC_APIKEY: ${{ secrets.GH_KEY }}
-        run: docker login -u kentos -p $GH_KEY ghcr.io
+        run: docker login ghcr.io -u kentos -p $GH_KEY
       - name: Build image
         env:
           DC_REPO: ${{ secrets.GH_PACKAGE }}
