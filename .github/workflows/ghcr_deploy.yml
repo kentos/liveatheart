@@ -1,0 +1,23 @@
+name: Deploy to GHCR
+on: workflow_dispatch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Log in to GHCR
+        env:
+          DC_APIKEY: ${{ secrets.GH_KEY }}
+        run: echo "$GH_KEY" | docker login -u kentos --password-stdin ghcr.io
+      - name: Build image
+        env:
+          DC_REPO: ${{ secrets.GH_PACKAGE }}
+        run: |
+          cd ./api
+          docker build --target=production --platform=linux/amd64 -t $GH_PACKAGE .
+      - name: Push image
+        env:
+          DC_REPO: ${{ secrets.GH_PACKAGE }}
+        run: docker push $GH_PACKAGE

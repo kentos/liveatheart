@@ -21,7 +21,7 @@ FROM base AS production
 COPY --from=build /app/dist ./
 COPY --from=build /app/package*.json ./
 RUN mkdir -m777 /app/data
-RUN npm i --production
+RUN npm i --omit=dev
 ENV NODE_ENV=production
 USER node
 CMD [ "node", "./server.js" ]
