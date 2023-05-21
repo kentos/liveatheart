@@ -26,7 +26,7 @@ async function start() {
 
   await startServer({
     server,
-    port: 8080,
+    port: getenv.int('PORT', 8080),
   })
 }
 
