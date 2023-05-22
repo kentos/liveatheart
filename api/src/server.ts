@@ -2,7 +2,7 @@ import path from 'path'
 import { FastifyReply, createServer, startServer } from '@heja/shared/fastify'
 import { connect } from '@heja/shared/mongodb'
 
-import './worker/worker'
+// import './worker/worker'
 import { NotAllowed } from '@heja/shared/errors'
 import getenv from 'getenv'
 

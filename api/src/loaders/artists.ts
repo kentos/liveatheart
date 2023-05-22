@@ -1,9 +1,9 @@
 import { collection, ObjectId } from '@heja/shared/mongodb'
 import _ from 'lodash'
 import { getOriginalImage } from '../features/images/getOriginalImage'
-import { nameParser } from '../lib/nameParser'
+// import { nameParser } from '../lib/nameParser'
 import { stripHtml } from 'string-strip-html'
-import { decode } from 'html-entities'
+// import { decode } from 'html-entities'
 import { loader, WPAPIResponse } from './jsonloader'
 
 async function parseResult(result: WPAPIResponse[]) {
@@ -11,23 +11,43 @@ async function parseResult(result: WPAPIResponse[]) {
 
   await Promise.all(
     result.map(async (row: any) => {
-      const [name, countryCode] = nameParser(row.title.rendered)
+      const {
+        meta_box: {
+          artistband_name: name,
+          country,
+          genre,
+          short_artist_bio,
+          // facebook,
+          // instagram,
+          // youtubr,
+          press_photo,
+          ljudlank_1,
+          videolank_1,
+          vart_val,
+        },
+      } = row
+
+      if (vart_val !== 'Ja') {
+        return
+      }
+
+      const image = press_photo?.[0]?.sizes?.large?.url
 
       const artist: Partial<Artist> = {
         externalid: String(row.id),
-        name: decode(name),
-        countryCode,
-        image:
-          row._embedded?.['wp:featuredmedia']?.[0]?.media_details?.sizes?.[
-            'et-pb-gallery-module-image-portrait'
-          ]?.source_url,
-        description: stripHtml(row.acf.bio).result,
-        categories: row._embedded?.['wp:term']?.[0]?.map((term: any) => ({
-          name: term.name,
-          slug: term.slug,
-        })),
-        spotify: row.acf?.spotify?.replace('/artist/', '/embed/artist/'),
-        youtube: row.acf?.youtube
+        name: name,
+        countryCode: country.substring(0, 3),
+        image,
+        description: stripHtml(short_artist_bio).result,
+        categories: [
+          {
+            name: genre,
+            slug: genre,
+            hidden: false,
+          },
+        ],
+        spotify: ljudlank_1?.replace('/artist/', '/embed/artist/'),
+        youtube: videolank_1
           ?.replace('watch?v=', 'embed/')
           .replace('https://youtu.be/', 'https://www.youtube.com/embed/'),
         createdAt: new Date(),
@@ -69,8 +89,11 @@ async function parseResult(result: WPAPIResponse[]) {
   return storedIds
 }
 
+//const url =
+//  'https://liveatheart.se/wp-json/wp/v2/project?per_page=20&page={{page}}&_fields=id,date,status,title,content,project_category,acf,featured_media,_links&project_category=212&_embed=wp:featuredmedia,wp:term'
+
 const url =
-  'https://liveatheart.se/wp-json/wp/v2/project?per_page=20&page={{page}}&_fields=id,date,status,title,content,project_category,acf,featured_media,_links&project_category=212&_embed=wp:featuredmedia,wp:term'
+  'https://liveatheart.se/wp-json/wp/v2/artist?_embed=wp:featuredmedia&per_page=30&page={{page}}'
 
 async function loadArtists() {
   const storedIds = await loader(url, parseResult)

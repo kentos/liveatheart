@@ -6,6 +6,7 @@ export interface WPAPIResponse {
   date: string
   status: string
   title: { rendered: string }
+  content: { rendered: string }
   featured_media: number
   project_category: number[]
   acf: {

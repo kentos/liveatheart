@@ -7,6 +7,21 @@ x-logging: &default-logging
   driver: local
 
 services:
+  worker:
+    container_name: lah_worker
+    build:
+      context: ./
+      dockerfile: Dockerfile.worker-dev
+    logging: *default-logging
+    env_file:
+      - ./.env
+    depends_on:
+      db:
+        condition: service_healthy
+    working_dir: /app
+    volumes:
+      - ./:/app:delegated
+
   api:
     container_name: api
     build:

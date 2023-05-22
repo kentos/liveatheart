@@ -1,0 +1,11 @@
+FROM alpine AS base
+
+RUN apk add --update nodejs npm
+RUN addgroup -S nodeusers && adduser -S node -G nodeusers
+WORKDIR /app
+
+FROM base
+USER node
+ENV NODE_ENV=development
+VOLUME [ "/app" ]
+CMD [ "./node_modules/.bin/nodemon", "--files", "--transpile-only", "./src/worker/worker.ts" ]
