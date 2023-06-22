@@ -7,10 +7,10 @@ function DealItem({ deal }: { deal: Deal }) {
   const navigation = useNavigation();
   return (
     <Pressable onPress={() => navigation.navigate('DealDetails', { dealid: deal._id })}>
-      <View style={{ width: '100%', height: 200 }}>
+      <View style={{ width: '100%', height: 250 }}>
         <Image
           source={{ uri: deal.image, cache: 'force-cache' }}
-          style={{ width: '100%', height: 200 }}
+          style={{ width: '100%', height: 250 }}
         />
         <View
           style={{

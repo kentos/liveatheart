@@ -36,9 +36,7 @@
         "foregroundImage": "./assets/images/icon-1024x1024-clean.png",
         "backgroundColor": "#ffffff"
       },
-      "runtimeVersion": {
-        "policy": "exposdk:45.0.0"
-      },
+      "runtimeVersion": "exposdk:45.0.0",
       "permissions": ["ACCESS_COARSE_LOCATION"],
       "config": {
         "googleMaps": {

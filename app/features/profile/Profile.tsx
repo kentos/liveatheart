@@ -25,7 +25,7 @@ function Profile() {
         <View
           style={{
             borderRadius: 100,
-            backgroundColor: Colors.light.border,
+            backgroundColor: Colors.light.tint,
             width: 96,
             height: 96,
           }}
@@ -37,7 +37,7 @@ function Profile() {
         <Body>{data?.email}</Body>
       </View>
 
-      <View style={{ height: 16 }} />
+      {/* <View style={{ height: 16 }} />
 
       <View>
         <Title>Push notifications</Title>
@@ -91,7 +91,7 @@ function Profile() {
             trackColor={{ false: Colors.light.border, true: Colors.light.tint }}
           />
         </View>
-      </View>
+      </View> */}
     </View>
   );
 }

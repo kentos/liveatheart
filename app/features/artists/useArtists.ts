@@ -22,6 +22,8 @@ function useArtists(ids?: string | string[]): UseArtists {
   });
   const [isRefetching, setIsRefetching] = useState(false);
 
+  console.log(data);
+
   const isEmpty = !isInitialLoading && data.length === 0;
 
   const reload = useCallback(async () => {
