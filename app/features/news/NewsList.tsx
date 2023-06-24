@@ -21,10 +21,10 @@ interface NewsItemProps {
 function NewsItem({ news }: NewsItemProps) {
   const navigation = useNavigation();
   const goTo = useCallback(() => {
-    // navigation.navigate('WebView', { url: news.link, title: news.title });
     navigation.navigate('NewsArticle', { articleId: news._id });
   }, [navigation, news._id]);
   const [imageLoaded, setImageLoaded] = useState(false);
+
   return (
     <Pressable onPress={goTo}>
       <View style={{ position: 'relative' }}>

@@ -1,6 +1,5 @@
 import { useCallback, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { get } from '../../libs/api';
+import { trpc } from '../../libs/trpc';
 
 interface UseNewsProps {
   allNews: News[];
@@ -12,13 +11,7 @@ interface UseNewsProps {
 
 function useNews(id?: string): UseNewsProps {
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const { data, refetch, isLoading, isInitialLoading } = useQuery<News[]>({
-    queryKey: ['news'],
-    queryFn: async () => {
-      const result = await get<News[]>('/news');
-      return result.data;
-    },
-  });
+  const { data, refetch, isLoading, isInitialLoading } = trpc.news.getNews.useQuery();
 
   const refresh = useCallback(async () => {
     setIsRefreshing(true);

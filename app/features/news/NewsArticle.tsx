@@ -1,5 +1,5 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { Body, Headline } from '../../components/Texts';
+import { Headline } from '../../components/Texts';
 import useNews from './useNews';
 import { NewsStackParamList } from './NewsNavigator';
 import { Image, ScrollView, StyleSheet, View, useWindowDimensions } from 'react-native';
@@ -8,15 +8,13 @@ import RenderHtml, {
   MixedStyleRecord,
   defaultSystemFonts,
 } from 'react-native-render-html';
-import { useCallback, useLayoutEffect, useState } from 'react';
+import { useCallback, useLayoutEffect } from 'react';
 import Colors from '../../constants/Colors';
 import config from '../../constants/config';
 import HeartButton from '../../components/HeartButton';
 import useToast from '../../hooks/useToast';
-import { useMutation } from '@tanstack/react-query';
-import { del, put } from '../../libs/api';
-import { queryClient } from '../../libs/queryClient';
 import useUser from '../../hooks/useUser';
+import { trpc } from '../../libs/trpc';
 
 const baseStyle: MixedStyleDeclaration = {
   color: Colors.light.text,
@@ -42,35 +40,59 @@ const systemFonts = [
 function ArticleHeart({ articleId }: { articleId?: string }) {
   const user = useUser();
   const { single } = useNews(articleId);
-  const [isLiked, setIsLiked] = useState((user._id && single?.hearts?.includes(user._id)) || false);
+  const isLiked = (user._id && single?.hearts?.includes(user._id)) || false;
   const { toast } = useToast();
-  const sendHeart = useMutation({
-    mutationFn: async (add: boolean) => {
-      if (add) {
-        await put(`/news/${articleId}/hearts`, {});
-      } else {
-        await del(`/news/${articleId}/hearts`);
+
+  const utils = trpc.useContext();
+
+  const setHeart = trpc.news.setHeart.useMutation({
+    onMutate({ articleId }) {
+      const data = utils.news.getNews.getData();
+      if (data) {
+        const newData = data.reduce((previous, cur) => {
+          if (cur._id === articleId) {
+            cur.hearts?.push(user._id!);
+          }
+          return [...previous, cur];
+        }, [] as typeof data);
+        utils.news.getNews.cancel();
+        utils.news.getNews.setData(undefined, newData);
+        toast('Article hearted 🙌');
       }
     },
     onSuccess() {
-      queryClient.invalidateQueries(['news']);
+      utils.news.getNews.invalidate();
+    },
+  });
+  const removeHeart = trpc.news.removeHeart.useMutation({
+    onMutate() {
+      const data = utils.news.getNews.getData();
+      if (data) {
+        const newData = data.reduce((previous, cur) => {
+          if (cur._id === articleId) {
+            cur.hearts = cur.hearts?.filter((t) => t !== user._id);
+          }
+          return [...previous, cur];
+        }, [] as typeof data);
+        utils.news.getNews.cancel();
+        utils.news.getNews.setData(undefined, newData);
+      }
+    },
+    onSuccess() {
+      utils.news.getNews.invalidate();
     },
   });
 
-  const toggle = useCallback(async () => {
-    if (isLiked) {
-      await sendHeart.mutateAsync(false);
-      setIsLiked(false);
-    } else {
-      await sendHeart.mutateAsync(true);
-      setIsLiked((t) => {
-        if (!t) {
-          toast('Article hearted 🙌');
-        }
-        return !t;
-      });
+  const toggle = useCallback(() => {
+    if (!single) {
+      return;
     }
-  }, [isLiked]);
+    if (isLiked) {
+      removeHeart.mutate({ articleId: single._id });
+    } else {
+      setHeart.mutate({ articleId: single._id });
+    }
+  }, [single, isLiked]);
 
   if (!articleId) {
     return null;
@@ -118,8 +140,6 @@ function NewsArticle() {
           tagsStyles={tagsStyle}
         />
       )}
-      {/* <View style={{ height: 24 }} />
-      <Body>{single?.content}</Body> */}
     </ScrollView>
   );
 }
