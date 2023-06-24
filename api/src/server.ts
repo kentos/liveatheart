@@ -11,6 +11,7 @@ async function start() {
 
   const server = await createServer({
     name: 'lah-api',
+    maxParamLength: 5000,
     routes: path.join(__dirname, 'endpoints'),
     plugins: path.join(__dirname, 'plugins'),
     disableRequestLogging:

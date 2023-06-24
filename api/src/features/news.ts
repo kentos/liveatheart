@@ -26,23 +26,24 @@ export async function heartArticle(
   articleId: ObjectId,
   userId: string,
 ): Promise<News> {
-  await collection<News>('news').updateOne(
+  const result = await collection<News>('news').findOneAndUpdate(
     { _id: articleId },
     { $addToSet: { hearts: userId } },
+    { returnDocument: 'after' },
   )
-  const article = await collection<News>('news').findOne(
-    { _id: articleId },
-    { projection },
-  )
-  if (!article) {
+  if (!result.ok) {
+    throw new Error('Article not updated')
+  }
+  if (!result.value) {
     throw new Error('Article not found')
   }
-  return article
+  return result.value
 }
 
 export async function removeHeartArticle(articleId: ObjectId, userId: string) {
-  return collection<News>('news').updateOne(
+  return collection<News>('news').findOneAndUpdate(
     { _id: articleId },
     { $pull: { hearts: userId } },
+    { returnDocument: 'after' },
   )
 }
