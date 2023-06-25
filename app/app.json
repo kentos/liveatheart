@@ -4,11 +4,11 @@
     "slug": "liveatheart",
     "version": "8.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon-1024x1024-clean.png",
+    "icon": "./assets/images/icon-1024x1024-clean_2.png",
     "scheme": "lah",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/loading-clean.png",
+      "image": "./assets/images/loading-clean_2.png",
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
@@ -28,12 +28,17 @@
       "config": {
         "googleMapsApiKey": "AIzaSyAh_GO5dIJYYqi_5ctVPFXqC_mzw9wxBoo",
         "usesNonExemptEncryption": false
+      },
+      "splash": {
+        "image": "./assets/images/loading-clean_2.png",
+        "resizeMode": "cover",
+        "backgroundColor": "#ffffff"
       }
     },
     "android": {
       "versionCode": 2714,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/icon-1024x1024-clean.png",
+        "foregroundImage": "./assets/images/icon-1024x1024-clean_2.png",
         "backgroundColor": "#ffffff"
       },
       "runtimeVersion": "exposdk:45.0.0",

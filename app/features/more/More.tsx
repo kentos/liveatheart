@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Body } from '../../components/Texts';
 import Colors from '../../constants/Colors';
+import { resetClient } from '../../contexts/session/restoreUserSession';
 
 function Item({ title, onPress }: { title: string; onPress?: () => void }) {
   return (
@@ -51,6 +52,14 @@ function More() {
         }}
       />
       <Item title="About the app" onPress={() => navigation.navigate('AboutApp')} />
+      {__DEV__ && (
+        <Item
+          title="Debug: Log out"
+          onPress={() => {
+            resetClient();
+          }}
+        />
+      )}
     </ScrollView>
   );
 }

@@ -5,6 +5,7 @@ import verifyAuthtoken from '../lib/verifyAuthtoken'
 export async function createContext({ req, res }: CreateFastifyContextOptions) {
   // await new Promise((res) => setTimeout(res, 1500))
   if (req.headers.authorization) {
+    console.log('HEADERS', req.headers.authorization)
     const { authorization } = req.headers
     const requester = verifyAuthtoken(authorization.substring(7))
     if (!requester) {

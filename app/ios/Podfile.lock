@@ -32,7 +32,7 @@ PODS:
     - ExpoModulesCore
   - EXSecureStore (12.0.0):
     - ExpoModulesCore
-  - EXSplashScreen (0.17.5):
+  - EXSplashScreen (0.18.2):
     - ExpoModulesCore
     - React-Core
   - EXStructuredHeaders (3.0.1)
@@ -602,7 +602,7 @@ SPEC CHECKSUMS:
   ExpoModulesCore: 485dff3a59b036a33b6050c0a5aea3cf1037fdd1
   ExpoWebBrowser: 073e50f16669d498fb49063b9b7fe780b24f7fda
   EXSecureStore: daec0117c922a67c658cb229152a9e252e5c1750
-  EXSplashScreen: 3e989924f61a8dd07ee4ea584c6ba14be9b51949
+  EXSplashScreen: 0e0a9ba0cf7553094e93213099bd7b42e6e237e9
   EXStructuredHeaders: fb774e45eac2e5d62ba40b28176bfbfba61b843e
   EXUpdates: e687436502147e80ef13cf6eedd17e3039ef47d6
   EXUpdatesInterface: bffd1ead18f0bab04fa784ca159c115607b8a23c

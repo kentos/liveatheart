@@ -1,6 +1,7 @@
 import axios from 'axios';
 import useUserState from '../contexts/session/useUserState';
 import config from '../constants/config';
+import { trcpVanilla, trpc } from './trpc';
 
 let renewal: Promise<string> | null;
 
@@ -17,13 +18,10 @@ export async function renewAuthToken(refreshToken: string): Promise<string> {
     return renewal;
   }
   renewal = (async () => {
-    const result = await instance.post<{ authToken: string }>('/auth', { refreshToken });
-    if (result.status === 403) {
-      throw new Error('Dead token');
-    }
-    useUserState.getState().setAuthtoken(result.data.authToken);
+    const result = await trcpVanilla.auth.renewAuthToken.mutate({ refreshToken });
+    useUserState.getState().setAuthtoken(result.authToken);
     renewal = null;
-    return result.data.authToken;
+    return result.authToken;
   })();
   return renewal;
 }

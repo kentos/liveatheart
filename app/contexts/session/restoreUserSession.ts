@@ -3,37 +3,47 @@ import useUserState from './useUserState';
 import { renewAuthToken } from '../../libs/tokens';
 import setupNewAccount from './setupNewAccount';
 import { getRefreshToken } from './getRefreshToken';
+import { TRPCClientError } from '@trpc/client';
 
 const KEY = 'REFRESH_TOKEN';
+
+export async function resetClient() {
+  await remove(KEY);
+  alert('Reload app');
+}
 
 async function setupClient() {
   try {
     const refreshToken = await setupNewAccount();
     await store(KEY, refreshToken);
-    await renewAuthToken(refreshToken);
+    const authToken = await renewAuthToken(refreshToken);
+    useUserState.getState().restore({ authToken });
   } catch (e) {
     console.log(e);
-    remove(KEY);
+    await remove(KEY);
   }
 }
 
 async function restoreUserSession() {
   const stored = await getRefreshToken();
-  if (stored) {
-    try {
-      const authToken = await renewAuthToken(stored);
-      useUserState.getState().restore({ authToken });
-      return;
-    } catch (e: any) {
-      if (e.message === 'Dead token') {
+  if (!stored) {
+    await setupClient();
+    return;
+  }
+  try {
+    const authToken = await renewAuthToken(stored);
+    useUserState.getState().restore({ authToken });
+    return;
+  } catch (e: any) {
+    if (e instanceof TRPCClientError) {
+      console.log(e.data.path);
+      if (e.data.path === 'auth.renewAuthToken') {
         await setupClient();
-      } else {
-        alert(e.message);
-        console.log(e);
+        return;
       }
     }
-  } else {
-    await setupClient();
+    alert(e.message);
+    console.log(e);
   }
 }
 

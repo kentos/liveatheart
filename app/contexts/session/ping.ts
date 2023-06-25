@@ -1,8 +1,12 @@
 import * as Device from 'expo-device';
-import { post } from '../../libs/api';
+import { trcpVanilla } from '../../libs/trpc';
 
 async function ping() {
-  post('/me/ping', { timestamp: new Date(), os: Device.osName, osVersion: Device.osVersion });
+  trcpVanilla.user.ping.mutate({
+    timestamp: new Date(),
+    os: Device.osName,
+    osVersion: Device.osVersion,
+  });
 }
 
 export default ping;

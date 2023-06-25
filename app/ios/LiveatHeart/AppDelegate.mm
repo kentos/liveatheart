@@ -23,10 +23,6 @@
 
 #import <react/config/ReactNativeConfig.h>
 
-//#import <AppCenterReactNative.h>
-//#import <AppCenterReactNativeAnalytics.h>
-//#import <AppCenterReactNativeCrashes.h>
-
 static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
 @interface AppDelegate () <RCTCxxBridgeDelegate, RCTTurboModuleManagerDelegate> {
@@ -68,10 +64,6 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-
-  //[AppCenterReactNative register];
-  //[AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];
-  //[AppCenterReactNativeCrashes registerWithAutomaticProcessing];
 
   [super application:application didFinishLaunchingWithOptions:launchOptions];
 

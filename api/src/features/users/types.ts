@@ -16,3 +16,12 @@ export interface User {
   updatedAt?: Date
   isAdmin?: boolean
 }
+
+export interface UserSession {
+  _id: ObjectId
+  user: User['_id']
+  os: string
+  osVersion: string
+  timestamp: Date
+  createdAt: Date
+}

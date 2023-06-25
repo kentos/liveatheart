@@ -1,8 +1,8 @@
-import { post } from '../../libs/api';
+import { trcpVanilla } from '../../libs/trpc';
 
 async function setupNewAccount() {
-  const newid = await post<{ refreshToken: string }>('/auth', { newAccount: true });
-  return newid.data.refreshToken;
+  const result = await trcpVanilla.auth.newAccount.mutate();
+  return result.refreshToken;
 }
 
 export default setupNewAccount;
