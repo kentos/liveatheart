@@ -1,21 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
-import { get } from '../../libs/api';
-
-type Profile = {
-  _id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-};
+import { trpc } from '../../libs/trpc';
 
 export default function useProfile() {
-  const { data, isInitialLoading } = useQuery({
-    queryKey: ['profile'],
-    queryFn: async () => {
-      const result = await get<Profile>('/profile');
-      return result.data;
-    },
-  });
+  const { data, isInitialLoading } = trpc.user.getProfile.useQuery();
 
   const isIncompleteProfile = !isInitialLoading && !data?.firstName && !data?.lastName;
 

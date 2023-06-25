@@ -15,7 +15,6 @@ export default router({
       }),
     )
     .mutation(async ({ input }) => {
-      console.log('renewAuthToken', input)
       return createAuthToken(input.refreshToken)
     }),
 })

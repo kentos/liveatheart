@@ -4,7 +4,6 @@ import { RefreshToken } from './types'
 import { ulid } from 'ulid'
 import { collection } from '@heja/shared/mongodb'
 import { User } from '../users/types'
-// import { NotAllowed } from '@heja/shared/errors'
 import { TRPCError } from '@trpc/server'
 
 const REFRESH_SECRET = getenv.string('REFRESH_SECRET')
@@ -22,7 +21,6 @@ export function createRefreshToken(userId: string) {
 }
 
 export async function createAuthToken(refreshToken: string) {
-  console.log('createAuthToken', refreshToken)
   const verifiedPayload = verify(refreshToken, REFRESH_SECRET, {
     algorithms: ['HS512'],
     issuer: 'lah-api',
@@ -49,7 +47,7 @@ export async function createAuthToken(refreshToken: string) {
       algorithm: 'HS512',
       issuer: 'lah-api',
       audience: 'lah-client',
-      expiresIn: '10m',
+      expiresIn: '10s',
     },
   )
   return { authToken }

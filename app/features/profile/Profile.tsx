@@ -5,6 +5,7 @@ import { useLayoutEffect, useState } from 'react';
 import Colors from '../../constants/Colors';
 import useProfile from './useProfile';
 import { IncompleteProfile } from './IncompleteProfile';
+import Avatar from './Avatar';
 
 function Profile() {
   const navigation = useNavigation();
@@ -22,14 +23,7 @@ function Profile() {
   return (
     <View style={{ flex: 1, backgroundColor: Colors.light.background, padding: 16 }}>
       <View style={{ alignItems: 'center' }}>
-        <View
-          style={{
-            borderRadius: 100,
-            backgroundColor: Colors.light.tint,
-            width: 96,
-            height: 96,
-          }}
-        />
+        <Avatar size={96} firstName={data?.firstName} lastName={data?.lastName} />
         <View style={{ height: 16 }} />
         <Headline>
           {data?.firstName} {data?.lastName}

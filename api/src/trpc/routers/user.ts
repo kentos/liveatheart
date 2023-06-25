@@ -4,6 +4,7 @@ import { User } from '../../features/users/types'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 import { ping } from '../../features/users/ping'
+import { getProfile, updateProfile } from '../../features/users/profile'
 
 export default router({
   getFavorites: protectedProcedure.query(async ({ ctx }) => {
@@ -30,5 +31,25 @@ export default router({
         osVersion: input.osVersion,
         timestamp: input.timestamp,
       })
+    }),
+
+  getProfile: protectedProcedure.query(async ({ ctx }) => {
+    const profile = await getProfile(ctx.requester)
+    if (!profile) {
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' })
+    }
+    return profile
+  }),
+
+  updateProfile: protectedProcedure
+    .input(
+      z.object({
+        firstName: z.string().optional(),
+        lastName: z.string().optional(),
+        email: z.string().optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return updateProfile(ctx.requester, input)
     }),
 })

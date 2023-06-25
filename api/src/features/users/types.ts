@@ -5,6 +5,16 @@ export interface Favorite {
   createdAt: Date
 }
 
+export interface Push {
+  settings?: {
+    enabled: boolean
+    concertReminder: boolean
+    news: boolean
+  }
+  token?: string
+  updatedAt?: Date
+}
+
 export interface User {
   _id: string
   firstName?: string | null
@@ -12,9 +22,10 @@ export interface User {
   email?: string | null
   favorites?: Favorite[]
   refreshTokenUuid?: string
+  isAdmin?: boolean
+  push?: Push
   createdAt?: Date
   updatedAt?: Date
-  isAdmin?: boolean
 }
 
 export interface UserSession {

@@ -32,7 +32,7 @@ const stylesButton = StyleSheet.create({
     width: Dimensions.get('window').width / 3.5,
     marginHorizontal: 4,
     paddingHorizontal: 16,
-    paddingVertical: 6,
+    paddingVertical: 8,
     borderRadius: 12,
     backgroundColor: Colors.light.background,
     borderWidth: StyleSheet.hairlineWidth,

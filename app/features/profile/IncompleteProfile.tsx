@@ -4,11 +4,9 @@ import { useState } from 'react';
 import Colors from '../../constants/Colors';
 import Button from '../../components/Button';
 import useToast from '../../hooks/useToast';
-import { useMutation } from '@tanstack/react-query';
-import { put } from '../../libs/api';
-import { queryClient } from '../../libs/queryClient';
 import { AnonymousProfileBlurb } from './AnonymousProfileBlurb';
 import Input from '../../components/forms/Input';
+import { trpc } from '../../libs/trpc';
 
 export function IncompleteProfile() {
   const { toast } = useToast();
@@ -16,12 +14,10 @@ export function IncompleteProfile() {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const updateProfile = useMutation({
-    mutationFn: async (updates: { firstName?: string; lastName?: string; email?: string }) => {
-      await put('/profile', updates);
-    },
+  const utils = trpc.useContext();
+  const updateProfile = trpc.user.updateProfile.useMutation({
     onSuccess() {
-      queryClient.invalidateQueries(['profile']);
+      utils.user.getProfile.refetch();
     },
   });
 

@@ -18,6 +18,7 @@ async function setupClient() {
     await store(KEY, refreshToken);
     const authToken = await renewAuthToken(refreshToken);
     useUserState.getState().restore({ authToken });
+    return authToken;
   } catch (e) {
     console.log(e);
     await remove(KEY);
@@ -33,10 +34,9 @@ async function restoreUserSession() {
   try {
     const authToken = await renewAuthToken(stored);
     useUserState.getState().restore({ authToken });
-    return;
+    return authToken;
   } catch (e: any) {
     if (e instanceof TRPCClientError) {
-      console.log(e.data.path);
       if (e.data.path === 'auth.renewAuthToken') {
         await setupClient();
         return;
