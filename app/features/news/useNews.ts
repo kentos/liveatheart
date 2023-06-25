@@ -1,15 +1,9 @@
 import { useCallback, useState } from 'react';
-import { trpc } from '../../libs/trpc';
+import { trpc, RouterOutput } from '../../libs/trpc';
 
-interface UseNewsProps {
-  allNews: News[];
-  single?: News;
-  refresh: () => void;
-  isRefreshing: boolean;
-  isLoading: boolean;
-}
+type NewsArticle = RouterOutput['news']['getNews'][0];
 
-function useNews(id?: string): UseNewsProps {
+function useNews(id?: string) {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const { data, refetch, isLoading, isInitialLoading } = trpc.news.getNews.useQuery();
 
@@ -19,7 +13,7 @@ function useNews(id?: string): UseNewsProps {
     setIsRefreshing(false);
   }, []);
 
-  let single;
+  let single: NewsArticle | undefined;
   if (id) {
     single = data?.find((d) => d._id === id);
   }

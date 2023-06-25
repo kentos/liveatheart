@@ -1,4 +1,5 @@
 import { collection } from '@heja/shared/mongodb'
+import { User } from './types'
 
 type Updates = Partial<
   Pick<User, 'firstName' | 'lastName' | 'email' | 'refreshTokenUuid'>

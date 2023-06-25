@@ -18,4 +18,5 @@ RUN mkdir -m777 /app/data
 RUN npm i --omit=dev
 ENV NODE_ENV=production
 USER node
-CMD [ "node", "./server.js" ]
+ENTRYPOINT [ "node" ]
+CMD [ "./server.js" ]

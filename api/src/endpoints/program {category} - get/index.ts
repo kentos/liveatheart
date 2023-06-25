@@ -1,6 +1,8 @@
 import { FastifyInstance, FastifyRequest } from '@heja/shared/fastify'
 import { collection } from '@heja/shared/mongodb'
 import _ from 'lodash'
+import { Artist, LAHEvent } from '../../features/artists/types'
+import { Seminar } from '../../features/types'
 
 function omitSpotify(a: Artist) {
   return a.spotify?.length === 0 ? _.omit(a, 'spotify') : a

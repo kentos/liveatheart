@@ -10,7 +10,10 @@ import { TRPCError } from '@trpc/server'
 
 export default router({
   getNews: publicProcedure.query(async () => {
-    return getAllNews()
+    return (await getAllNews()).map((n) => ({
+      ...n,
+      _id: n._id.toString(),
+    }))
   }),
 
   setHeart: protectedProcedure

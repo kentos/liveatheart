@@ -9,6 +9,7 @@ import sharp from 'sharp'
 import { getOriginalImage } from '../../features/images/getOriginalImage'
 import { collection } from '@heja/shared/mongodb'
 import { applySmartCrop } from '../../features/images/smartCrop'
+import { News } from '../../features/types'
 
 async function handler(fastify: FastifyInstance) {
   fastify.route({

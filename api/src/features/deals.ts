@@ -1,4 +1,5 @@
 import { collection } from '@heja/shared/mongodb'
+import { Deal } from './deals/types'
 
 async function getAllDeals() {
   const deals = await collection<Deal>('deals')

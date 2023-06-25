@@ -6,6 +6,8 @@ import { sign, verify, decode } from 'jsonwebtoken'
 import { ulid } from 'ulid'
 import { createUser } from '../../features/users/create'
 import { updateUser } from '../../features/users/update'
+import { RefreshToken } from '../../features/auth/types'
+import { User } from '../../features/users/types'
 
 const REFRESH_SECRET = getenv.string('REFRESH_SECRET')
 const AUTH_SECRET = getenv.string('AUTH_SECRET')

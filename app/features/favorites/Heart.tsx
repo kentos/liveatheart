@@ -9,14 +9,13 @@ interface HeartProps {
 }
 
 function Heart({ inverted, artistid, size = 18 }: HeartProps) {
-  const favorites = useFavorites((state) => state.favoriteIds);
-  const [add, remove] = useFavorites((state) => [state.addFavorite, state.removeFavorite]);
+  const { favorites, addFavorite, removeFavorite } = useFavorites();
   const isFaved = useMemo(() => favorites.includes(artistid), [favorites, artistid]);
   const toggle = useCallback(() => {
     if (isFaved) {
-      remove(artistid);
+      removeFavorite(artistid);
     } else {
-      add(artistid);
+      addFavorite(artistid);
     }
   }, [isFaved, artistid]);
   return <HeartButton toggle={toggle} active={isFaved} size={size} inverted={inverted} />;

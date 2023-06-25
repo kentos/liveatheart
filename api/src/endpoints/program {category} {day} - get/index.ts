@@ -1,6 +1,7 @@
 import { FastifyInstance, FastifyRequest } from '@heja/shared/fastify'
 import { collection } from '@heja/shared/mongodb'
 import _ from 'lodash'
+import { Artist } from '../../features/artists/types'
 
 async function getSampleArtists() {
   return collection<Artist>('artists')

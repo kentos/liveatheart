@@ -22,9 +22,9 @@ function task(fn: () => Promise<void>) {
 
 async function start() {
   await connect({})
-  // // loadNews()
+  // loadNews()
   // loadArtists()
-  // // loadDeals()
+  // loadDeals()
   // return
   if (getenv('NODE_ENV', 'development') === 'production') {
     schedule.scheduleJob('fetch news', '*/10 * * * *', task(loadNews))

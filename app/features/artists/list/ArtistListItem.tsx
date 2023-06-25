@@ -2,9 +2,12 @@ import { Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useCallback } from 'react';
 import ArtistListItemSkeleton from './ArtistListItemSkeleton';
+import { RouterOutput } from '../../../libs/trpc';
+
+type Artist = RouterOutput['artists']['getAllArtists'][0];
 
 interface ArtistListItemProps {
-  artist: Partial<Artist>;
+  artist: Artist;
 }
 
 export const ITEM_HEIGHT = 80;
@@ -23,8 +26,8 @@ function ArtistListItem({ artist }: ArtistListItemProps) {
         _id={artist._id}
         name={artist.name}
         imageUri={artist.image}
-        city={artist.city}
-        country={artist.country}
+        // city={artist.city}
+        country={artist.countryCode}
         genre={artist.genre}
       />
     </Pressable>

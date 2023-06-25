@@ -8,4 +8,5 @@ FROM base
 USER node
 ENV NODE_ENV=development
 VOLUME [ "/app" ]
-CMD [ "./node_modules/.bin/nodemon", "--files", "--transpile-only", "./src/worker/worker.ts" ]
+ENTRYPOINT [ "./node_modules/.bin/nodemon" ]
+CMD [ "--files", "--transpile-only", "./src/worker/worker.ts" ]

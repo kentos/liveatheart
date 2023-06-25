@@ -1,28 +1,12 @@
 import _ from 'lodash';
 import { useCallback, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { get } from '../../libs/api';
+import { trpc } from '../../libs/trpc';
 
-interface UseArtists {
-  artists?: Artist[];
-  artist?: Artist;
-  reload: () => void;
-  isReloading: boolean;
-  isEmpty: boolean;
-}
-
-function useArtists(ids?: string | string[]): UseArtists {
-  const { data, refetch, isInitialLoading } = useQuery<Artist[]>({
-    initialData: [] as Artist[],
-    queryKey: ['artists'],
-    queryFn: async () => {
-      const result = await get<Artist[]>('/artists');
-      return result.data;
-    },
-  });
+function useArtists(ids?: string | string[]) {
+  const { data, refetch, isInitialLoading } = trpc.artists.getAllArtists.useQuery();
   const [isRefetching, setIsRefetching] = useState(false);
 
-  const isEmpty = !isInitialLoading && data.length === 0;
+  const isEmpty = !isInitialLoading && data?.length === 0;
 
   const reload = useCallback(async () => {
     setIsRefetching(() => true);

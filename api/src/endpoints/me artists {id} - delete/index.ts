@@ -1,6 +1,7 @@
 import { FastifyInstance, FastifyRequest } from '@heja/shared/fastify'
 import { collection } from '@heja/shared/mongodb'
 import authenticatedEndpoint from '../../lib/authenticateEndpoint'
+import { User } from '../../features/users/types'
 
 async function handler(fastify: FastifyInstance) {
   fastify.route({

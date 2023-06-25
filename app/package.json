@@ -58,6 +58,7 @@
     "react-native-web": "0.18.10",
     "react-native-webview": "11.23.1",
     "react-test-renderer": "18.1.0",
+    "superjson": "^1.12.3",
     "zustand": "4.3.2"
   },
   "devDependencies": {

@@ -2,6 +2,7 @@ import { FastifyInstance } from '@heja/shared/fastify'
 import { collection } from '@heja/shared/mongodb'
 import _ from 'lodash'
 import authenticatedEndpoint from '../../lib/authenticateEndpoint'
+import type { Artist } from '../../features/artists/types'
 
 function omitSpotify(a: Artist) {
   return a.spotify?.length === 0 ? _.omit(a, 'spotify') : a
@@ -35,27 +36,28 @@ async function handler(fastify: FastifyInstance) {
     method: 'GET',
     url: '/artists',
     preHandler: [authenticatedEndpoint],
-    handler: async () => {
-      const [artists, events] = await Promise.all([
-        collection<Artist>('artists')
-          .find({ deletedAt: { $exists: false } })
-          .toArray(),
-        collection<LAHEvent>('events')
-          .find({ artistid: { $exists: true }, deletedAt: { $exists: false } })
-          .toArray(),
-      ])
-      return artists
-        .map((a) => ({
-          ...a,
-          slots: events
-            .filter((e) => e.artistid!.equals(a._id))
-            .map((e) => ({
-              ...e,
-              day: dayMap[e.date],
-            })),
-        }))
-        .map(handleArtist)
-    },
+    handler: async () => [],
+    // {
+    //   const [artists, events] = await Promise.all([
+    //     collection<Artist>('artists')
+    //       .find({ deletedAt: { $exists: false } })
+    //       .toArray(),
+    //     collection<LAHEvent>('events')
+    //       .find({ artistid: { $exists: true }, deletedAt: { $exists: false } })
+    //       .toArray(),
+    //   ])
+    //   return artists
+    //     .map((a) => ({
+    //       ...a,
+    //       slots: events
+    //         .filter((e) => e.artistid!.equals(a._id))
+    //         .map((e) => ({
+    //           ...e,
+    //           day: dayMap[e.date],
+    //         })),
+    //     }))
+    //     .map(handleArtist)
+    // },
   })
 }
 

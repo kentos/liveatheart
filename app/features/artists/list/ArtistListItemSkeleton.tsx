@@ -1,4 +1,4 @@
-import { View, StyleSheet, Image, Animated } from 'react-native';
+import { View, StyleSheet, Image, Animated, ViewStyle } from 'react-native';
 import { Text } from '../../../components/Themed';
 import Heart from '../../favorites/Heart';
 import { useEffect, useRef } from 'react';
@@ -19,9 +19,10 @@ interface ArtistListItemSkeletonProps {
 function ArtistListItemSkeleton({ imageUri, name, genre, _id }: ArtistListItemSkeletonProps) {
   const fadeAnim = useRef(new Animated.Value(1)).current;
   const dur = useRef(_.random(1000, 1250));
+  const isSkeleton = !_id;
 
   useEffect(() => {
-    if (!imageUri || !name || !genre) {
+    if (!_id) {
       Animated.loop(
         Animated.sequence([
           Animated.timing(fadeAnim, {
@@ -46,7 +47,7 @@ function ArtistListItemSkeleton({ imageUri, name, genre, _id }: ArtistListItemSk
 
   return (
     <View style={styles.wrapper}>
-      {!!imageUri ? (
+      {!isSkeleton && !!imageUri ? (
         <Image
           source={{ uri: config.api + '/image?type=thumb&url=' + imageUri, cache: 'force-cache' }}
           style={styles.image}
@@ -55,14 +56,14 @@ function ArtistListItemSkeleton({ imageUri, name, genre, _id }: ArtistListItemSk
         <Animated.View style={[styles.image, styles.skeleton, { opacity: opacityInterpolated }]} />
       )}
       <View style={styles.info}>
-        {!!name ? (
+        {!isSkeleton && !!name ? (
           <Text style={styles.name}>{name}</Text>
         ) : (
           <Animated.View
             style={[styles.skeletonrow, { height: 20, opacity: opacityInterpolated }]}
           />
         )}
-        {!!genre ? (
+        {!isSkeleton && !!genre ? (
           <Text style={styles.genre}>{genre || 'loading'}</Text>
         ) : (
           <Animated.View

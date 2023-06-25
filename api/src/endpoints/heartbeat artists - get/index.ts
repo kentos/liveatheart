@@ -2,6 +2,8 @@ import { FastifyInstance } from '@heja/shared/fastify'
 import authenticatedEndpoint from '../../lib/authenticateEndpoint'
 import onlyAdmins from '../../lib/onlyAdmins'
 import { ObjectId, collection } from '@heja/shared/mongodb'
+import { Artist } from '../../features/artists/types'
+import { User } from '../../features/users/types'
 
 type HeartedArtist = { _id: ObjectId; count: number; artist: Artist }
 

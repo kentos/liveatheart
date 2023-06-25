@@ -1,40 +1,49 @@
-import { create } from 'zustand';
-import { get, store } from '../../helpers/storage';
-import * as api from '../../libs/api';
+import { trpc } from '../../libs/trpc';
+import { useCallback } from 'react';
 
-interface Favorites {
-  favoriteIds: string[];
+function useFavorites() {
+  const favorites = trpc.user.getFavorites.useQuery(undefined, {
+    initialData: [],
+    cacheTime: Infinity,
+  });
 
-  addFavorite: (id: string) => void;
-  removeFavorite: (id: string) => void;
+  const utils = trpc.useContext();
+
+  const setHeart = trpc.artists.setHeart.useMutation({
+    async onMutate(variables: { artistId: string }) {
+      await utils.user.getFavorites.cancel();
+      utils.user.getFavorites.setData(undefined, [...favorites.data, variables.artistId]);
+    },
+    onSettled() {
+      utils.user.getFavorites.refetch();
+    },
+  });
+  const removeHeart = trpc.artists.removeHeart.useMutation({
+    async onMutate(variables: { artistId: string }) {
+      await utils.user.getFavorites.cancel();
+      utils.user.getFavorites.setData(
+        undefined,
+        favorites.data.filter((id) => id !== variables.artistId)
+      );
+    },
+    onSettled() {
+      utils.user.getFavorites.refetch();
+    },
+  });
+
+  const addFavorite = useCallback((artistId: string) => {
+    setHeart.mutate({ artistId });
+  }, []);
+
+  const removeFavorite = useCallback((artistId: string) => {
+    removeHeart.mutate({ artistId });
+  }, []);
+
+  return {
+    favorites: favorites.data,
+    addFavorite,
+    removeFavorite,
+  };
 }
-
-const useFavorites = create<Favorites>((set) => ({
-  favoriteIds: [],
-
-  addFavorite: (id: string) => {
-    set((state) => ({ favoriteIds: [...state.favoriteIds, id] }));
-    api.post(`/me/artists/${id}`, {});
-  },
-  removeFavorite: (id: string) => {
-    set((state) => ({ favoriteIds: state.favoriteIds.filter((fid) => fid !== id) }));
-    api.del(`/me/artists/${id}`);
-  },
-}));
-
-// Observe state
-useFavorites.subscribe(({ favoriteIds }) => {
-  store('FAVORITE_IDS', favoriteIds.join(';'));
-});
-
-// Restore state
-(async function () {
-  const stored = await get('FAVORITE_IDS');
-  if (stored) {
-    useFavorites.setState({
-      favoriteIds: stored?.split(';') ?? [],
-    });
-  }
-})();
 
 export default useFavorites;

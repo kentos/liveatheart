@@ -1,4 +1,5 @@
 import { ObjectId, collection } from '@heja/shared/mongodb'
+import { News } from './types'
 
 const projection = {
   title: 1,

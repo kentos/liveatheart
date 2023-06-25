@@ -4,6 +4,7 @@ import { decode } from 'html-entities'
 import { loader, WPAPIResponse } from './jsonloader'
 import { getOriginalImage } from '../features/images/getOriginalImage'
 import { omit } from 'radash'
+import { News } from '../features/types'
 
 async function parseResult(result: WPAPIResponse[]) {
   await Promise.all(

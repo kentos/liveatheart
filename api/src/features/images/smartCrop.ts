@@ -12,7 +12,6 @@ export async function applySmartCrop(
     height: height || width,
     debug: true,
   })
-  console.log(result)
   const { topCrop: crop } = result
   return sharp(src)
     .extract({

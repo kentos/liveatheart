@@ -11,6 +11,7 @@ import { Body } from '../../../components/Texts';
 import { FlashList } from '@shopify/flash-list';
 import Colors from '../../../constants/Colors';
 import SegmentedButtons from '../../../components/SegmentedButtons';
+import { RouterOutput } from '../../../libs/trpc';
 
 const segments = ['A-Z', 'Genres', 'Faves'] as const;
 type Category = (typeof segments)[number];
@@ -28,8 +29,10 @@ function emptyList() {
   ];
 }
 
+type Artists = RouterOutput['artists']['getAllArtists'];
+
 function assembleList(
-  all: Artist[],
+  all: Artists,
   category: (typeof segments)[number],
   genre: string,
   favorites?: string[]
@@ -49,7 +52,7 @@ function assembleList(
 
 function ArtistsList() {
   const [category, setCategory] = useState<Category>('A-Z');
-  const favorites = useFavorites((state) => state.favoriteIds);
+  const { favorites } = useFavorites();
   const { artists: allArtists, reload, isReloading, isEmpty } = useArtists();
 
   const allGenres = useMemo(() => {
@@ -65,18 +68,18 @@ function ArtistsList() {
     setGenre((g) => (!g ? allGenres[0] : g));
   }, [allArtists]);
 
-  const data = useMemo<(string | Artist | { _id: string })[]>(() => {
+  const data = useMemo(() => {
     let all = allArtists;
 
     LayoutAnimation.configureNext(LayoutAnimation.create(150, 'easeOut', 'opacity'));
 
     if (allArtists?.length === 0 && !isEmpty) {
-      return emptyList();
+      return emptyList() as Artists;
     }
     if (all) {
       return assembleList(all, category, genre, favorites);
     }
-    return [];
+    return [] as Artists;
   }, [allArtists, category, genre]);
 
   if (isEmpty) {

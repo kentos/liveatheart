@@ -1,5 +1,7 @@
 import { FastifyInstance } from '@heja/shared/fastify'
 import { collection } from '@heja/shared/mongodb'
+import { Film } from '../../features/types'
+import { LAHEvent } from '../../features/artists/types'
 
 const dayMap: Record<string, string> = {
   '31/08/2022': 'wednesday',

@@ -1,11 +1,11 @@
-interface Film {
-  _id: string;
-  externalid: string;
-  name: string;
-  link: string;
-  image?: string;
-  description?: string;
-  slots: Slot[];
-  createdAt: Date;
-  updatedAt: Date;
-}
+// interface Film {
+//   _id: string;
+//   externalid: string;
+//   name: string;
+//   link: string;
+//   image?: string;
+//   description?: string;
+//   slots: Slot[];
+//   createdAt: Date;
+//   updatedAt: Date;
+// }

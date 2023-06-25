@@ -1,9 +1,11 @@
-interface Favorite {
-  _id: string
+import { ObjectId } from '@heja/shared/mongodb'
+
+export interface Favorite {
+  _id: ObjectId
   createdAt: Date
 }
 
-interface User {
+export interface User {
   _id: string
   firstName?: string | null
   lastName?: string | null

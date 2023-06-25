@@ -1,6 +1,7 @@
 import { FastifyInstance } from '@heja/shared/fastify'
 import { collection } from '@heja/shared/mongodb'
 import { ulid } from 'ulid'
+import { User } from '../../features/users/types'
 
 async function getUniqueId(): Promise<string> {
   const newId = ulid()

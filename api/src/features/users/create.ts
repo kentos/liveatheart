@@ -1,5 +1,6 @@
 import { collection } from '@heja/shared/mongodb'
 import DBError from '../../errors/DBError'
+import { User } from './types'
 
 interface CreateUser {
   _id: string

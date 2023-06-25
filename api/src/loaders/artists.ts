@@ -5,6 +5,7 @@ import { getOriginalImage } from '../features/images/getOriginalImage'
 import { stripHtml } from 'string-strip-html'
 // import { decode } from 'html-entities'
 import { loader, WPAPIResponse } from './jsonloader'
+import { Artist } from '../features/artists/types'
 
 async function parseResult(result: WPAPIResponse[]) {
   const storedIds: ObjectId[] = []

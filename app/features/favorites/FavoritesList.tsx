@@ -6,8 +6,9 @@ import ArtistListItem from '../artists/list/ArtistListItem';
 import useFavorites from './useFavorites';
 
 function FavoritesList() {
-  const favs = useFavorites((state) => state.favoriteIds);
-  const { artists: data } = useArtists(favs);
+  const { favorites } = useFavorites();
+  console.log('FAVORITES:', favorites);
+  const { artists: data } = useArtists(favorites);
   const artists = useMemo(() => _.sortBy(data, (a) => a.name), [data]);
 
   return (
