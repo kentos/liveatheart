@@ -13,9 +13,11 @@ import { Headline } from '../../components/Texts';
 import config from '../../constants/config';
 import useNews from './useNews';
 import Loading from '../../components/Loading';
+import { RouterOutput } from '../../libs/trpc';
+import Colors from '../../constants/Colors';
 
 interface NewsItemProps {
-  news: News;
+  news: RouterOutput['news']['getNews'][0];
 }
 
 function NewsItem({ news }: NewsItemProps) {
@@ -60,7 +62,13 @@ function NewsList() {
       renderItem={({ item }) => {
         return <NewsItem news={item} />;
       }}
-      refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refresh} />}
+      refreshControl={
+        <RefreshControl
+          tintColor={Colors.light.tabIconDefault}
+          refreshing={isRefreshing}
+          onRefresh={refresh}
+        />
+      }
     />
   );
 }
