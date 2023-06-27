@@ -5,6 +5,7 @@ import { trpc, trpcClient } from './libs/trpc';
 import SessionContextProvider from './contexts/session/Context';
 import useCachedResources from './hooks/useCachedResources';
 import Navigation from './navigation';
+import './libs/pushNotifications';
 
 import { queryClient } from './libs/queryClient';
 
