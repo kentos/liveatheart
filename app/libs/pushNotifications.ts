@@ -1,4 +1,5 @@
 import OneSignal from 'react-native-onesignal';
+import useUserState from '../contexts/session/useUserState';
 
 OneSignal.setAppId('5b845d8d-c903-4338-8b4f-2ca684b6ea6c');
 
@@ -15,3 +16,14 @@ OneSignal.setNotificationWillShowInForegroundHandler((notificationReceivedEvent)
 OneSignal.setNotificationOpenedHandler((notification) => {
   console.log('OneSignal: notification opened:', notification);
 });
+
+useUserState.subscribe((user) => {
+  if (user._id) {
+    OneSignal.setExternalUserId(user._id);
+  }
+});
+
+export async function getState() {
+  const result = await OneSignal.getDeviceState();
+  return result;
+}

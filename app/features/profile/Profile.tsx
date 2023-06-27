@@ -1,17 +1,43 @@
 import { Switch, View } from 'react-native';
 import { Body, Headline, Title } from '../../components/Texts';
 import { useNavigation } from '@react-navigation/native';
-import { useLayoutEffect, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import Colors from '../../constants/Colors';
 import useProfile from './useProfile';
 import { IncompleteProfile } from './IncompleteProfile';
 import Avatar from './Avatar';
+import { getState } from '../../libs/pushNotifications';
+import { useOnboardingModal } from '../push/OnboardingModal';
+import OneSignal from 'react-native-onesignal';
 
 function Profile() {
   const navigation = useNavigation();
   const { data, isIncompleteProfile } = useProfile();
-
+  const showModal = useOnboardingModal((state) => state.show);
   const [push, setPush] = useState(false);
+
+  useEffect(() => {
+    (async function run() {
+      const state = await getState();
+      console.log('Disabled:', state.isPushDisabled);
+      setPush(!state.isPushDisabled);
+    })();
+  }, []);
+
+  const togglePush = async () => {
+    const state = await getState();
+    if (!state.hasNotificationPermission) {
+      showModal();
+      return;
+    }
+    if (state.isPushDisabled) {
+      OneSignal.disablePush(false);
+      setPush(true);
+    } else {
+      OneSignal.disablePush(true);
+      setPush(false);
+    }
+  };
 
   useLayoutEffect(() => {
     navigation.setOptions({ title: 'Your profile' });
@@ -31,7 +57,7 @@ function Profile() {
         <Body>{data?.email}</Body>
       </View>
 
-      {/* <View style={{ height: 16 }} />
+      <View style={{ height: 16 }} />
 
       <View>
         <Title>Push notifications</Title>
@@ -47,12 +73,12 @@ function Profile() {
           <Body>Recieve push notifications</Body>
           <Switch
             value={push}
-            onValueChange={setPush}
+            onValueChange={togglePush}
             trackColor={{ false: Colors.light.border, true: Colors.light.tint }}
           />
         </View>
 
-        <View
+        {/* <View
           style={{
             flexDirection: 'row',
             alignItems: 'center',
@@ -84,8 +110,8 @@ function Profile() {
             onValueChange={setPush}
             trackColor={{ false: Colors.light.border, true: Colors.light.tint }}
           />
-        </View>
-      </View> */}
+        </View> */}
+      </View>
     </View>
   );
 }

@@ -4,7 +4,6 @@ import * as React from 'react';
 import { Image } from 'react-native';
 
 import Colors from '../constants/Colors';
-import ModalScreen from '../screens/ModalScreen';
 
 import ArtistDetails from '../features/artists/details/ArtistDetails';
 import SeminarDetails from '../features/seminars/SeminarDetail';
@@ -92,7 +91,6 @@ function RootNavigator() {
           headerLeft: () => <CloseButton style={{ marginLeft: 8 }} />,
         }}
       >
-        <Stack.Screen name="Modal" component={ModalScreen} />
         <Stack.Screen name="Tickets" component={Tickets} />
         <Stack.Screen name="WebView" component={WebView} />
         <Stack.Screen name="AboutApp" component={AboutApp} options={{ title: 'About this app' }} />

@@ -8,6 +8,7 @@ import Navigation from './navigation';
 import './libs/pushNotifications';
 
 import { queryClient } from './libs/queryClient';
+import OnboardingModal from './features/push/OnboardingModal';
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -20,6 +21,7 @@ export default function App() {
         <SessionContextProvider>
           <RootSiblingParent>
             <Navigation />
+            <OnboardingModal />
           </RootSiblingParent>
           <StatusBar />
         </SessionContextProvider>
