@@ -13,7 +13,9 @@ export const trcpVanilla = createTRPCProxyClient<AppRouter>({
   transformer: superjson,
   links: [
     httpBatchLink({
-      url: 'http://localhost:8080/trpc',
+      url: __DEV__
+        ? 'http://localhost:8080/trpc'
+        : 'https://liveatheart-production.up.railway.app/trpc',
       async headers() {
         const token = useUserState.getState().authToken;
         return (
@@ -30,7 +32,9 @@ export const trpcClient = trpc.createClient({
   transformer: superjson,
   links: [
     httpBatchLink({
-      url: 'http://localhost:8080/trpc',
+      url: __DEV__
+        ? 'http://localhost:8080/trpc'
+        : 'https://liveatheart-production.up.railway.app/trpc',
       fetch: async (url, options): Promise<Response> => {
         const res = await fetch(url, options);
         if (res.status === 401) {
