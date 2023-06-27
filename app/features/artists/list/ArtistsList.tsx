@@ -103,7 +103,13 @@ function ArtistsList() {
         <FlashList
           data={data}
           estimatedItemSize={ITEM_HEIGHT}
-          refreshControl={<RefreshControl refreshing={isReloading} onRefresh={reload} />}
+          refreshControl={
+            <RefreshControl
+              tintColor={Colors.light.tabIconDefault}
+              refreshing={isReloading}
+              onRefresh={reload}
+            />
+          }
           renderItem={({ item }) => {
             if (typeof item === 'string') {
               return <SectionHeader title={item} />;
