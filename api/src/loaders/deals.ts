@@ -2,6 +2,7 @@ import { collection, ObjectId } from '@heja/shared/mongodb'
 import { decode } from 'html-entities'
 import _ from 'lodash'
 import { loader, WPAPIResponse } from './jsonloader'
+import { Deal } from '../features/deals/types'
 
 // const url =
 //   'https://liveatheart.se/wp-json/wp/v2/project?per_page=20&page={{page}}&_fields=id,date,status,title,content,project_category,acf,featured_media,_links&project_category=224&_embed=wp:featuredmedia,wp:term'

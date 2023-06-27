@@ -3,6 +3,8 @@ import { parse, getHours, addDays } from 'date-fns'
 import { decode } from 'html-entities'
 import _ from 'lodash'
 import { loader, WPAPIResponse } from './jsonloader'
+import { Artist, LAHEvent } from '../features/artists/types'
+import { Film, Seminar, Speaker } from '../features/types'
 
 function fixDate(date: Date) {
   return getHours(date) >= 22 ? addDays(date, 2) : date

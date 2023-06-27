@@ -4,6 +4,7 @@ import { getOriginalImage } from '../features/images/getOriginalImage'
 import { stripHtml } from 'string-strip-html'
 import { decode } from 'html-entities'
 import { loader, WPAPIResponse } from './jsonloader'
+import { Film } from '../features/types'
 
 async function parseResult(result: WPAPIResponse[]) {
   const storedIds: ObjectId[] = []
