@@ -1,22 +1,21 @@
 import { ScrollView, View } from 'react-native';
 import { Body, Caption } from '../../components/Texts';
-import { useQuery } from '@tanstack/react-query';
-import { get } from '../../libs/api';
 import Colors from '../../constants/Colors';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 
 function HeartbeatList() {
   const navigation = useNavigation();
-  const { data } = useQuery({
-    queryKey: ['heartbeat', 'artists'],
-    queryFn: async () => {
-      const result = await get<
-        { _id: string; count: number; artist: { _id: string; name: string } }[]
-      >('/heartbeat/artists');
-      return result.data;
-    },
-  });
+  const data = [];
+  // const { data } = useQuery({
+  //   queryKey: ['heartbeat', 'artists'],
+  //   queryFn: async () => {
+  //     const result = await get<
+  //       { _id: string; count: number; artist: { _id: string; name: string } }[]
+  //     >('/heartbeat/artists');
+  //     return result.data;
+  //   },
+  // });
   return (
     <ScrollView contentContainerStyle={{ padding: 8 }}>
       <Caption>Most hearted artists</Caption>
