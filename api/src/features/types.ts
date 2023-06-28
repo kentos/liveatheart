@@ -20,6 +20,7 @@ export interface News {
   title: string
   link: string
   image: string
+  content: string
   published: Date
   hearts: string[]
   createdAt: Date

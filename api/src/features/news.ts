@@ -1,24 +1,9 @@
 import { ObjectId, collection } from '@heja/shared/mongodb'
 import { News } from './types'
 
-const projection = {
-  title: 1,
-  link: 1,
-  image: 1,
-  published: 1,
-  content: 1,
-  hearts: 1,
-}
-
 export async function getAllNews(): Promise<News[]> {
   const news = await collection<News>('news')
-    .find(
-      {},
-      {
-        sort: { published: -1 },
-        projection,
-      },
-    )
+    .find({}, { sort: { published: -1 } })
     .toArray()
   return news
 }
