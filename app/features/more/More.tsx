@@ -9,7 +9,7 @@ export default function More() {
   const navigation = useNavigation();
   return (
     <ScrollView>
-      {__DEV__ && <Item title="Your profile" onPress={() => navigation.navigate('Profile')} />}
+      <Item title="Your profile" onPress={() => navigation.navigate('Profile')} />
       <Item title="Buy tickets" onPress={() => navigation.navigate('Tickets')} />
       <Item
         title="About Live at Heart"

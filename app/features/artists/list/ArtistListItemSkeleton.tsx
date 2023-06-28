@@ -1,4 +1,4 @@
-import { View, StyleSheet, Image, Animated, ViewStyle } from 'react-native';
+import { View, StyleSheet, Image, Animated } from 'react-native';
 import { Text } from '../../../components/Themed';
 import Heart from '../../favorites/Heart';
 import { useEffect, useRef } from 'react';
