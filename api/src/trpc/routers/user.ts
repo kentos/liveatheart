@@ -9,7 +9,6 @@ import { getProfile, updateProfile } from '../../features/users/profile'
 export default router({
   getFavorites: protectedProcedure.query(async ({ ctx }) => {
     const user = await collection<User>('users').findOne({ _id: ctx.requester })
-    console.log(user)
     if (!user) {
       throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' })
     }
