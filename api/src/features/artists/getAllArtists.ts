@@ -2,13 +2,14 @@ import { collection } from '@heja/shared/mongodb'
 import { Artist } from './types'
 
 let localCache: Artist[] = []
-const lastSet = Date.now()
+let lastSet = Date.now()
 
 export async function getAllArtists() {
-  if (Date.now() - lastSet < 1000 * 60 * 2) {
+  if (localCache.length > 0 && Date.now() - lastSet < 1000 * 60 * 2) {
     // 2 minutes in-memory cache
     return localCache
   }
+  lastSet = Date.now()
   localCache = await collection<Artist>('artists')
     .find({ deletedAt: { $exists: false } })
     .toArray()
