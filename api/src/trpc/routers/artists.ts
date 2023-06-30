@@ -19,7 +19,7 @@ export default router({
     return result.map((a) => ({
       _id: a._id.toString(),
       name: a.name,
-      countryCode: a.countryCode,
+      countryCode: a.countryCode || '',
       link: a.link,
       image: a.image,
       description: a.description,
