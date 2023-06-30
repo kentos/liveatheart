@@ -7,14 +7,16 @@ import {
   View,
   StyleSheet,
   ActivityIndicator,
+  Dimensions,
 } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
-import { Headline } from '../../components/Texts';
+import { Body, Caption, Headline } from '../../components/Texts';
 import config from '../../constants/config';
 import useNews from './useNews';
 import Loading from '../../components/Loading';
 import { RouterOutput } from '../../libs/trpc';
 import Colors from '../../constants/Colors';
+import { format } from 'date-fns';
 
 interface NewsItemProps {
   news: RouterOutput['news']['getNews'][0];
@@ -40,6 +42,7 @@ function NewsItem({ news }: NewsItemProps) {
         )}
       </View>
       <View style={styles.itemText}>
+        {news.published && <Caption>{format(news.published, 'PP')}</Caption>}
         <Headline>{news.title}</Headline>
       </View>
     </Pressable>
@@ -74,7 +77,7 @@ function NewsList() {
 }
 
 const styles = StyleSheet.create({
-  itemImage: { width: '100%', height: 200 },
+  itemImage: { width: '100%', height: Dimensions.get('window').width },
   itemText: { marginHorizontal: 12, marginTop: 8, marginBottom: 16 },
 });
 

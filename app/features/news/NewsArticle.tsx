@@ -2,7 +2,7 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { Headline } from '../../components/Texts';
 import useNews from './useNews';
 import { NewsStackParamList } from './NewsNavigator';
-import { Image, ScrollView, StyleSheet, View, useWindowDimensions } from 'react-native';
+import { Dimensions, Image, ScrollView, StyleSheet, View, useWindowDimensions } from 'react-native';
 import RenderHtml, {
   MixedStyleDeclaration,
   MixedStyleRecord,
@@ -118,8 +118,10 @@ function NewsArticle() {
   }, []);
 
   return (
-    <ScrollView style={{ padding: 16 }} contentContainerStyle={{ paddingBottom: 32 }}>
-      <Headline>{single?.title}</Headline>
+    <ScrollView contentContainerStyle={{ paddingBottom: 32 }}>
+      <View style={{ padding: 16 }}>
+        <Headline>{single?.title}</Headline>
+      </View>
       {!!single?.image && (
         <Image
           source={{
@@ -130,22 +132,24 @@ function NewsArticle() {
         />
       )}
       {single?.content && (
-        <RenderHtml
-          source={{ html: single?.content }}
-          contentWidth={width - 16}
-          emSize={8}
-          ignoredDomTags={['img']}
-          baseStyle={baseStyle}
-          systemFonts={systemFonts}
-          tagsStyles={tagsStyle}
-        />
+        <View style={{ padding: 16 }}>
+          <RenderHtml
+            source={{ html: single?.content }}
+            contentWidth={width - 16}
+            emSize={8}
+            ignoredDomTags={['img']}
+            baseStyle={baseStyle}
+            systemFonts={systemFonts}
+            tagsStyles={tagsStyle}
+          />
+        </View>
       )}
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  itemImage: { width: '100%', height: 300, marginVertical: 16 },
+  itemImage: { width: '100%', height: Dimensions.get('window').width },
 });
 
 export default NewsArticle;
