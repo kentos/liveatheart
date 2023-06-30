@@ -7,7 +7,7 @@ export function Headline(props: TextProps) {
     <Text
       style={{
         fontFamily: 'Archia-Medium',
-        fontSize: 20,
+        fontSize: 24,
         lineHeight: 26,
         color: Colors.light.tint,
         ...(props.style as TextStyle),
