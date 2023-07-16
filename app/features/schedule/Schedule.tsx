@@ -1,28 +1,33 @@
-import { useLayoutEffect, useMemo, useState } from 'react';
-import { ScrollView, TouchableOpacity, View } from 'react-native';
+import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import {
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  ScrollView,
+  TouchableOpacity,
+  View,
+  useWindowDimensions,
+} from 'react-native';
 import _ from 'lodash';
 import { useNavigation } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
-import useFavorites from '../favorites/useFavorites';
+//import useFavorites from '../favorites/useFavorites';
 import Colors from '../../constants/Colors';
 import { useArtists } from '../artists/useArtists';
 import SegmentedButtons from '../../components/SegmentedButtons/SegmentedButtons';
 import DateTimeList from './DateTimeList';
 import useSchedule from './useSchedule';
-
-const categories = ['Concerts', 'Day Party', 'Film', 'Conference'] as const;
-export type Category = (typeof categories)[number];
-
-const days = ['Wed', 'Thu', 'Fri', 'Sat'] as const;
-export type Day = (typeof days)[number];
+import { Category, Day, categories, days } from './types';
 
 function Schedule() {
+  const { width: pageWidth } = useWindowDimensions();
   const [category, setCategory] = useState<Category>('Concerts');
   const [selectedDay, setSelectedDay] = useState<Day>('Wed');
+  //const { favorites } = useFavorites();
+  const scroll = useRef<ScrollView>(null);
+  const [activePageIndex, setActivePageIndex] = useState(0);
 
   const [showFavorites, setShowFavorites] = useState(false);
   const { artists } = useArtists();
-  const faves = useFavorites((state) => state.favoriteIds);
 
   const navigation = useNavigation();
   const schedule = useSchedule(category, selectedDay);
@@ -58,31 +63,62 @@ function Schedule() {
   // }, []);
 
   const data = useMemo(() => {
-    return schedule.data || [];
+    return schedule.data?.program || [];
   }, [showFavorites, artists, schedule]);
+
+  const pages = useMemo(() => {
+    const titles = _(data)
+      .map((d) => d.time)
+      .uniq()
+      .value();
+    return titles;
+  }, [data]);
+
+  const onPageChanged = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const scrollX = e.nativeEvent.contentOffset.x;
+    const index = Math.round(scrollX / pageWidth);
+    setActivePageIndex(index);
+  };
+
+  const changePage = useCallback(
+    (item: string) => {
+      const index = pages.indexOf(item);
+      setActivePageIndex(index);
+      scroll.current?.scrollTo({ x: index * pageWidth, animated: true });
+    },
+    [pages, scroll, pageWidth]
+  );
 
   return (
     <View style={{ flex: 1 }}>
       <View style={{ backgroundColor: '#fff' }}>
+        <View style={{ paddingVertical: 4 }}>
+          <SegmentedButtons
+            buttons={days}
+            active={selectedDay}
+            onChange={(e) => setSelectedDay(e as Day)}
+          />
+        </View>
         <SegmentedButtons
           buttons={categories}
           active={category}
           onChange={(e) => setCategory(e as Category)}
         />
-        <SegmentedButtons
-          buttons={days}
-          active={selectedDay}
-          onChange={(e) => setSelectedDay(e as Day)}
+      </View>
+      <View style={{ paddingVertical: 4 }}>
+        <SegmentedButtons<string>
+          buttons={pages}
+          compact
+          active={pages[activePageIndex]}
+          onChange={changePage}
         />
       </View>
       {data?.length > 0 && (
-        <View style={{ flex: 1 }}>
-          <ScrollView horizontal>
-            {data.map((day) => (
-              <DateTimeList key={day.time} time={day.time} slots={day.slots} />
-            ))}
-          </ScrollView>
-        </View>
+        <ScrollView ref={scroll} horizontal pagingEnabled onMomentumScrollEnd={onPageChanged}>
+          {data.map((day) => (
+            <DateTimeList key={day.time} time={day.time} slots={day.slots} />
+          ))}
+        </ScrollView>
       )}
     </View>
   );

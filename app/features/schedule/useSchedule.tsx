@@ -1,19 +1,16 @@
-import { Category, Day } from './Schedule';
+import { trpc } from '../../libs/trpc';
+import { Category, Day } from './types';
 
 export default function useSchedule(category: Category, day: Day) {
-  // const { data, refetch, isRefetching } = useQuery({
-  //   queryKey: ['program', category, day],
-  //   queryFn: async () => {
-  //     const result = await get<
-  //       { time: string; slots: { artist: Artist; venue: { name: string } }[] }[]
-  //     >(`/program/${category.toLowerCase()}/${day.toLowerCase()}`);
-  //     return result.data;
-  //   },
-  // });
+  const { data, refetch, isLoading, isRefetching } = trpc.program.getScheduleByDay.useQuery(
+    {
+      category,
+      day,
+    },
+    {
+      staleTime: 1000 * 60 * 5, // 5 mins
+    }
+  );
 
-  const data = [];
-  const refetch = () => {};
-  const isRefetching = false;
-
-  return { data, refetch, isRefetching };
+  return { data, refetch, isRefetching, isLoading };
 }

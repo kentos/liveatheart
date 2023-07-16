@@ -6,10 +6,12 @@ export default function SegmentedButton({
   text,
   active,
   onPress,
+  compact,
 }: {
   text: string;
   active?: boolean;
   onPress: () => void;
+  compact?: boolean;
 }) {
   return (
     <Pressable
@@ -17,6 +19,7 @@ export default function SegmentedButton({
         { opacity: pressed ? 0.5 : 1 },
         stylesButton.btn,
         active && stylesButton.active,
+        compact && stylesButton.compact,
       ]}
       onPress={onPress}
     >
@@ -40,5 +43,9 @@ const stylesButton = StyleSheet.create({
   },
   active: {
     backgroundColor: Colors.light.tabIconSelected,
+  },
+  compact: {
+    paddingVertical: 4,
+    width: Dimensions.get('window').width / 5,
   },
 });

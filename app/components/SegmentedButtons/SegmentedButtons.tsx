@@ -10,18 +10,15 @@ export default function SegmentedButtons<T>({
   buttons,
   active,
   onChange,
+  compact,
 }: {
   buttons: readonly T[];
   active: T;
   onChange: (value: T) => void;
+  compact?: boolean;
 }) {
   const scrollView = useRef<ScrollView>(null);
-  const [selected, setSelected] = useState<T>(active);
   const [items, setItems] = useState<Record<number, ItemLayout>>([]);
-
-  useEffect(() => {
-    onChange(selected);
-  }, [selected]);
 
   useEffect(() => {
     // On first render, scroll to the active button
@@ -49,7 +46,7 @@ export default function SegmentedButtons<T>({
       ref={scrollView}
       horizontal
       showsHorizontalScrollIndicator={false}
-      style={{ flexDirection: 'row', paddingVertical: 8 }}
+      style={{ flexDirection: 'row' }}
       onLayout={(e) => {
         width = e.nativeEvent.layout.width;
       }}
@@ -68,8 +65,9 @@ export default function SegmentedButtons<T>({
           <SegmentedButton
             key={String(b)}
             text={String(b)}
-            active={selected === b}
-            onPress={() => setSelected(b)}
+            active={active === b}
+            onPress={() => onChange(b)}
+            compact={compact}
           />
         </View>
       ))}

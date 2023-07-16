@@ -11,6 +11,7 @@ import DealsNavigator from '../features/deals/DealsNavigator';
 import More from '../features/more/More';
 import useUser from '../hooks/useUser';
 import HeartbeatNavigator from '../features/heartbeat/HeartbeatNavigator';
+import Schedule from '../features/schedule/Schedule';
 
 interface TabBarIconProps {
   name: React.ComponentProps<typeof FontAwesome>['name'];
@@ -80,7 +81,7 @@ export default function BottomTabNavigator() {
           }}
         />
       )}
-      {/* <BottomTab.Screen
+      <BottomTab.Screen
         name="Schedule"
         component={Schedule}
         options={{
@@ -88,7 +89,7 @@ export default function BottomTabNavigator() {
           tabBarIcon: ({ color }) => <TabBarIcon name="clock-o" color={color} />,
           lazy: false,
         }}
-      /> */}
+      />
       {/* <BottomTab.Screen
         name="MapView"
         component={MapView}

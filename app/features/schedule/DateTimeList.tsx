@@ -1,26 +1,20 @@
 import { Image, StyleSheet, useWindowDimensions } from 'react-native';
 import { Text, View } from '../../components/Themed';
 import Colors from '../../constants/Colors';
-import { Title } from '../../components/Texts';
 import { FlashList } from '@shopify/flash-list';
 import { ITEM_HEIGHT } from '../artists/list/ArtistListItem';
 import config from '../../constants/config';
+import { RouterOutput } from '../../libs/trpc';
 
 type Props = {
   time: string;
-  slots: {
-    artist: Artist;
-    venue: { name: string };
-  }[];
+  slots: RouterOutput['program']['getScheduleByDay']['program'][0]['slots'];
 };
 
 export default function DateTimeList({ time, slots }: Props) {
   const { width } = useWindowDimensions();
   return (
-    <View key={time} style={{ width: width * 0.9 }}>
-      <View style={styles.listTitle}>
-        <Title>{time}</Title>
-      </View>
+    <View key={time} style={{ width: width }}>
       <FlashList
         data={slots}
         estimatedItemSize={ITEM_HEIGHT}
@@ -47,12 +41,6 @@ export default function DateTimeList({ time, slots }: Props) {
 }
 
 const styles = StyleSheet.create({
-  listTitle: {
-    backgroundColor: Colors.light.background,
-    borderBottomColor: Colors.light.border,
-    borderBottomWidth: 1,
-    padding: 8,
-  },
   itemList: {
     flexDirection: 'row',
     borderBottomColor: Colors.light.border,
@@ -61,6 +49,7 @@ const styles = StyleSheet.create({
   image: {
     width: ITEM_HEIGHT,
     height: ITEM_HEIGHT,
+    backgroundColor: Colors.light.tint,
   },
   name: {
     textTransform: 'uppercase',

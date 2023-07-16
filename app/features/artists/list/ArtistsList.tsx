@@ -93,9 +93,13 @@ function ArtistsList() {
   return (
     <>
       <View style={styles.top}>
-        <SegmentedButtons<Category> buttons={segments} active={category} onChange={setCategory} />
+        <View style={{ paddingVertical: 4 }}>
+          <SegmentedButtons<Category> buttons={segments} active={category} onChange={setCategory} />
+        </View>
         {category === 'Genres' && (
-          <SegmentedButtons buttons={allGenres} active={genre} onChange={setGenre} />
+          <View style={{ paddingVertical: 4 }}>
+            <SegmentedButtons buttons={allGenres} active={genre} onChange={setGenre} />
+          </View>
         )}
       </View>
       {category === 'Faves' && data.length === 0 && <EmptyFaveList />}
