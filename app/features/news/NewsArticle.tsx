@@ -149,7 +149,7 @@ function NewsArticle() {
 }
 
 const styles = StyleSheet.create({
-  itemImage: { width: '100%', height: Dimensions.get('window').width },
+  itemImage: { width: Dimensions.get('window').width, height: Dimensions.get('window').width },
 });
 
 export default NewsArticle;

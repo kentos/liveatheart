@@ -10,7 +10,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
-import { Body, Caption, Headline } from '../../components/Texts';
+import { Caption, Headline } from '../../components/Texts';
 import config from '../../constants/config';
 import useNews from './useNews';
 import Loading from '../../components/Loading';
@@ -31,11 +31,15 @@ function NewsItem({ news }: NewsItemProps) {
 
   return (
     <Pressable onPress={goTo}>
-      <View style={{ position: 'relative' }}>
+      <View>
         <Image
-          source={{ uri: config.api + '/image?type=thumb&url=' + news.image, cache: 'force-cache' }}
+          source={{
+            uri: config.api + '/image?type=thumb&url=' + news.image,
+            cache: 'force-cache',
+          }}
           style={styles.itemImage}
           onLoadEnd={() => setImageLoaded(true)}
+          resizeMode="stretch"
         />
         {!imageLoaded && (
           <ActivityIndicator style={{ position: 'absolute', left: '50%', top: '50%' }} />
@@ -77,8 +81,11 @@ function NewsList() {
 }
 
 const styles = StyleSheet.create({
-  itemImage: { width: '100%', height: Dimensions.get('window').width },
-  itemText: { marginHorizontal: 12, marginTop: 8, marginBottom: 16 },
+  itemImage: {
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').width,
+  },
+  itemText: { marginHorizontal: 12, marginTop: 4, marginBottom: 16 },
 });
 
 export default NewsList;
