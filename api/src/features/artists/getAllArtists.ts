@@ -11,7 +11,7 @@ export async function getAllArtists() {
   }
   lastSet = Date.now()
   localCache = await collection<Artist>('artists')
-    .find({ deletedAt: { $exists: false } })
+    .find({ image: { $ne: null }, deletedAt: { $exists: false } })
     .toArray()
   return localCache
 }

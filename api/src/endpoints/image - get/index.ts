@@ -49,7 +49,7 @@ async function handler(fastify: FastifyInstance) {
           const thumb = result + '_thumb'
           if (!fs.existsSync(thumb)) {
             if (newsUrls.includes(req.query.url)) {
-              await applySmartCrop(result, thumb, 640, 400)
+              await applySmartCrop(result, thumb, 640)
               // await sharp(result).resize({ width: 640 }).toFile(thumb)
             } else {
               await applySmartCrop(result, thumb, 160)
@@ -63,7 +63,7 @@ async function handler(fastify: FastifyInstance) {
           const grayscaled = result + '_gray'
           if (!fs.existsSync(grayscaled)) {
             await sharp(result)
-              .resize({ height: 650 })
+              .resize({ height: 640 })
               .gamma(1.0)
               .grayscale()
               .toFile(grayscaled)
