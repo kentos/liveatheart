@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useCallback } from 'react';
 import ArtistListItemSkeleton from './ArtistListItemSkeleton';
 import { RouterOutput } from '../../../libs/trpc';
+import Colors from '../../../constants/Colors';
 
 type Artist = RouterOutput['artists']['getAllArtists'][0];
 

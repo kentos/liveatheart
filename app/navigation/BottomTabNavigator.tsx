@@ -12,6 +12,7 @@ import More from '../features/more/More';
 import useUser from '../hooks/useUser';
 import HeartbeatNavigator from '../features/heartbeat/HeartbeatNavigator';
 import Schedule from '../features/schedule/Schedule';
+import useFeatures from '../hooks/useFeatures';
 
 interface TabBarIconProps {
   name: React.ComponentProps<typeof FontAwesome>['name'];
@@ -27,6 +28,8 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 export default function BottomTabNavigator() {
   const insets = useSafeAreaInsets();
   const user = useUser();
+  const features = useFeatures();
+
   return (
     <BottomTab.Navigator
       screenOptions={{
@@ -70,7 +73,7 @@ export default function BottomTabNavigator() {
           lazy: false,
         }}
       />
-      {user.role === 'admin' && (
+      {(user.role === 'admin' || features.showHeartbeat) && (
         <BottomTab.Screen
           name="Heartbeat"
           component={HeartbeatNavigator}
@@ -81,15 +84,17 @@ export default function BottomTabNavigator() {
           }}
         />
       )}
-      <BottomTab.Screen
-        name="Schedule"
-        component={Schedule}
-        options={{
-          title: 'Program',
-          tabBarIcon: ({ color }) => <TabBarIcon name="clock-o" color={color} />,
-          lazy: false,
-        }}
-      />
+      {features.showSchedule && (
+        <BottomTab.Screen
+          name="Schedule"
+          component={Schedule}
+          options={{
+            title: 'Program',
+            tabBarIcon: ({ color }) => <TabBarIcon name="clock-o" color={color} />,
+            lazy: false,
+          }}
+        />
+      )}
       {/* <BottomTab.Screen
         name="MapView"
         component={MapView}
