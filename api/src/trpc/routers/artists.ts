@@ -13,6 +13,20 @@ function cleanCategories(a: { categories?: { name: string; slug: string }[] }) {
   )
 }
 
+function handleSpotifyEmbed(spotifyUrl?: string) {
+  if (!spotifyUrl) {
+    return ''
+  }
+  if (
+    spotifyUrl.includes('open.spotify.com') &&
+    !spotifyUrl.includes('embed')
+  ) {
+    const url = new URL(spotifyUrl)
+    return `https://open.spotify.com/embed${url.pathname}`
+  }
+  return ''
+}
+
 export default router({
   getAllArtists: publicProcedure.query(async () => {
     const result = await getAllArtists()
@@ -23,7 +37,7 @@ export default router({
       link: a.link,
       image: a.image,
       description: a.description,
-      spotify: a.spotify,
+      spotify: handleSpotifyEmbed(a.spotify),
       youtube: a.youtube,
       slots: [],
       genre: cleanCategories(a),
