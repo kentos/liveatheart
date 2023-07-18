@@ -51,4 +51,9 @@ export default router({
     .mutation(async ({ ctx, input }) => {
       return updateProfile(ctx.requester, input)
     }),
+
+  getFeatures: protectedProcedure.query(async () => {
+    const features: Record<string, boolean> = {}
+    return features
+  }),
 })
