@@ -56,4 +56,11 @@ export default router({
     const features: Record<string, boolean> = {}
     return features
   }),
+
+  deleteProfile: protectedProcedure.mutation(async ({ ctx }) => {
+    await collection<User>('users').updateOne(
+      { _id: ctx.requester },
+      { $set: { deleted: true } },
+    )
+  }),
 })
