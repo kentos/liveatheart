@@ -13,6 +13,7 @@ import useUser from '../hooks/useUser';
 import HeartbeatNavigator from '../features/heartbeat/HeartbeatNavigator';
 import Schedule from '../features/schedule/Schedule';
 import useFeatures from '../hooks/useFeatures';
+import MapView from '../features/mapview/MapView';
 
 interface TabBarIconProps {
   name: React.ComponentProps<typeof FontAwesome>['name'];
@@ -95,14 +96,14 @@ export default function BottomTabNavigator() {
           }}
         />
       )}
-      {/* <BottomTab.Screen
+      <BottomTab.Screen
         name="MapView"
         component={MapView}
         options={{
           title: 'Map',
           tabBarIcon: ({ color }) => <TabBarIcon name="map" color={color} />,
         }}
-      /> */}
+      />
       {/* <BottomTab.Screen
           name="MyFavorites"
           component={FavoritesList}
