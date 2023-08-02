@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { publicProcedure, router } from '../trpc'
+import { getVenues } from '../../features/venues/getVenues'
 
 export default router({
   getSchedule: publicProcedure.query(async () => {
@@ -33,4 +34,8 @@ export default router({
         category: input.category,
       }
     }),
+
+  getVenues: publicProcedure.query(async () => {
+    return getVenues()
+  }),
 })
