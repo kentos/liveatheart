@@ -8,6 +8,7 @@ import { loadNews } from '../loaders/news'
 // import { loadSeminars } from '../loaders/seminars'
 // import { loadSpeakers } from '../loaders/speakers'
 import { connect } from '@heja/shared/mongodb'
+import { loadVenues } from '../loaders/venues'
 
 function task(fn: () => Promise<void>) {
   return async (fireDate: Date) => {
@@ -24,13 +25,15 @@ async function start() {
   await connect({})
 
   if (getenv('NODE_ENV', 'development') !== 'production') {
-    // loadNews()
-    // loadArtists()
+    //loadNews()
+    //loadArtists()
     // loadDeals()
+    //loadVenues()
     return
   }
   schedule.scheduleJob('fetch news', '*/10 * * * *', task(loadNews))
   schedule.scheduleJob('fetch artists', '*/2 * * * *', task(loadArtists))
+  schedule.scheduleJob('fetch venues', '*/5 * * * *', task(loadVenues))
   //schedule.scheduleJob('fetch artists', '*/3 * * * *', task(loadEvents))
   schedule.scheduleJob('fetch deals', '*/10 * * * *', task(loadDeals))
   //schedule.scheduleJob('fetch speakers', '*/12 * * * *', task(loadSpeakers))
