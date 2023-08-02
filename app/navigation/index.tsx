@@ -20,6 +20,7 @@ import WebView from '../features/webview/WebView';
 import AboutApp from '../features/more/AboutApp';
 import BottomTabNavigator from './BottomTabNavigator';
 import Profile from '../features/profile/Profile';
+import RemoveAccount from '../features/profile/RemoveAccount';
 
 export default function Navigation() {
   return (
@@ -51,6 +52,16 @@ function RootNavigator() {
       }}
     >
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+
+      <Stack.Screen
+        name="RemoveAccount"
+        component={RemoveAccount}
+        options={{
+          headerShown: false,
+          presentation: 'modal',
+        }}
+      />
+
       <Stack.Group
         screenOptions={{
           presentation: 'card',

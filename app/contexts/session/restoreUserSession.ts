@@ -9,10 +9,9 @@ const KEY = 'REFRESH_TOKEN';
 
 export async function resetClient() {
   await remove(KEY);
-  alert('Reload app');
 }
 
-async function setupClient() {
+export async function setupClient() {
   try {
     const refreshToken = await setupNewAccount();
     await store(KEY, refreshToken);

@@ -3,7 +3,9 @@ import { useCallback, useState } from 'react';
 import { trpc } from '../../libs/trpc';
 
 function useArtists(ids?: string | string[]) {
-  const { data, refetch, isInitialLoading } = trpc.artists.getAllArtists.useQuery();
+  const { data, refetch, isInitialLoading } = trpc.artists.getAllArtists.useQuery(undefined, {
+    staleTime: Infinity,
+  });
   const [isRefetching, setIsRefetching] = useState(false);
 
   const isEmpty = !isInitialLoading && data?.length === 0;

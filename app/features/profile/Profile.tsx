@@ -1,4 +1,4 @@
-import { Switch, View } from 'react-native';
+import { Alert, Switch, View } from 'react-native';
 import { Body, Headline, Title } from '../../components/Texts';
 import { useNavigation } from '@react-navigation/native';
 import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
@@ -9,6 +9,7 @@ import Avatar from './Avatar';
 import { getState } from '../../libs/pushNotifications';
 import { useOnboardingModal } from '../push/OnboardingModal';
 import OneSignal from 'react-native-onesignal';
+import Button from '../../components/Button';
 
 function Profile() {
   const navigation = useNavigation();
@@ -57,9 +58,7 @@ function Profile() {
         <Body>{data?.email}</Body>
       </View>
 
-      <View style={{ height: 16 }} />
-
-      <View>
+      <View style={{ marginTop: 32 }}>
         <Title>Push notifications</Title>
         <View style={{ height: 1, backgroundColor: Colors.light.border, marginVertical: 8 }} />
         <View
@@ -111,6 +110,31 @@ function Profile() {
             trackColor={{ false: Colors.light.border, true: Colors.light.tint }}
           />
         </View> */}
+      </View>
+
+      <View style={{ marginTop: 32 }}>
+        <Title>Account</Title>
+        <View style={{ height: 1, backgroundColor: Colors.light.border, marginVertical: 8 }} />
+        <Button
+          onPress={() =>
+            Alert.alert(
+              'Remove your account?',
+              'This will remove all your favorites and reset the app.',
+              [
+                { text: 'Cancel' },
+                {
+                  text: 'Remove',
+                  onPress: () => {
+                    navigation.navigate('RemoveAccount');
+                  },
+                  style: 'destructive',
+                },
+              ]
+            )
+          }
+        >
+          Remove account
+        </Button>
       </View>
     </View>
   );
