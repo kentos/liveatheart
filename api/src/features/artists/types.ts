@@ -3,6 +3,10 @@ import { ObjectId } from '@heja/shared/mongodb'
 export interface Venue {
   _id: ObjectId
   name: string
+  slug: string
+  address: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 export interface Slot {
