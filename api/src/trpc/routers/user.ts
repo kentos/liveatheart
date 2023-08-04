@@ -53,7 +53,9 @@ export default router({
     }),
 
   getFeatures: protectedProcedure.query(async () => {
-    const features: Record<string, boolean> = {}
+    const features: Record<string, boolean> = {
+      showSchedule: false,
+    }
     return features
   }),
 

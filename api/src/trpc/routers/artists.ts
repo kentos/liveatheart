@@ -4,10 +4,12 @@ import { protectedProcedure, publicProcedure, router } from '../trpc'
 import { removeHeart, setHeart } from '../../features/artists/hearts'
 import { toObjectId } from '@heja/shared/mongodb'
 
-function cleanCategories(a: { categories?: { name: string; slug: string }[] }) {
+function cleanCategories(a: {
+  categories?: { name: string; slug: string; hidden: boolean }[]
+}) {
   return (
     a.categories
-      ?.filter((c) => ![c.name, c.slug].includes('artists-2022'))
+      ?.filter((c) => !c.hidden && ![c.name, c.slug].includes('artists-2022'))
       .map((c) => c.name.replace('-', ' '))
       .join(', ') ?? 'Unknown'
   )

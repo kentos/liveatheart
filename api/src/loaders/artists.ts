@@ -14,13 +14,12 @@ async function parseResult(result: WPAPIResponse[]) {
     result.map(async (row: any) => {
       const {
         meta_box: {
-          artistband_name: name,
           country,
           genre,
           short_artist_bio,
           // facebook,
           // instagram,
-          // youtubr,
+          // youtube,
           press_photo,
           ljudlank_1,
           videolank_1,
@@ -32,7 +31,12 @@ async function parseResult(result: WPAPIResponse[]) {
         return
       }
 
-      const image = press_photo?.[0]?.sizes?.large?.url
+      const name = row.meta_box['artist/band_name']
+
+      const image =
+        press_photo?.[0]?.sizes?.large?.url ??
+        press_photo?.[0]?.sizes?.medium?.url ??
+        ''
 
       const artist: Partial<Artist> = {
         externalid: String(row.id),
@@ -46,6 +50,11 @@ async function parseResult(result: WPAPIResponse[]) {
             slug: genre,
             hidden: false,
           },
+          // sub_genre && {
+          //   name: sub_genre,
+          //   slug: sub_genre,
+          //   hidden: true,
+          // },
         ],
         spotify: ljudlank_1?.replace('/artist/', '/embed/artist/'),
         youtube: videolank_1
@@ -93,8 +102,11 @@ async function parseResult(result: WPAPIResponse[]) {
 //const url =
 //  'https://liveatheart.se/wp-json/wp/v2/project?per_page=20&page={{page}}&_fields=id,date,status,title,content,project_category,acf,featured_media,_links&project_category=212&_embed=wp:featuredmedia,wp:term'
 
+// const url =
+//   'https://liveatheart.se/wp-json/wp/v2/artist?_embed=wp:featuredmedia&per_page=30&page={{page}}'
+
 const url =
-  'https://liveatheart.se/wp-json/wp/v2/artist?_embed=wp:featuredmedia&per_page=30&page={{page}}'
+  'https://liveatheart.se/wp-json/wp/v2/artist_new?_embed=wp:featuredmedia&per_page=60&page={{page}}'
 
 async function loadArtists() {
   const storedIds = await loader(url, parseResult)
