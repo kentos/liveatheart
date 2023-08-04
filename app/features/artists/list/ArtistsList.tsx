@@ -93,11 +93,11 @@ function ArtistsList() {
   return (
     <>
       <View style={styles.top}>
-        <View style={{ paddingVertical: 4 }}>
+        <View style={{ paddingVertical: 8 }}>
           <SegmentedButtons<Category> buttons={segments} active={category} onChange={setCategory} />
         </View>
         {category === 'Genres' && (
-          <View style={{ paddingVertical: 4 }}>
+          <View style={{ paddingBottom: 8 }}>
             <SegmentedButtons buttons={allGenres} active={genre} onChange={setGenre} />
           </View>
         )}

@@ -12,7 +12,6 @@ import { useNavigation } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
 //import useFavorites from '../favorites/useFavorites';
 import Colors from '../../constants/Colors';
-import { useArtists } from '../artists/useArtists';
 import SegmentedButtons from '../../components/SegmentedButtons/SegmentedButtons';
 import DateTimeList from './DateTimeList';
 import useSchedule from './useSchedule';
@@ -27,7 +26,6 @@ function Schedule() {
   const [activePageIndex, setActivePageIndex] = useState(0);
 
   const [showFavorites, setShowFavorites] = useState(false);
-  const { artists } = useArtists();
 
   const navigation = useNavigation();
   const schedule = useSchedule(category, selectedDay);
@@ -64,7 +62,7 @@ function Schedule() {
 
   const data = useMemo(() => {
     return schedule.data?.program || [];
-  }, [showFavorites, artists, schedule]);
+  }, [schedule]);
 
   const pages = useMemo(() => {
     const titles = _(data)
@@ -92,20 +90,23 @@ function Schedule() {
   return (
     <View style={{ flex: 1 }}>
       <View style={{ backgroundColor: '#fff' }}>
-        <View style={{ paddingVertical: 4 }}>
+        <View style={{ paddingTop: 8 }}>
+          <SegmentedButtons
+            buttons={categories}
+            active={category}
+            onChange={(e) => setCategory(e as Category)}
+          />
+        </View>
+        <View style={{ paddingTop: 8 }}>
           <SegmentedButtons
             buttons={days}
             active={selectedDay}
             onChange={(e) => setSelectedDay(e as Day)}
           />
         </View>
-        <SegmentedButtons
-          buttons={categories}
-          active={category}
-          onChange={(e) => setCategory(e as Category)}
-        />
       </View>
-      <View style={{ paddingVertical: 4 }}>
+
+      <View style={{ paddingTop: 8, paddingBottom: 8 }}>
         <SegmentedButtons<string>
           buttons={pages}
           compact

@@ -5,6 +5,8 @@ import { FlashList } from '@shopify/flash-list';
 import { ITEM_HEIGHT } from '../artists/list/ArtistListItem';
 import config from '../../constants/config';
 import { RouterOutput } from '../../libs/trpc';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 
 type Props = {
   time: string;
@@ -13,6 +15,8 @@ type Props = {
 
 export default function DateTimeList({ time, slots }: Props) {
   const { width } = useWindowDimensions();
+  const navigation = useNavigation();
+
   return (
     <View key={time} style={{ width: width }}>
       <FlashList
@@ -20,19 +24,28 @@ export default function DateTimeList({ time, slots }: Props) {
         estimatedItemSize={ITEM_HEIGHT}
         renderItem={({ item }) => {
           return (
-            <View style={styles.itemList}>
-              <Image
-                source={{
-                  uri: config.api + '/image?type=thumb&url=' + item.artist.image,
-                  cache: 'force-cache',
-                }}
-                style={styles.image}
-              />
-              <View style={styles.itemText}>
-                <Text style={styles.name}>{item.artist.name}</Text>
-                <Text style={styles.venue}>{item.venue.name}</Text>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('ArtistDetails', { artistid: String(item.artist._id) })
+              }
+            >
+              <View style={styles.itemList}>
+                <Image
+                  source={{
+                    uri: config.api + '/image?type=thumb&url=' + item.artist.image,
+                    cache: 'force-cache',
+                  }}
+                  style={styles.image}
+                />
+                <View style={styles.itemText}>
+                  {item.artist.categories.length > 0 && (
+                    <Text style={styles.category}>{item.artist.categories}</Text>
+                  )}
+                  <Text style={styles.name}>{item.artist.name}</Text>
+                  <Text style={styles.venue}>{item.venue.name}</Text>
+                </View>
               </View>
-            </View>
+            </TouchableOpacity>
           );
         }}
       />
@@ -61,6 +74,11 @@ const styles = StyleSheet.create({
     color: 'rgba(0,0,0,.45)',
     marginVertical: 4,
     fontSize: 14,
+  },
+  category: {
+    color: 'rgba(0,0,0,.45)',
+    fontSize: 12,
+    marginBottom: 4,
   },
   itemText: {
     flex: 1,
