@@ -34,10 +34,10 @@ async function parseResult(result: WPAPIResponse[]) {
       const name = row.meta_box['artist/band_name']
 
       const image =
-        press_photo?.[0]?.sizes?.large?.url ??
-        press_photo?.[0]?.sizes?.medium_large?.url ??
-        press_photo?.[0]?.sizes?.medium?.url ??
-        press_photo?.[0]?.url ??
+        press_photo?.[0]?.sizes?.large?.file ||
+        press_photo?.[0]?.sizes?.medium_large?.file ||
+        press_photo?.[0]?.sizes?.medium?.file ||
+        press_photo?.[0]?.url ||
         ''
 
       const artist: Partial<Artist> = {
