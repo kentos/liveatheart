@@ -35,6 +35,7 @@ async function parseResult(result: WPAPIResponse[]) {
 
       const image =
         press_photo?.[0]?.sizes?.large?.url ??
+        press_photo?.[0]?.sizes?.medium_large?.url ??
         press_photo?.[0]?.sizes?.medium?.url ??
         ''
 
@@ -42,7 +43,7 @@ async function parseResult(result: WPAPIResponse[]) {
         externalid: String(row.id),
         name: name,
         countryCode: country.substring(0, 3),
-        image,
+        image: `https://liveatheart.se/wp-content/uploads/2023/08/${image}`,
         description: stripHtml(short_artist_bio).result,
         categories: [
           {
