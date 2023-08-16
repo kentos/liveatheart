@@ -34,17 +34,17 @@ async function parseResult(result: WPAPIResponse[]) {
       const name = row.meta_box['artist/band_name']
 
       const image =
+        press_photo?.[0]?.url ||
         press_photo?.[0]?.sizes?.large?.file ||
         press_photo?.[0]?.sizes?.medium_large?.file ||
         press_photo?.[0]?.sizes?.medium?.file ||
-        press_photo?.[0]?.url ||
         ''
 
       const artist: Partial<Artist> = {
         externalid: String(row.id),
         name: name,
         countryCode: country.substring(0, 3),
-        image: `https://liveatheart.se/wp-content/uploads/2023/08/${image}`,
+        image,
         description: stripHtml(short_artist_bio).result,
         categories: [
           {
@@ -66,8 +66,10 @@ async function parseResult(result: WPAPIResponse[]) {
         updatedAt: new Date(),
       }
 
-      if (artist.image) {
+      if (artist.image && artist.image !== '') {
         getOriginalImage(artist.image)
+      } else {
+        console.log('Missing image', artist.name)
       }
 
       if (artist.spotify && artist.spotify.length === 0) {
