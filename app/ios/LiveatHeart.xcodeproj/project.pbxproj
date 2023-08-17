@@ -353,7 +353,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "Live at Heart";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 11.0.0;
+				MARKETING_VERSION = 12.0.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -386,7 +386,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "Live at Heart";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 11.0.0;
+				MARKETING_VERSION = 12.0.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
