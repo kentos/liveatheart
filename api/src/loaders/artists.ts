@@ -6,6 +6,14 @@ import { stripHtml } from 'string-strip-html'
 // import { decode } from 'html-entities'
 import { loader, WPAPIResponse } from './jsonloader'
 import { Artist } from '../features/artists/types'
+import axios from 'axios'
+
+async function getAttachments(url: string) {
+  const result = await axios.get<[{ media_type: string; source_url: string }]>(
+    url,
+  )
+  return result.data
+}
 
 async function parseResult(result: WPAPIResponse[]) {
   const storedIds: ObjectId[] = []
@@ -21,10 +29,12 @@ async function parseResult(result: WPAPIResponse[]) {
           // instagram,
           // youtube,
           press_photo,
+          image_upload,
           ljudlank_1,
           videolank_1,
           vart_val,
         },
+        _links,
       } = row
 
       if (vart_val !== 'Ja') {
@@ -33,13 +43,19 @@ async function parseResult(result: WPAPIResponse[]) {
 
       const name = row.meta_box['artist/band_name']
 
-      const image =
-        press_photo?.[0]?.full_url ||
-        press_photo?.[0]?.url ||
-        press_photo?.[0]?.sizes?.large?.file ||
-        press_photo?.[0]?.sizes?.medium_large?.file ||
-        press_photo?.[0]?.sizes?.medium?.file ||
-        ''
+      let image =
+        image_upload?.[0]?.full_url || press_photo?.[0]?.full_url || ''
+
+      const attachmentsUrl = _links['wp:attachment']?.[0]?.href
+      if (image.length === 0 && attachmentsUrl) {
+        const attachments = await getAttachments(attachmentsUrl)
+        const imageAttachment = attachments.find(
+          (a) => a.media_type === 'image',
+        )
+        if (imageAttachment) {
+          image = imageAttachment.source_url
+        }
+      }
 
       const artist: Partial<Artist> = {
         externalid: String(row.id),
