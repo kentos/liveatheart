@@ -12,6 +12,7 @@ import SpotifyEmbed from './SpotifyEmbed';
 import ConcertRow from './ConcertRow';
 import YoutubeEmbed from './YoutubeEmbed';
 import _ from 'lodash';
+import FastImage from 'react-native-fast-image';
 
 const HEIGHT = Layout.window.height * 0.85;
 
@@ -30,12 +31,11 @@ function ArtistDetails() {
       <StatusBar barStyle={'light-content'} animated />
       <ScrollView style={[styles.view]}>
         <View>
-          <Image
+          <FastImage
             source={{
               uri: config.api + '/image?type=gray&url=' + artist?.image,
-              cache: 'force-cache',
             }}
-            style={[styles.artistImage]}
+            style={styles.artistImage}
           />
           <View style={styles.overlay} />
           <View style={styles.text}>

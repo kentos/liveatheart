@@ -17,6 +17,7 @@ import Loading from '../../components/Loading';
 import { RouterOutput } from '../../libs/trpc';
 import Colors from '../../constants/Colors';
 import { format } from 'date-fns';
+import FastImage from 'react-native-fast-image';
 
 interface NewsItemProps {
   news: RouterOutput['news']['getNews'][0];
@@ -32,14 +33,15 @@ function NewsItem({ news }: NewsItemProps) {
   return (
     <Pressable onPress={goTo}>
       <View>
-        <Image
+        <FastImage
           source={{
             uri: config.api + '/image?type=thumb&url=' + news.image,
-            cache: 'force-cache',
+            cache: 'immutable',
+            priority: FastImage.priority.high,
           }}
           style={styles.itemImage}
           onLoadEnd={() => setImageLoaded(true)}
-          resizeMode="stretch"
+          resizeMode={FastImage.resizeMode.stretch}
         />
         {!imageLoaded && (
           <ActivityIndicator style={{ position: 'absolute', left: '50%', top: '50%' }} />

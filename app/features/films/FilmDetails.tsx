@@ -9,6 +9,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import _ from 'lodash';
 import ConcertRow from '../artists/details/ConcertRow';
 import useFilms from './useFilms';
+import FastImage from 'react-native-fast-image';
 
 const HEIGHT = Layout.window.height * 0.85;
 
@@ -27,12 +28,11 @@ function FilmDetails() {
       <StatusBar barStyle={'light-content'} animated />
       <ScrollView style={styles.view}>
         <View>
-          <Image
+          <FastImage
             source={{
               uri: config.api + '/image?type=gray&url=' + film?.image,
-              cache: 'force-cache',
             }}
-            style={[styles.image]}
+            style={styles.image}
           />
           <View style={styles.overlay} />
           <View style={styles.text}>

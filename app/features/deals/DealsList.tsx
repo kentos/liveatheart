@@ -1,16 +1,20 @@
 import { useNavigation } from '@react-navigation/native';
-import { Image, View, FlatList, Pressable } from 'react-native';
+import { Image, View, FlatList, Pressable, Dimensions } from 'react-native';
 import { Text } from '../../components/Themed';
 import useDeals from './useDeals';
+import FastImage from 'react-native-fast-image';
 
 function DealItem({ deal }: { deal: Deal }) {
   const navigation = useNavigation();
   return (
     <Pressable onPress={() => navigation.navigate('DealDetails', { dealid: deal._id })}>
-      <View style={{ width: '100%', height: 250 }}>
-        <Image
-          source={{ uri: deal.image, cache: 'force-cache' }}
-          style={{ width: '100%', height: 250 }}
+      <View
+        style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').width }}
+      >
+        <FastImage
+          source={{ uri: deal.image }}
+          style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').width }}
+          resizeMode={FastImage.resizeMode.cover}
         />
         <View
           style={{

@@ -7,6 +7,7 @@ import config from '../../constants/config';
 import { RouterOutput } from '../../libs/trpc';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
+import FastImage from 'react-native-fast-image';
 
 type Props = {
   time: string;
@@ -30,10 +31,9 @@ export default function DateTimeList({ time, slots }: Props) {
               }
             >
               <View style={styles.itemList}>
-                <Image
+                <FastImage
                   source={{
                     uri: config.api + '/image?type=thumb&url=' + item.artist.image,
-                    cache: 'force-cache',
                   }}
                   style={styles.image}
                 />

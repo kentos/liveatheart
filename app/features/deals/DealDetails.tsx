@@ -1,6 +1,6 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { useLayoutEffect } from 'react';
-import { Image, ScrollView, StyleSheet, View, useWindowDimensions } from 'react-native';
+import { Dimensions, Image, ScrollView, StyleSheet, View, useWindowDimensions } from 'react-native';
 import { Body, Headline } from '../../components/Texts';
 import { DealsStackParamList } from './DealsNavigator';
 import useDeals from './useDeals';
@@ -10,6 +10,7 @@ import RenderHTML, {
   defaultSystemFonts,
 } from 'react-native-render-html';
 import Colors from '../../constants/Colors';
+import FastImage from 'react-native-fast-image';
 
 const baseStyle: MixedStyleDeclaration = {
   color: Colors.light.text,
@@ -48,7 +49,7 @@ function DealDetails() {
   return (
     <>
       <ScrollView>
-        <Image source={{ uri: deal?.image, cache: 'force-cache' }} style={styles.image} />
+        <FastImage source={{ uri: deal?.image }} style={styles.image} />
         <View style={styles.textWrapper}>
           <Headline>{deal?.title}</Headline>
 
@@ -71,8 +72,8 @@ function DealDetails() {
 
 const styles = StyleSheet.create({
   image: {
-    width: '100%',
-    height: 250,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').width,
   },
   textWrapper: {
     padding: 16,

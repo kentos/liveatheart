@@ -4,6 +4,7 @@ import Heart from '../../favorites/Heart';
 import { useEffect, useRef } from 'react';
 import _ from 'lodash';
 import config from '../../../constants/config';
+import FastImage from 'react-native-fast-image';
 
 export const ITEM_HEIGHT = 80;
 
@@ -48,8 +49,11 @@ function ArtistListItemSkeleton({ imageUri, name, genre, _id }: ArtistListItemSk
   return (
     <View style={styles.wrapper}>
       {!isSkeleton && !!imageUri ? (
-        <Image
-          source={{ uri: config.api + '/image?type=thumb&url=' + imageUri, cache: 'force-cache' }}
+        <FastImage
+          source={{
+            uri: config.api + '/image?type=thumb&url=' + imageUri,
+            cache: 'immutable',
+          }}
           style={styles.image}
         />
       ) : (

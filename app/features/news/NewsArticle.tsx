@@ -15,6 +15,7 @@ import HeartButton from '../../components/HeartButton';
 import useToast from '../../hooks/useToast';
 import useUser from '../../hooks/useUser';
 import { trpc } from '../../libs/trpc';
+import FastImage from 'react-native-fast-image';
 
 const baseStyle: MixedStyleDeclaration = {
   color: Colors.light.text,
@@ -123,10 +124,9 @@ function NewsArticle() {
         <Headline>{single?.title}</Headline>
       </View>
       {!!single?.image && (
-        <Image
+        <FastImage
           source={{
             uri: config.api + '/image?type=thumb&url=' + single.image,
-            cache: 'force-cache',
           }}
           style={styles.itemImage}
         />
