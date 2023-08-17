@@ -47,7 +47,7 @@ export async function createAuthToken(refreshToken: string) {
       algorithm: 'HS512',
       issuer: 'lah-api',
       audience: 'lah-client',
-      expiresIn: '10s',
+      expiresIn: '10m',
     },
   )
   return { authToken }
