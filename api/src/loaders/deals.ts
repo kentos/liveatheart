@@ -22,9 +22,7 @@ async function parseResult(result: WPAPIResponse[]) {
         externalid: String(row.id),
         title: decode(row.title.rendered),
         // company: decode(row.acf.foretag),
-        image:
-          row?._embedded?.['wp:featuredmedia']?.[0]?.media_details?.sizes
-            ?.medium_large?.source_url,
+        image: row?._embedded?.['wp:featuredmedia']?.[0]?.source_url,
         description: row.content?.rendered,
         publishedAt: new Date(row.date),
       }
