@@ -10,6 +10,10 @@ import axios from 'axios'
 const replaceName: Record<string, string> = {
   'Örebro Konserthus - Foajén': 'Konserthuset, Foajén',
   'Clarion Hotel': 'Clarion Hotel (Kungsgatan)',
+  'Kulturkvarteret - Entrénscenen': 'Kulturkvarteret, Entréscenen',
+  'Kulturkvarteret - Entréscenen': 'Kulturkvarteret, Entréscenen',
+  'Kvarteret &amp; Co': 'Kvarteret & Co.',
+  'Makeriet - Glashuset': 'Makeriet, Glashuset',
 }
 
 type RawEvent = {
@@ -43,14 +47,13 @@ function stripName(name: string) {
   if (replaceName[name]) {
     n = replaceName[name]
   }
-  return n
-    .replace('&amp;', '')
-    .replace(/[^A-Za-z0-9]/g, '')
-    .toLowerCase()
+  return n.toLowerCase()
 }
 
 function findVenue(venues: Venue[], name: string) {
-  return venues.find((a) => stripName(a.name) === stripName(name))
+  return venues.find((a) => {
+    return stripName(a.name) === stripName(name)
+  })
 }
 
 async function parseResult(result: { [k: string]: RawEvent }) {
@@ -80,18 +83,26 @@ async function parseResult(result: { [k: string]: RawEvent }) {
         return
       }
 
-      if (!row.customfield_1?.value) {
+      const name =
+        row.customfield_1?.value ??
+        row.name.substring(0, row.name.indexOf('(') - 1)
+
+      if (!name) {
         console.log('No artist in customfield_1', row.name)
         return
       }
 
-      const artist = findArtist(artists, row.customfield_1.value)
+      const artist = findArtist(artists, name.trim())
       if (!artist) {
-        console.log('Could not find', row.customfield_1.value)
+        console.log('Could not find', name, row.name)
         return
       }
 
       const venue = findVenue(venues, row.location_name)
+      if (!venue) {
+        console.log('Could not find venue', row.location_name)
+        return
+      }
 
       const event: Omit<LAHEvent, '_id'> = {
         title: row.name,

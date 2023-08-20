@@ -26,11 +26,11 @@ async function start() {
   await connect({})
 
   if (getenv('NODE_ENV', 'development') !== 'production') {
+    // await loadArtists()
+    // await loadVenues()
     // loadEvents()
     // loadNews()
-    // loadArtists()
     // loadDeals()
-    // loadVenues()
     return
   }
   schedule.scheduleJob('fetch news', '*/10 * * * *', task(loadNews))

@@ -4,7 +4,7 @@ import { protectedProcedure, publicProcedure, router } from '../trpc'
 import { removeHeart, setHeart } from '../../features/artists/hearts'
 import { collection, toObjectId } from '@heja/shared/mongodb'
 import { LAHEvent } from '../../features/artists/types'
-import { format } from 'date-fns'
+import { format, setHours, sub, subHours } from 'date-fns'
 
 function cleanCategories(a: {
   categories?: { name: string; slug: string; hidden: boolean }[]
@@ -35,7 +35,7 @@ export default router({
   getAllArtists: publicProcedure.query(async () => {
     const result = await getAllArtists()
     const slots = await collection<LAHEvent>('events')
-      .find({ artistid: { $exists: true } })
+      .find({ artistid: { $exists: true } }, { sort: { eventAt: 1 } })
       .toArray()
     return result.map((a) => ({
       _id: a._id.toString(),
@@ -51,7 +51,7 @@ export default router({
         .map((s) => ({
           _id: s._id.toString(),
           venue: s.venue,
-          day: (s.eventAt && format(s.eventAt, 'EEE')) || '',
+          day: (s.eventAt && format(subHours(s.eventAt, 6), 'EEE')) || '',
           time: (s.eventAt && format(s.eventAt, 'HH:mm')) || '',
         })),
       genre: cleanCategories(a),

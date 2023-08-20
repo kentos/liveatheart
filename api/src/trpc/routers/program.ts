@@ -4,9 +4,11 @@ import { getVenues } from '../../features/venues/getVenues'
 import { getAllArtists } from '../../features/artists/getAllArtists'
 import { random } from 'radash'
 import { format, parseISO } from 'date-fns'
-import { collection } from '@heja/shared/mongodb'
-import { LAHEvent } from '../../features/artists/types'
+import { collection, toObjectId } from '@heja/shared/mongodb'
+import { LAHEvent, Venue } from '../../features/artists/types'
 import _ from 'lodash'
+import { getVenue } from '../../features/venues/getVenue'
+import { getArtistsByIds } from '../../features/artists/getArtists'
 
 type Categories = 'Concerts' | 'Day Party' | 'Film' | 'Conference'
 
@@ -18,6 +20,38 @@ const ranges = {
 }
 
 export default router({
+  getScheduleByVenue: publicProcedure
+    .input(
+      z.object({
+        venueId: z.string(),
+        day: z.enum(['Wed', 'Thu', 'Fri', 'Sat']),
+      }),
+    )
+    .query(async ({ input }) => {
+      const venue = await getVenue(toObjectId(input.venueId))
+      if (!venue) {
+        return []
+      }
+      const [start, end] = ranges[input.day]
+      const events = await collection<LAHEvent>('events')
+        .find(
+          {
+            'venue._id': venue._id,
+            eventAt: { $gt: start, $lt: end },
+            artistid: { $exists: true },
+          },
+          { sort: { eventAt: 1 } },
+        )
+        .toArray()
+      const artists = await getArtistsByIds(events.map((e) => e.artistid!))
+      return events.map((e) => ({
+        _id: e._id.toString(),
+        artist: artists[e.artistid!.toString()],
+        eventAt: e.eventAt,
+        venue: venue,
+      }))
+    }),
+
   getScheduleByDay: publicProcedure
     .input(
       z.object({
@@ -39,12 +73,8 @@ export default router({
         })
         .toArray()
 
-      const grouped = _.groupBy(
-        events,
-        (e) =>
-          e.eventAt?.getHours() +
-          ':' +
-          e.eventAt?.getMinutes().toString().padStart(2, '0'),
+      const grouped = _.groupBy(events, (e) =>
+        format(e.eventAt!, 'yyyy-MM-dd HH:mm'),
       )
 
       const program = _(grouped)
@@ -52,7 +82,7 @@ export default router({
         .sortBy((k) => k)
         .map((key) => {
           return {
-            time: key,
+            time: key.substring(key.indexOf(' ') + 1),
             slots: grouped[key].map((e) => {
               const artist = artists.find(
                 (a) => e.artistid && a._id.equals(e.artistid),
