@@ -57,8 +57,12 @@ async function parseResult(result: { [k: string]: RawEvent }) {
   const storedIds: ObjectId[] = []
 
   const [artists, venues] = await Promise.all([
-    collection<Artist>('artists').find({}).toArray(),
-    collection<Venue>('venues').find({}).toArray(),
+    collection<Artist>('artists')
+      .find({ deletedAt: { $exists: false } })
+      .toArray(),
+    collection<Venue>('venues')
+      .find({ deletedAt: { $exists: false } })
+      .toArray(),
   ])
 
   await Promise.all(
