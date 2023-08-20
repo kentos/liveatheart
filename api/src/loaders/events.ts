@@ -9,6 +9,7 @@ import axios from 'axios'
 
 const replaceName: Record<string, string> = {
   'Örebro Konserthus - Foajén': 'Konserthuset, Foajén',
+  'Clarion Hotel': 'Clarion Hotel (Kungsgatan)',
 }
 
 type RawEvent = {
