@@ -25,7 +25,7 @@ async function parseResult(result: WPAPIResponse[]) {
       }
 
       const existing = await collection<Venue>('venues').findOne({
-        slug: venue.slug,
+        name: venue.name,
       })
       if (existing) {
         storedIds.push(existing._id)
