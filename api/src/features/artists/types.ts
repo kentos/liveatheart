@@ -51,7 +51,8 @@ export interface LAHEvent {
   date: string
   time: string
   venue: {
-    externalid: string
+    externalid?: string
+    _id?: ObjectId
     name: string
   }
   eventAt?: Date
@@ -66,4 +67,5 @@ export interface Venue {
     latitude: number
     longitude: number
   }
+  matches?: string[]
 }

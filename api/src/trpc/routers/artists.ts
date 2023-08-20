@@ -2,7 +2,9 @@ import { z } from 'zod'
 import { getAllArtists } from '../../features/artists/getAllArtists'
 import { protectedProcedure, publicProcedure, router } from '../trpc'
 import { removeHeart, setHeart } from '../../features/artists/hearts'
-import { toObjectId } from '@heja/shared/mongodb'
+import { collection, toObjectId } from '@heja/shared/mongodb'
+import { LAHEvent } from '../../features/artists/types'
+import { format } from 'date-fns'
 
 function cleanCategories(a: {
   categories?: { name: string; slug: string; hidden: boolean }[]
@@ -32,6 +34,9 @@ function handleSpotifyEmbed(spotifyUrl?: string) {
 export default router({
   getAllArtists: publicProcedure.query(async () => {
     const result = await getAllArtists()
+    const slots = await collection<LAHEvent>('events')
+      .find({ artistid: { $exists: true } })
+      .toArray()
     return result.map((a) => ({
       _id: a._id.toString(),
       name: a.name,
@@ -41,7 +46,14 @@ export default router({
       description: a.description,
       spotify: handleSpotifyEmbed(a.spotify),
       youtube: a.youtube,
-      slots: [],
+      slots: slots
+        .filter((s) => s.artistid?.equals(a._id))
+        .map((s) => ({
+          _id: s._id.toString(),
+          venue: s.venue,
+          day: (s.eventAt && format(s.eventAt, 'EEE')) || '',
+          time: (s.eventAt && format(s.eventAt, 'HH:mm')) || '',
+        })),
       genre: cleanCategories(a),
     }))
   }),

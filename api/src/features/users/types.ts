@@ -26,6 +26,9 @@ export interface User {
   push?: Push
   createdAt?: Date
   updatedAt?: Date
+  features?: {
+    showSchedule?: boolean
+  }
 }
 
 export interface UserSession {
