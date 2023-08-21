@@ -1,10 +1,8 @@
 import { collection, ObjectId } from '@heja/shared/mongodb'
-import { parse, getHours, addDays, getDate, getMinutes, format } from 'date-fns'
-import { decode } from 'html-entities'
+import { getHours, getMinutes, format } from 'date-fns'
 import _ from 'lodash'
-import { loader, WPAPIResponse } from './jsonloader'
 import { Artist, LAHEvent, Venue } from '../features/artists/types'
-import { Film, Seminar, Speaker } from '../features/types'
+import { Dayparty } from '../features/types'
 import axios from 'axios'
 
 const replaceName: Record<string, string> = {
@@ -36,10 +34,6 @@ type RawEvent = {
   }
   event_type?: { [k: string]: string }
   event_type_2?: { [k: string]: string }
-}
-
-function fixDate(date: Date) {
-  return getHours(date) >= 22 ? addDays(date, 2) : date
 }
 
 function findArtist(artists: Artist[], name: string) {
@@ -78,12 +72,35 @@ async function parseResult(result: { [k: string]: RawEvent }) {
 
       const startDate = new Date(row.start * 1000)
 
+      if (row.event_type_2?.['25'] === 'DAYPARTY') {
+        const dpevent: Dayparty = {
+          _id: new ObjectId(),
+          externalid: e,
+          name: row.customfield_1!.value!,
+          venue: {
+            name: row.location_name,
+          },
+          eventAt: startDate,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        }
+        const existing = await collection<Dayparty>('dayparties').findOne({
+          externalid: e,
+        })
+        if (existing) {
+          await collection<Partial<Dayparty>>('dayparties').updateOne(
+            { _id: existing._id },
+            {
+              $set: _.omit(dpevent, ['_id', 'externalid', 'createdAt']),
+            },
+          )
+        } else {
+          await collection<Dayparty>('dayparties').insertOne(dpevent)
+        }
+        return
+      }
       if (row.event_type_2?.['23'] !== 'Showcase') {
-        console.log(
-          e,
-          'Event_type_2 is not showcase:',
-          row.event_type_2?.['23'],
-        )
+        console.log(e, 'Event_type_2 is not showcase:', row.event_type_2)
         return
       }
 

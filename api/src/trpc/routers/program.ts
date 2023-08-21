@@ -2,15 +2,13 @@ import { z } from 'zod'
 import { publicProcedure, router } from '../trpc'
 import { getVenues } from '../../features/venues/getVenues'
 import { getAllArtists } from '../../features/artists/getAllArtists'
-import { random } from 'radash'
 import { format, parseISO } from 'date-fns'
-import { collection, toObjectId } from '@heja/shared/mongodb'
-import { LAHEvent, Venue } from '../../features/artists/types'
+import { ObjectId, collection, toObjectId } from '@heja/shared/mongodb'
+import { LAHEvent } from '../../features/artists/types'
 import _ from 'lodash'
 import { getVenue } from '../../features/venues/getVenue'
 import { getArtistsByIds } from '../../features/artists/getArtists'
-
-type Categories = 'Concerts' | 'Day Party' | 'Film' | 'Conference'
+import { Dayparty } from '../../features/types'
 
 const ranges = {
   Wed: [parseISO('2023-08-30T09:00:00'), parseISO('2023-08-31T06:00:00')],
@@ -20,6 +18,14 @@ const ranges = {
 }
 
 export default router({
+  getVenues: publicProcedure.query(async () => {
+    const data = await getVenues()
+    return _.sortBy(data, (v) => v.name).map((v) => ({
+      ...v,
+      _id: v._id.toString(),
+    }))
+  }),
+
   getScheduleByVenue: publicProcedure
     .input(
       z.object({
@@ -30,7 +36,7 @@ export default router({
     .query(async ({ input }) => {
       const venue = await getVenue(toObjectId(input.venueId))
       if (!venue) {
-        return []
+        return { program: [] }
       }
       const [start, end] = ranges[input.day]
       const events = await collection<LAHEvent>('events')
@@ -44,24 +50,62 @@ export default router({
         )
         .toArray()
       const artists = await getArtistsByIds(events.map((e) => e.artistid!))
-      return events.map((e) => ({
-        _id: e._id.toString(),
-        artist: artists[e.artistid!.toString()],
-        eventAt: e.eventAt,
-        venue: venue,
-      }))
+      return {
+        program: events.map((e) => ({
+          _id: e._id.toString(),
+          artist: artists[e.artistid!.toString()],
+          eventAt: e.eventAt,
+          venue: venue,
+        })),
+      }
     }),
 
   getScheduleByDay: publicProcedure
     .input(
       z.object({
-        category: z.enum(['Concerts', 'Day Party', 'Film', 'Conference']),
+        category: z.enum(['Concerts', 'Day Party', 'Conference']),
         day: z.enum(['Wed', 'Thu', 'Fri', 'Sat']),
       }),
     )
     .query(async ({ input }) => {
+      if (input.category === 'Day Party') {
+        const events = await collection<Dayparty>('dayparties')
+          .find({
+            eventAt: { $gt: ranges[input.day][0], $lt: ranges[input.day][1] },
+          })
+          .toArray()
+
+        const grouped = _.groupBy(events, (e) =>
+          format(e.eventAt!, 'yyyy-MM-dd HH:mm'),
+        )
+
+        const result = _(grouped)
+          .keys()
+          .sortBy((k) => k)
+          .map((key) => ({
+            time: key.substring(key.indexOf(' ') + 1),
+            slots: grouped[key].map((e) => ({
+              _id: e._id.toString(),
+              artist: {
+                name: e.name,
+                image:
+                  'https://liveatheart.se/wp-content/uploads/2023/04/LAH-logo-WHITE.png',
+                categories: [],
+              },
+              eventAt: e.eventAt,
+              venue: {
+                _id: new ObjectId().toString(),
+                name: e.venue.name,
+              },
+            })),
+          }))
+          .value()
+        return { program: result }
+      }
       if (input.category !== 'Concerts') {
-        return []
+        return {
+          program: [],
+        }
       }
 
       const artists = await getAllArtists()
@@ -111,8 +155,4 @@ export default router({
         category: input.category,
       }
     }),
-
-  getVenues: publicProcedure.query(async () => {
-    return getVenues()
-  }),
 })

@@ -49,3 +49,15 @@ export interface Speaker {
   createdAt: Date
   updatedAt: Date
 }
+
+export type Dayparty = {
+  _id: ObjectId
+  externalid: string
+  name: string
+  venue: {
+    name: string
+  }
+  eventAt: Date
+  createdAt: Date
+  updatedAt: Date
+}
