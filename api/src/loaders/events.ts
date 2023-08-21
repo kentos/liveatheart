@@ -14,6 +14,9 @@ const replaceName: Record<string, string> = {
   'Kulturkvarteret - Entréscenen': 'Kulturkvarteret, Entréscenen',
   'Kvarteret &amp; Co': 'Kvarteret & Co.',
   'Makeriet - Glashuset': 'Makeriet, Glashuset',
+  'Örebro Teater - Stora Scenen': 'Örebro Teater',
+  'Scandic Grand - Cupolen': 'Scandic Grand, Cupole',
+  'STÅ Pintxos &amp; Vänner': 'STÅ Pintxos & Vänner',
 }
 
 type RawEvent = {
@@ -98,7 +101,7 @@ async function parseResult(result: { [k: string]: RawEvent }) {
         return
       }
 
-      const venue = findVenue(venues, row.location_name)
+      const venue = row.location_name && findVenue(venues, row.location_name)
       if (!venue) {
         console.log('Could not find venue', row.location_name)
         return
