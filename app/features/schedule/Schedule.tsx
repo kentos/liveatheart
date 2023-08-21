@@ -8,7 +8,7 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import _ from 'lodash';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
 //import useFavorites from '../favorites/useFavorites';
 import Colors from '../../constants/Colors';
@@ -45,6 +45,12 @@ function Schedule() {
       ),
     });
   }, [showFavorites, selectedDay, category, setVisible, visible, setCategory]);
+
+  useFocusEffect(
+    useCallback(() => {
+      schedule.refetch();
+    }, [schedule.refetch])
+  );
 
   // useEffect(() => {
   //   storeSelection(selectedDay);
@@ -104,16 +110,16 @@ function Schedule() {
             onChange={(e) => setSelectedDay(e as Day)}
           />
         </View>
+        <View style={{ paddingTop: 8, paddingBottom: 8 }}>
+          <SegmentedButtons<string>
+            buttons={pages}
+            compact
+            active={pages[activePageIndex]}
+            onChange={changePage}
+          />
+        </View>
       </View>
 
-      <View style={{ paddingTop: 8, paddingBottom: 8 }}>
-        <SegmentedButtons<string>
-          buttons={pages}
-          compact
-          active={pages[activePageIndex]}
-          onChange={changePage}
-        />
-      </View>
       {data?.length > 0 && (
         <ScrollView ref={scroll} horizontal pagingEnabled onMomentumScrollEnd={onPageChanged}>
           {data.map((day) => (

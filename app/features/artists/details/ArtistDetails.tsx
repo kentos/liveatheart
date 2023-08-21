@@ -1,5 +1,5 @@
 import { useRoute, useNavigation } from '@react-navigation/native';
-import { ScrollView, Image, View, StyleSheet, StatusBar } from 'react-native';
+import { ScrollView, View, StyleSheet, StatusBar } from 'react-native';
 import { Headline, Body } from '../../../components/Texts';
 import CloseButton from '../../../components/CloseButton';
 import { useArtists } from '../useArtists';

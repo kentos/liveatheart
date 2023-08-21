@@ -8,7 +8,7 @@
     "scheme": "lah",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/loading-clean_2.png",
+      "image": "./assets/images/loading-clean_3.png",
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
@@ -30,7 +30,7 @@
         "usesNonExemptEncryption": false
       },
       "splash": {
-        "image": "./assets/images/loading-clean_2.png",
+        "image": "./assets/images/loading-clean_3.png",
         "resizeMode": "cover",
         "backgroundColor": "#ffffff"
       }

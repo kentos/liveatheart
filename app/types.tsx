@@ -49,6 +49,7 @@ export type RootTabParamList = {
   News: NewsStackParamList;
   More: undefined;
   Heartbeat: undefined;
+  Venues: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<

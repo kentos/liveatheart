@@ -27,6 +27,7 @@ export default function DateTimeList({ time, slots }: Props) {
           return (
             <TouchableOpacity
               onPress={() =>
+                item.artist._id &&
                 navigation.navigate('ArtistDetails', { artistid: String(item.artist._id) })
               }
             >

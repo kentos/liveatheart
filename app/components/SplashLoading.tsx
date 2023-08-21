@@ -9,7 +9,7 @@ function SplashLoading() {
         duration={700}
         iterationDelay={0}
         iterationCount="infinite"
-        source={require('../assets/images/loading-clean_2.png')}
+        source={require('../assets/images/loading-clean_3.png')}
         resizeMode="cover"
         style={{ width: '100%', height: '100%' }}
       />

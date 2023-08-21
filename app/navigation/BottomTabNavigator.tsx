@@ -14,6 +14,7 @@ import HeartbeatNavigator from '../features/heartbeat/HeartbeatNavigator';
 import Schedule from '../features/schedule/Schedule';
 import useFeatures from '../hooks/useFeatures';
 import MapView from '../features/mapview/MapView';
+import Venues from '../features/schedule/Venues';
 
 interface TabBarIconProps {
   name: React.ComponentProps<typeof FontAwesome>['name'];
@@ -85,14 +86,25 @@ export default function BottomTabNavigator() {
           }}
         />
       )}
-      {features.showSchedule && (
+
+      <BottomTab.Screen
+        name="Schedule"
+        component={Schedule}
+        options={{
+          title: 'Program',
+          tabBarIcon: ({ color }) => <TabBarIcon name="clock-o" color={color} />,
+          lazy: false,
+        }}
+      />
+
+      {features.showVenues && (
         <BottomTab.Screen
-          name="Schedule"
-          component={Schedule}
+          name="Venues"
+          component={Venues}
           options={{
-            title: 'Program',
-            tabBarIcon: ({ color }) => <TabBarIcon name="clock-o" color={color} />,
-            lazy: false,
+            title: 'Venues',
+            lazy: true,
+            tabBarIcon: ({ color }) => <TabBarIcon name="address-card-o" color={color} />,
           }}
         />
       )}
