@@ -16,6 +16,7 @@ const replaceName: Record<string, string> = {
   'Makeriet - Glashuset': 'Makeriet, Glashuset',
   'Örebro Teater - Stora Scenen': 'Örebro Teater',
   'Scandic Grand - Cupolen': 'Scandic Grand, Cupole',
+  'Scandic Grand - Cupole': 'Scandic Grand, Cupole',
   'STÅ Pintxos &amp; Vänner': 'STÅ Pintxos & Vänner',
 }
 
