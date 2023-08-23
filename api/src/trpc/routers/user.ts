@@ -58,7 +58,7 @@ export default router({
       throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' })
     }
     const features: Record<string, boolean> = {
-      showSchedule: user.features?.showSchedule ?? false,
+      showSchedule: true,
     }
     return features
   }),
