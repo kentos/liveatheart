@@ -99,6 +99,39 @@ async function parseResult(result: { [k: string]: RawEvent }) {
         }
         return
       }
+      if (row.event_type_2?.['24'] === 'Conference') {
+        const venue = row.location_name && findVenue(venues, row.location_name)
+        if (!venue) {
+          console.log('Could not find venue', row.location_name)
+          return
+        }
+        const conference = {
+          _id: new ObjectId(),
+          externalid: e,
+          name: row.name,
+          venue: {
+            _id: venue?._id,
+            name: venue?.name ?? row.location_name,
+          },
+          eventAt: startDate,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        }
+        const existing = await collection<any>('conferences').findOne({
+          externalid: e,
+        })
+        if (existing) {
+          await collection<any>('conferences').updateOne(
+            { _id: existing._id },
+            {
+              $set: _.omit(conference, ['_id', 'externalid', 'createdAt']),
+            },
+          )
+        } else {
+          await collection<any>('conferences').insertOne(conference)
+        }
+        return
+      }
       if (row.event_type_2?.['23'] !== 'Showcase') {
         console.log(e, 'Event_type_2 is not showcase:', row.event_type_2)
         return

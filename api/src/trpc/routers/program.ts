@@ -11,10 +11,10 @@ import { getArtistsByIds } from '../../features/artists/getArtists'
 import { Dayparty } from '../../features/types'
 
 const ranges = {
-  Wed: [parseISO('2023-08-30T09:00:00'), parseISO('2023-08-31T06:00:00')],
-  Thu: [parseISO('2023-08-31T09:00:00'), parseISO('2023-09-01T06:00:00')],
-  Fri: [parseISO('2023-09-01T09:00:00'), parseISO('2023-09-02T06:00:00')],
-  Sat: [parseISO('2023-09-02T09:00:00'), parseISO('2023-09-03T06:00:00')],
+  Wed: [parseISO('2023-08-30T07:00:00'), parseISO('2023-08-31T05:00:00')],
+  Thu: [parseISO('2023-08-31T07:00:00'), parseISO('2023-09-01T05:00:00')],
+  Fri: [parseISO('2023-09-01T07:00:00'), parseISO('2023-09-02T05:00:00')],
+  Sat: [parseISO('2023-09-02T07:00:00'), parseISO('2023-09-03T05:00:00')],
 }
 
 export default router({
@@ -79,6 +79,38 @@ export default router({
           format(e.eventAt!, 'yyyy-MM-dd HH:mm'),
         )
 
+        const result = _(grouped)
+          .keys()
+          .sortBy((k) => k)
+          .map((key) => ({
+            time: key.substring(key.indexOf(' ') + 1),
+            slots: grouped[key].map((e) => ({
+              _id: e._id.toString(),
+              artist: {
+                name: e.name,
+                image:
+                  'https://liveatheart.se/wp-content/uploads/2023/04/LAH-logo-WHITE.png',
+                categories: [],
+              },
+              eventAt: e.eventAt,
+              venue: {
+                _id: new ObjectId().toString(),
+                name: e.venue.name,
+              },
+            })),
+          }))
+          .value()
+        return { program: result }
+      }
+      if (input.category === 'Conference') {
+        const events = await collection<any>('conferences')
+          .find({
+            eventAt: { $gt: ranges[input.day][0], $lt: ranges[input.day][1] },
+          })
+          .toArray()
+        const grouped = _.groupBy(events, (e) =>
+          format(e.eventAt!, 'yyyy-MM-dd HH:mm'),
+        )
         const result = _(grouped)
           .keys()
           .sortBy((k) => k)
