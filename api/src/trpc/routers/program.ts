@@ -30,6 +30,26 @@ export default router({
     }))
   }),
 
+  getVenuesForMap: publicProcedure.query(async () => {
+    const data = await getVenues()
+    const result = _(data)
+      .groupBy((v) => `${v.coordinates.latitude},${v.coordinates.longitude}`)
+      .mapValues((v) => v[0])
+      .flatMap((v) => {
+        const nameHasHyphen = v.name.includes('-')
+        return {
+          ...v,
+          name: nameHasHyphen
+            ? v.name.substring(0, v.name.indexOf('-')).trim()
+            : v.name,
+          type: v.type?.toUpperCase(),
+        }
+      })
+      .value()
+    console.log(result)
+    return result
+  }),
+
   getScheduleByVenue: publicProcedure
     .input(
       z.object({

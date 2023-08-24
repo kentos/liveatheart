@@ -3,6 +3,18 @@ import _ from 'lodash'
 import { loader, WPAPIResponse } from './jsonloader'
 import { Venue } from '../features/artists/types'
 
+function getType(color: string) {
+  switch (color) {
+    case '#81d742':
+      return 'conference'
+    case '#dd9933':
+      return 'dayparty'
+    case '#8224e3':
+    default:
+      return 'showcase'
+  }
+}
+
 async function parseResult(result: WPAPIResponse[]) {
   const storedIds: ObjectId[] = []
 
@@ -10,7 +22,7 @@ async function parseResult(result: WPAPIResponse[]) {
     result.map(async (row: any) => {
       const {
         title,
-        meta_box: { adress: address, slug, map },
+        meta_box: { adress: address, slug, map, color_xo93k3oo56c: color },
       } = row
 
       const name = title.rendered
@@ -26,6 +38,8 @@ async function parseResult(result: WPAPIResponse[]) {
           latitude: map.latitude,
           longitude: map.longitude,
         },
+        type: getType(color),
+        color: color,
         createdAt: new Date(),
         updatedAt: new Date(),
       }

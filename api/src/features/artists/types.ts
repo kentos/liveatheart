@@ -5,6 +5,12 @@ export interface Venue {
   name: string
   slug: string
   address: string
+  coordinates: {
+    latitude: number
+    longitude: number
+  }
+  type?: 'showcase' | 'dayparty' | 'conference'
+  color?: string
   createdAt: Date
   updatedAt: Date
 }
@@ -55,14 +61,4 @@ export interface LAHEvent {
   eventAt: Date
   createdAt: Date
   updatedAt: Date
-}
-
-export interface Venue {
-  _id: ObjectId
-  name: string
-  coordinates: {
-    latitude: number
-    longitude: number
-  }
-  matches?: string[]
 }
