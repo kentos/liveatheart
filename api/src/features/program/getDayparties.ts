@@ -6,6 +6,7 @@ export async function getDayparties(from: Date, to: Date, venueId?: ObjectId) {
     .find({
       ...(venueId && { 'venue._id': venueId }),
       eventAt: { $gt: from, $lt: to },
+      deletedAt: { $exists: false },
     })
     .toArray()
   return events.map((e) => ({
