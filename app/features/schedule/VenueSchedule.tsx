@@ -29,7 +29,7 @@ export default function VenueSchedule() {
   console.log('DAYS', Object.keys(days));
 
   return (
-    <SafeAreaView edges={['bottom']}>
+    <SafeAreaView edges={['bottom']} style={{ flex: 1 }}>
       <ScrollView>
         {Object.keys(days)?.map((day) => (
           <View key={day}>
