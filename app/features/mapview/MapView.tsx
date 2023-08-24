@@ -17,14 +17,15 @@ const initialRegion: Region = {
 
 interface Props {
   title: string;
+  color?: string;
 }
 
-function Venue({ title }: Props) {
+function Venue({ title, color }: Props) {
   return (
     <View style={{ flexDirection: 'column', alignItems: 'center', paddingBottom: 5 }}>
       <View
         style={{
-          backgroundColor: Colors.light.tint,
+          backgroundColor: color ? color : Colors.light.tint,
           padding: 8,
           paddingVertical: 6,
           borderRadius: 8,
@@ -39,7 +40,7 @@ function Venue({ title }: Props) {
           transform: [{ rotate: '45deg' }],
           width: 14,
           height: 14,
-          backgroundColor: Colors.light.tint,
+          backgroundColor: color ? color : Colors.light.tint,
           marginTop: -7,
           borderBottomWidth: StyleSheet.hairlineWidth,
           borderBottomColor: Colors.light.border,
@@ -52,12 +53,14 @@ function Venue({ title }: Props) {
 }
 
 function MapView() {
-  const venues = trpc.program.getVenues.useQuery(undefined, { staleTime: Infinity });
+  const venues = trpc.program.getVenuesForMap.useQuery(undefined, { staleTime: Infinity });
   const markers =
     venues.data?.map((v) => ({
       _id: String(v._id),
       title: v.name,
       coordinates: { latitude: v.coordinates.latitude, longitude: v.coordinates.longitude },
+      color: v.color,
+      type: v.type,
     })) ?? [];
   return (
     <View style={styles.container}>
@@ -72,8 +75,13 @@ function MapView() {
         provider={PROVIDER_GOOGLE}
       >
         {markers.map((m) => (
-          <Marker key={m._id} coordinate={m.coordinates} title={m.title} description={m.title}>
-            <Venue title={m.title} />
+          <Marker
+            key={m._id}
+            coordinate={m.coordinates}
+            title={m.title}
+            description={m.type || m.title}
+          >
+            <Venue title={m.title} color={m.color} />
           </Marker>
         ))}
       </RNMapView>
