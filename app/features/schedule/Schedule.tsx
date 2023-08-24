@@ -31,20 +31,20 @@ function Schedule() {
   const schedule = useSchedule(category, selectedDay);
   const [visible, setVisible] = useState(false);
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity onPress={() => setShowFavorites((c) => !c)}>
-          <FontAwesome
-            size={20}
-            color={Colors.light.tint}
-            name={showFavorites ? 'heart' : 'heart-o'}
-            style={{ marginRight: 16 }}
-          />
-        </TouchableOpacity>
-      ),
-    });
-  }, [showFavorites, selectedDay, category, setVisible, visible, setCategory]);
+  // useLayoutEffect(() => {
+  //   navigation.setOptions({
+  //     headerRight: () => (
+  //       <TouchableOpacity onPress={() => setShowFavorites((c) => !c)}>
+  //         <FontAwesome
+  //           size={20}
+  //           color={Colors.light.tint}
+  //           name={showFavorites ? 'heart' : 'heart-o'}
+  //           style={{ marginRight: 16 }}
+  //         />
+  //       </TouchableOpacity>
+  //     ),
+  //   });
+  // }, [showFavorites, selectedDay, category, setVisible, visible, setCategory]);
 
   useFocusEffect(
     useCallback(() => {

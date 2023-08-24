@@ -97,17 +97,16 @@ export default function BottomTabNavigator() {
         }}
       />
 
-      {features.showVenues && (
-        <BottomTab.Screen
-          name="Venues"
-          component={Venues}
-          options={{
-            title: 'Venues',
-            lazy: true,
-            tabBarIcon: ({ color }) => <TabBarIcon name="address-card-o" color={color} />,
-          }}
-        />
-      )}
+      <BottomTab.Screen
+        name="Venues"
+        component={Venues}
+        options={{
+          title: 'Venues',
+          lazy: false,
+          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+        }}
+      />
+
       <BottomTab.Screen
         name="MapView"
         component={MapView}

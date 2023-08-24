@@ -4,7 +4,7 @@ export enum ScheduleCategory {
   CONFERENCE = 'conference',
 }
 
-export const categories = ['Concerts', 'Day Party', 'Conference'] as const;
+export const categories = ['All', 'Concerts', 'Day Party', 'Conference'] as const;
 export type Category = (typeof categories)[number];
 
 export const days = ['Wed', 'Thu', 'Fri', 'Sat'] as const;

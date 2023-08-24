@@ -33,6 +33,7 @@ export type RootStackParamList = {
   NewsArticle: { articleId: string };
   Profile: undefined;
   RemoveAccount: undefined;
+  VenueSchedule: { venueId: string };
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

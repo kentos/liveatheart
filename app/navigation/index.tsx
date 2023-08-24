@@ -21,6 +21,7 @@ import AboutApp from '../features/more/AboutApp';
 import BottomTabNavigator from './BottomTabNavigator';
 import Profile from '../features/profile/Profile';
 import RemoveAccount from '../features/profile/RemoveAccount';
+import VenueSchedule from '../features/schedule/VenueSchedule';
 
 export default function Navigation() {
   return (
@@ -95,6 +96,11 @@ function RootNavigator() {
           component={SeminarDetails}
         />
         <Stack.Screen name="FilmDetails" options={{ headerShown: false }} component={FilmDetails} />
+        <Stack.Screen
+          name="VenueSchedule"
+          options={{ headerShown: true, title: '' }}
+          component={VenueSchedule}
+        />
       </Stack.Group>
       <Stack.Group
         screenOptions={{
