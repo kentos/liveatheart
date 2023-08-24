@@ -2,11 +2,7 @@ import getenv from 'getenv'
 import schedule from 'node-schedule'
 import { loadArtists } from '../loaders/artists'
 import { loadDeals } from '../loaders/deals'
-// import { loadEvents } from '../loaders/events'
-// import { loadFilms } from '../loaders/films'
 import { loadNews } from '../loaders/news'
-// import { loadSeminars } from '../loaders/seminars'
-// import { loadSpeakers } from '../loaders/speakers'
 import { connect } from '@heja/shared/mongodb'
 import { loadVenues } from '../loaders/venues'
 import { loadEvents } from '../loaders/events'
@@ -38,9 +34,6 @@ async function start() {
   schedule.scheduleJob('fetch venues', '*/5 * * * *', task(loadVenues))
   schedule.scheduleJob('fetch events', '*/2 * * * *', task(loadEvents))
   schedule.scheduleJob('fetch deals', '*/10 * * * *', task(loadDeals))
-  //schedule.scheduleJob('fetch speakers', '*/12 * * * *', task(loadSpeakers))
-  //schedule.scheduleJob('fetch films', '*/4 * * * *', task(loadFilms))
-  //schedule.scheduleJob('fetch films', '*/5 * * * *', task(loadSeminars))
 
   console.log(Object.keys(schedule.scheduledJobs))
 }
