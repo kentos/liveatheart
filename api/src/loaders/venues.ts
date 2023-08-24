@@ -9,8 +9,14 @@ async function parseResult(result: WPAPIResponse[]) {
   await Promise.all(
     result.map(async (row: any) => {
       const {
-        meta_box: { name_of_venue: name, adress: address, slug, map },
+        title,
+        meta_box: { adress: address, slug, map },
       } = row
+
+      const name = title.rendered
+        .replace('&#8211;', '-')
+        .replace('&#038;', '&')
+        .trim()
 
       const venue: Partial<Venue> = {
         name: name,

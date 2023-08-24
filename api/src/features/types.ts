@@ -1,17 +1,4 @@
 import { ObjectId } from '@heja/shared/mongodb'
-import { Category, Slot } from './artists/types'
-
-export interface Film {
-  _id: ObjectId
-  externalid: string
-  name: string
-  link: string
-  image?: string
-  description?: string
-  slots: Slot[]
-  createdAt: Date
-  updatedAt: Date
-}
 
 export interface News {
   _id: ObjectId
@@ -26,35 +13,25 @@ export interface News {
   createdAt: Date
 }
 
-export interface Seminar {
-  _id: ObjectId
-  externalid: string
-  name: string
-  link: string
-  image?: string
-  description?: string
-  slots: Slot[]
-  createdAt: Date
-  updatedAt: Date
-}
-
-export interface Speaker {
-  _id: ObjectId
-  externalid: string
-  name: string
-  categories?: Category[]
-  link: string
-  image?: string
-  description?: string
-  createdAt: Date
-  updatedAt: Date
-}
-
 export type Dayparty = {
   _id: ObjectId
   externalid: string
   name: string
   venue: {
+    _id?: ObjectId
+    name: string
+  }
+  eventAt: Date
+  createdAt: Date
+  updatedAt: Date
+}
+
+export type Conference = {
+  _id: ObjectId
+  externalid: string
+  name: string
+  venue: {
+    _id?: ObjectId
     name: string
   }
   eventAt: Date

@@ -43,10 +43,7 @@ export interface Artist {
 export interface LAHEvent {
   _id: ObjectId
   externalid: string
-  artistid?: ObjectId
-  speakerid?: ObjectId
-  seminarid?: ObjectId
-  filmid?: ObjectId
+  artistid: ObjectId
   title: string
   date: string
   time: string
@@ -55,7 +52,7 @@ export interface LAHEvent {
     _id?: ObjectId
     name: string
   }
-  eventAt?: Date
+  eventAt: Date
   createdAt: Date
   updatedAt: Date
 }
