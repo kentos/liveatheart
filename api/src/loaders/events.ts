@@ -6,15 +6,7 @@ import { Dayparty } from '../features/types'
 import axios from 'axios'
 
 const replaceName: Record<string, string> = {
-  'Örebro Konserthus - Foajén': 'Konserthuset, Foajén',
-  'Clarion Hotel': 'Clarion Hotel (Kungsgatan)',
-  'Kulturkvarteret - Entrénscenen': 'Kulturkvarteret, Entréscenen',
-  'Kulturkvarteret - Entréscenen': 'Kulturkvarteret, Entréscenen',
   'Kvarteret &amp; Co': 'Kvarteret & Co.',
-  'Makeriet - Glashuset': 'Makeriet, Glashuset',
-  'Örebro Teater - Stora Scenen': 'Örebro Teater',
-  'Scandic Grand - Cupolen': 'Scandic Grand, Cupole',
-  'Scandic Grand - Cupole': 'Scandic Grand, Cupole',
   'STÅ Pintxos &amp; Vänner': 'STÅ Pintxos & Vänner',
 }
 
@@ -73,12 +65,17 @@ async function parseResult(result: { [k: string]: RawEvent }) {
       const startDate = new Date(row.start * 1000)
 
       if (row.event_type_2?.['25'] === 'DAYPARTY') {
+        const venue = row.location_name
+          ? findVenue(venues, row.location_name)
+          : undefined
         const dpevent: Dayparty = {
           _id: new ObjectId(),
           externalid: e,
-          name: row.customfield_1!.value!,
+          name: row.customfield_1?.value ?? row.name ?? '',
           venue: {
-            name: row.location_name,
+            ...(venue
+              ? { _id: venue._id, name: venue.name }
+              : { name: row.location_name }),
           },
           eventAt: startDate,
           createdAt: new Date(),

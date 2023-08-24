@@ -3,6 +3,6 @@ import { Venue } from '../artists/types'
 
 export async function getVenues() {
   return collection<Venue>('venues')
-    .find({ hidden: { $ne: true } })
+    .find({ deletedAt: { $exists: false } })
     .toArray()
 }
