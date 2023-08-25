@@ -130,7 +130,10 @@ async function parseResult(result: { [k: string]: RawEvent }) {
         }
         return
       }
-      if (row.event_type_2?.['23'] !== 'Showcase') {
+      if (
+        row.event_type_2?.['23'] !== 'Showcase' &&
+        row.event_type_2?.['120'] !== 'Diacert'
+      ) {
         console.log(e, 'Event_type_2 is not showcase:', row.event_type_2)
         return
       }
@@ -155,6 +158,17 @@ async function parseResult(result: { [k: string]: RawEvent }) {
       if (!venue) {
         console.log('Could not find venue', row.location_name)
         return
+      }
+
+      if (row.event_type_2?.['120'] === 'Diacert' && artist) {
+        collection<Artist>('artists').updateOne(
+          { _id: artist._id },
+          {
+            $addToSet: {
+              categories: { name: 'Diacert', slug: 'diacert', hidden: false },
+            },
+          },
+        )
       }
 
       const event: Omit<LAHEvent, '_id'> = {

@@ -28,7 +28,7 @@ export async function getEvents(from: Date, to: Date, venueId?: ObjectId) {
           _id: a._id,
           name: a.name,
           image: a.image,
-          categories: a.categories?.map((c) => c.name) ?? [],
+          categories: a.categories?.map((c) => c.name).join(', ') ?? '',
         },
       }
     })
