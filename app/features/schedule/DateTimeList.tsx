@@ -1,4 +1,5 @@
-import { Image, StyleSheet, useWindowDimensions } from 'react-native';
+import { StyleSheet, useWindowDimensions } from 'react-native';
+import _ from 'lodash';
 import { Text, View } from '../../components/Themed';
 import Colors from '../../constants/Colors';
 import { FlashList } from '@shopify/flash-list';
@@ -8,6 +9,7 @@ import { RouterOutput } from '../../libs/trpc';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
+import Heart from '../favorites/Heart';
 
 type Props = {
   time: string;
@@ -26,10 +28,11 @@ export default function DateTimeList({ time, slots }: Props) {
         renderItem={({ item }) => {
           return (
             <TouchableOpacity
-              onPress={() =>
-                item.artist._id &&
-                navigation.navigate('ArtistDetails', { artistid: String(item.artist._id) })
-              }
+              onPress={() => {
+                if (item.artist._id) {
+                  navigation.navigate('ArtistDetails', { artistid: String(item.artist._id) });
+                }
+              }}
             >
               <View style={styles.itemList}>
                 <FastImage
@@ -45,6 +48,9 @@ export default function DateTimeList({ time, slots }: Props) {
                   <Text style={styles.name}>{item.artist.name}</Text>
                   <Text style={styles.venue}>{item.venue.name}</Text>
                 </View>
+                <View style={{ marginHorizontal: 8 }}>
+                  <Heart artistid={item.artist._id} hiddenIfNotFaved />
+                </View>
               </View>
             </TouchableOpacity>
           );
@@ -59,6 +65,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderBottomColor: Colors.light.border,
     borderBottomWidth: StyleSheet.hairlineWidth,
+    alignItems: 'center',
   },
   image: {
     width: ITEM_HEIGHT,

@@ -6,9 +6,10 @@ interface HeartProps {
   artistid: string;
   size?: number;
   inverted?: boolean;
+  hiddenIfNotFaved?: boolean;
 }
 
-function Heart({ inverted, artistid, size = 18 }: HeartProps) {
+function Heart({ inverted, artistid, size = 18, hiddenIfNotFaved }: HeartProps) {
   const { favorites, addFavorite, removeFavorite } = useFavorites();
   const isFaved = useMemo(() => favorites.includes(artistid), [favorites, artistid]);
   const toggle = useCallback(() => {
@@ -18,6 +19,7 @@ function Heart({ inverted, artistid, size = 18 }: HeartProps) {
       addFavorite(artistid);
     }
   }, [isFaved, artistid]);
+  if (hiddenIfNotFaved && !isFaved) return null;
   return <HeartButton toggle={toggle} active={isFaved} size={size} inverted={inverted} />;
 }
 

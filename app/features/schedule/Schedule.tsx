@@ -10,18 +10,19 @@ import {
 import _ from 'lodash';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
-//import useFavorites from '../favorites/useFavorites';
+import useFavorites from '../favorites/useFavorites';
 import Colors from '../../constants/Colors';
 import SegmentedButtons from '../../components/SegmentedButtons/SegmentedButtons';
 import DateTimeList from './DateTimeList';
 import useSchedule from './useSchedule';
 import { Category, Day, categories, days } from './types';
+import { Body, Caption, Headline, Title } from '../../components/Texts';
 
 function Schedule() {
   const { width: pageWidth } = useWindowDimensions();
   const [category, setCategory] = useState<Category>('Concerts');
   const [selectedDay, setSelectedDay] = useState<Day>('Wed');
-  //const { favorites } = useFavorites();
+  const { favorites } = useFavorites();
   const scroll = useRef<ScrollView>(null);
   const [activePageIndex, setActivePageIndex] = useState(0);
 
@@ -31,20 +32,20 @@ function Schedule() {
   const schedule = useSchedule(category, selectedDay);
   const [visible, setVisible] = useState(false);
 
-  // useLayoutEffect(() => {
-  //   navigation.setOptions({
-  //     headerRight: () => (
-  //       <TouchableOpacity onPress={() => setShowFavorites((c) => !c)}>
-  //         <FontAwesome
-  //           size={20}
-  //           color={Colors.light.tint}
-  //           name={showFavorites ? 'heart' : 'heart-o'}
-  //           style={{ marginRight: 16 }}
-  //         />
-  //       </TouchableOpacity>
-  //     ),
-  //   });
-  // }, [showFavorites, selectedDay, category, setVisible, visible, setCategory]);
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={() => setShowFavorites((c) => !c)}>
+          <FontAwesome
+            size={20}
+            color={Colors.light.tint}
+            name={showFavorites ? 'heart' : 'heart-o'}
+            style={{ marginRight: 16 }}
+          />
+        </TouchableOpacity>
+      ),
+    });
+  }, [showFavorites, selectedDay, category, setVisible, visible, setCategory]);
 
   useFocusEffect(
     useCallback(() => {
@@ -52,21 +53,17 @@ function Schedule() {
     }, [schedule.refetch])
   );
 
-  // useEffect(() => {
-  //   storeSelection(selectedDay);
-  // }, [selectedDay]);
-
-  // useEffect(() => {
-  //   async function restoreSelection() {
-  //     const val = await getStoredSelection();
-  //     if (val) {
-  //       setSelectedDay(val);
-  //     }
-  //   }
-  //   restoreSelection();
-  // }, []);
-
   const data = useMemo(() => {
+    if (schedule.data?.program && showFavorites) {
+      return (
+        schedule.data?.program
+          .filter((d) => d.slots.some((s) => favorites.includes(s.artist._id)))
+          .map((d) => ({
+            ...d,
+            slots: d.slots.filter((s) => favorites.includes(s.artist._id)),
+          })) || []
+      );
+    }
     return schedule.data?.program || [];
   }, [schedule]);
 
@@ -127,6 +124,28 @@ function Schedule() {
           ))}
         </ScrollView>
       )}
+      {data?.length === 0 && schedule.isFetched && <EmptySchedule />}
+      {data?.length == 0 && schedule.isLoading && <Loading />}
+    </View>
+  );
+}
+
+function Loading() {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Title style={{ opacity: 0.5 }}>Loading...</Title>
+    </View>
+  );
+}
+
+function EmptySchedule() {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Headline center>This selection is</Headline>
+      <Headline>currently empty</Headline>
+      <View style={{ height: 16 }} />
+      <Body>the crew is working on</Body>
+      <Body>fixing this!</Body>
     </View>
   );
 }
