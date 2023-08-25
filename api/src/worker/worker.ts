@@ -30,10 +30,10 @@ async function start() {
     return
   }
   schedule.scheduleJob('fetch news', '*/10 * * * *', task(loadNews))
-  schedule.scheduleJob('fetch artists', '*/2 * * * *', task(loadArtists))
-  schedule.scheduleJob('fetch venues', '*/5 * * * *', task(loadVenues))
+  schedule.scheduleJob('fetch artists', '*/5 * * * *', task(loadArtists))
+  schedule.scheduleJob('fetch venues', '*/10 * * * *', task(loadVenues))
   schedule.scheduleJob('fetch events', '*/2 * * * *', task(loadEvents))
-  schedule.scheduleJob('fetch deals', '*/10 * * * *', task(loadDeals))
+  schedule.scheduleJob('fetch deals', '*/15 * * * *', task(loadDeals))
 
   console.log(Object.keys(schedule.scheduledJobs))
 }
