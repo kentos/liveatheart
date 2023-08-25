@@ -12,6 +12,7 @@ const replaceName: Record<string, string> = {
 
 type RawEvent = {
   name: string
+  event_subtitle: string
   start: number
   end: number
   featured: 'yes' | 'no'
@@ -135,6 +136,7 @@ async function parseResult(result: { [k: string]: RawEvent }) {
       }
 
       const name =
+        row.event_subtitle ??
         row.customfield_1?.value ??
         row.name.substring(0, row.name.indexOf('(') - 1)
 
@@ -145,7 +147,7 @@ async function parseResult(result: { [k: string]: RawEvent }) {
 
       const artist = findArtist(artists, name.trim())
       if (!artist) {
-        console.log('Could not find', name, row.name)
+        console.log('Could not find', name, '::', row.name)
         return
       }
 
