@@ -7,12 +7,26 @@ import { stripHtml } from 'string-strip-html'
 import { loader, WPAPIResponse } from './jsonloader'
 import { Artist } from '../features/artists/types'
 import axios from 'axios'
+import ccl from 'country-code-lookup'
 
 async function getAttachments(url: string) {
   const result = await axios.get<[{ media_type: string; source_url: string }]>(
     url,
   )
   return result.data
+}
+
+function bakeCountry(raw: string) {
+  if (['USA', 'United States (US)'].includes(raw)) {
+    return 'United States'
+  }
+  if (raw === 'Germany/Ireland') {
+    return 'Germany'
+  }
+  if (raw === 'UK') {
+    return 'United Kingdom'
+  }
+  return raw
 }
 
 async function parseResult(result: WPAPIResponse[]) {
@@ -57,10 +71,15 @@ async function parseResult(result: WPAPIResponse[]) {
         }
       }
 
+      const countries = country
+        .split('/')
+        .map((c: string) => ccl.byCountry(bakeCountry(c))?.internet)
+        .join('/')
+
       const artist: Partial<Artist> = {
         externalid: String(row.id),
         name: name,
-        countryCode: country.substring(0, 3),
+        countryCode: countries || country.substring(0, 2).toUpperCase(),
         image,
         description: stripHtml(short_artist_bio).result,
         categories: [
