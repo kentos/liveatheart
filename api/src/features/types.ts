@@ -17,6 +17,7 @@ export type Dayparty = {
   _id: ObjectId
   externalid: string
   name: string
+  image?: string
   venue: {
     _id?: ObjectId
     name: string
@@ -30,6 +31,7 @@ export type Conference = {
   _id: ObjectId
   externalid: string
   name: string
+  image?: string
   venue: {
     _id?: ObjectId
     name: string

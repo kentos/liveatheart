@@ -14,6 +14,7 @@ export async function getDayparties(from: Date, to: Date, venueId?: ObjectId) {
     artist: {
       name: e.name,
       image:
+        e.image ??
         'https://liveatheart.se/wp-content/uploads/2023/04/LAH-logo-WHITE.png',
       categories: ['Dayparty'],
     },

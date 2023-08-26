@@ -73,6 +73,7 @@ async function parseResult(result: { [k: string]: RawEvent }) {
           _id: new ObjectId(),
           externalid: e,
           name: row.customfield_1?.value ?? row.name ?? '',
+          image: row.image_url,
           venue: {
             ...(venue
               ? { _id: venue._id, name: venue.name }
@@ -107,6 +108,7 @@ async function parseResult(result: { [k: string]: RawEvent }) {
           _id: new ObjectId(),
           externalid: e,
           name: row.name,
+          image: row.image_url,
           venue: {
             _id: venue?._id,
             name: venue?.name ?? row.location_name,
