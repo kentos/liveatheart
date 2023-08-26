@@ -37,12 +37,16 @@ export default router({
       .mapValues((v) => v[0])
       .flatMap((v) => {
         const nameHasHyphen = v.name.includes('-')
+        const name = nameHasHyphen
+          ? v.name.substring(0, v.name.indexOf('-')).trim()
+          : v.name
         return {
           ...v,
-          name: nameHasHyphen
-            ? v.name.substring(0, v.name.indexOf('-')).trim()
-            : v.name,
-          type: v.type?.toUpperCase(),
+          name,
+          type:
+            name === 'Scandic Grand'
+              ? 'Festival Office & Conference - tickets, wristband & check in'
+              : v.type?.toUpperCase(),
         }
       })
       .value()
