@@ -14,6 +14,7 @@ export async function getEvents(from: Date, to: Date, venueId?: ObjectId) {
       artistid: { $exists: true },
       ...(venueId && { 'venue._id': venueId }),
       eventAt: { $gt: from, $lt: to },
+      deletedAt: { $exists: false },
     })
     .toArray()
   return _(events)
