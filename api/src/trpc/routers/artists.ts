@@ -4,7 +4,7 @@ import { protectedProcedure, publicProcedure, router } from '../trpc'
 import { removeHeart, setHeart } from '../../features/artists/hearts'
 import { collection, toObjectId } from '@heja/shared/mongodb'
 import { LAHEvent } from '../../features/artists/types'
-import { format, setHours, sub, subHours } from 'date-fns'
+import { format, subHours } from 'date-fns'
 
 function cleanCategories(a: {
   categories?: { name: string; slug: string; hidden: boolean }[]

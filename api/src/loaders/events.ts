@@ -1,5 +1,5 @@
 import { collection, ObjectId } from '@heja/shared/mongodb'
-import { getHours, getMinutes, format } from 'date-fns'
+import { getHours, getMinutes, format, addHours } from 'date-fns'
 import _ from 'lodash'
 import { Artist, LAHEvent, Venue } from '../features/artists/types'
 import { Dayparty } from '../features/types'
@@ -173,13 +173,19 @@ async function parseResult(result: { [k: string]: RawEvent }) {
         )
       }
 
+      const startingHour = getHours(startDate)
+      const eventAt =
+        startingHour === 0 || startingHour === 1
+          ? addHours(startDate, 24)
+          : startDate
+
       const event: Omit<LAHEvent, '_id'> = {
         title: row.name,
         externalid: e,
         artistid: artist?._id,
-        date: format(startDate, 'yyyy-MM-dd'),
-        time: `${getHours(startDate).toString().padStart(2, '0')}:${getMinutes(
-          startDate,
+        date: format(eventAt, 'yyyy-MM-dd'),
+        time: `${getHours(eventAt).toString().padStart(2, '0')}:${getMinutes(
+          eventAt,
         )
           .toString()
           .padStart(2, '0')}`,
@@ -187,7 +193,7 @@ async function parseResult(result: { [k: string]: RawEvent }) {
           _id: venue?._id,
           name: venue?.name ?? row.location_name,
         },
-        eventAt: startDate,
+        eventAt: eventAt,
         createdAt: new Date(),
         updatedAt: new Date(),
       }
