@@ -22,6 +22,9 @@ async function start() {
   await connect({})
 
   if (getenv('NODE_ENV', 'development') !== 'production') {
+    //
+    // Uncomment which loaders you want to run
+    //
     // await loadArtists()
     // await loadVenues()
     // loadEvents()

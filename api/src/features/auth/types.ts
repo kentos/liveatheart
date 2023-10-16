@@ -3,4 +3,7 @@ export type RefreshToken = {
   uuid: string
 }
 
-export type AuthToken = { _id: RefreshToken['_id']; isAdmin?: boolean }
+export type AuthToken = {
+  _id: RefreshToken['_id']
+  isAdmin?: boolean
+}

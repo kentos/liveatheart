@@ -4,9 +4,7 @@ import _ from 'lodash'
 
 export async function getEvents(from: Date, to: Date, venueId?: ObjectId) {
   const artists = await collection<Artist>('artists')
-    .find({
-      deletedAt: { $exists: false },
-    })
+    .find({ deletedAt: { $exists: false } })
     .toArray()
 
   const events = await collection<LAHEvent>('events')
@@ -17,6 +15,7 @@ export async function getEvents(from: Date, to: Date, venueId?: ObjectId) {
       deletedAt: { $exists: false },
     })
     .toArray()
+
   return _(events)
     .map((e) => {
       const a = artists.find((a) => a._id.equals(e.artistid))

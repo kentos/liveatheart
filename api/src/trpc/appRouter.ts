@@ -1,4 +1,4 @@
-import { publicProcedure, router } from './trpc'
+import { router } from './trpc'
 import news from './routers/news'
 import deals from './routers/deals'
 import artists from './routers/artists'
@@ -7,7 +7,6 @@ import auth from './routers/auth'
 import program from './routers/program'
 
 export const appRouter = router({
-  me: publicProcedure.query(() => 'Hello World!'),
   news,
   deals,
   artists,

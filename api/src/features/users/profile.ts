@@ -11,6 +11,7 @@ interface UpdateProfile {
   lastName?: string
   email?: string
 }
+
 export async function updateProfile(userId: string, updates: UpdateProfile) {
   if (!updates.firstName && !updates.lastName && !updates.email) {
     throw new Error('Nothing to update')

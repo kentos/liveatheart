@@ -18,7 +18,7 @@ async function createUser({ _id }: CreateUser): Promise<User> {
     _id: result.insertedId,
   })
   if (!user) {
-    throw new DBError('Create user not found')
+    throw new DBError('Created user not found')
   }
   return user
 }

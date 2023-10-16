@@ -4,8 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/index.ts",
-    "start:prod": "node dist/index.js",
     "build": "tsc -p .",
     "lint": "eslint --ignore-path .eslintignore --ext .js,.ts ./src",
     "format": "prettier --ignore-path .gitignore --write \"./src/**/*.+(js|ts|json)\"",
