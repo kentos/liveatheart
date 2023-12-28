@@ -1,18 +1,21 @@
-import { collection } from '@heja/shared/mongodb'
-import { protectedProcedure, router } from '../trpc'
-import { User } from '../../features/users/types'
-import { TRPCError } from '@trpc/server'
-import { z } from 'zod'
-import { ping } from '../../features/users/ping'
-import { getProfile, updateProfile } from '../../features/users/profile'
+import { collection } from "@heja/shared/mongodb";
+import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { type User } from "../../features/users/types";
+import { TRPCError } from "@trpc/server";
+import { z } from "zod";
+import { ping } from "../../features/users/ping";
+import { getProfile, updateProfile } from "../../features/users/profile";
+import collections from "~/server/collections";
 
-export default router({
+export default createTRPCRouter({
   getFavorites: protectedProcedure.query(async ({ ctx }) => {
-    const user = await collection<User>('users').findOne({ _id: ctx.requester })
+    const user = await collection<User>("users").findOne({
+      _id: ctx.requester,
+    });
     if (!user) {
-      throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' })
+      throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
     }
-    return user.favorites?.map((f) => f._id.toString()) ?? []
+    return user.favorites?.map((f) => f._id.toString()) ?? [];
   }),
 
   ping: protectedProcedure
@@ -23,21 +26,21 @@ export default router({
         timestamp: z.date(),
       }),
     )
-    .mutation(async ({ ctx, input }) => {
-      await ping({
-        user: ctx.requester,
+    .mutation(async ({ ctx: { db, requester }, input }) => {
+      await ping(db, {
+        user: requester,
         os: input.os,
         osVersion: input.osVersion,
         timestamp: input.timestamp,
-      })
+      });
     }),
 
-  getProfile: protectedProcedure.query(async ({ ctx }) => {
-    const profile = await getProfile(ctx.requester)
+  getProfile: protectedProcedure.query(async ({ ctx: { db, requester } }) => {
+    const profile = await getProfile(db, requester);
     if (!profile) {
-      throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' })
+      throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
     }
-    return profile
+    return profile;
   }),
 
   updateProfile: protectedProcedure
@@ -48,25 +51,34 @@ export default router({
         email: z.string().optional(),
       }),
     )
-    .mutation(async ({ ctx, input }) => {
-      return updateProfile(ctx.requester, input)
+    .mutation(async ({ ctx: { db, requester }, input }) => {
+      return updateProfile(db, requester, input);
     }),
 
-  getFeatures: protectedProcedure.query(async ({ ctx }) => {
-    const user = await collection<User>('users').findOne({ _id: ctx.requester })
+  getFeatures: protectedProcedure.query(async ({ ctx: { db, requester } }) => {
+    const user = await collections.users(db).findOne({
+      _id: requester,
+    });
     if (!user) {
-      throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' })
+      throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
     }
-    const features: Record<string, boolean> = {
-      showSchedule: true,
-    }
-    return features
+    const features = {
+      showHeartbeat: false,
+      hidden: {
+        artists: true,
+        schedule: true,
+        venues: true,
+        map: true,
+        deals: true,
+      },
+    };
+    return features;
   }),
 
   deleteProfile: protectedProcedure.mutation(async ({ ctx }) => {
-    await collection<User>('users').updateOne(
+    await collection<User>("users").updateOne(
       { _id: ctx.requester },
       { $set: { deleted: true } },
-    )
+    );
   }),
-})
+});

@@ -25,9 +25,12 @@ export async function createAuthToken(db: Db, refreshToken: string) {
     issuer: "lah-api",
     audience: "lah-client",
   }) as RefreshToken;
+  return generateAuthToken(db, verifiedPayload.uuid);
+}
 
+export async function generateAuthToken(db: Db, refreshTokenUuid: string) {
   const existingUser = await collections.users(db).findOne({
-    refreshTokenUuid: verifiedPayload.uuid,
+    refreshTokenUuid,
   });
   if (!existingUser) {
     throw new TRPCError({
@@ -38,7 +41,7 @@ export async function createAuthToken(db: Db, refreshToken: string) {
 
   const authToken = sign(
     {
-      _id: verifiedPayload._id,
+      _id: existingUser._id,
       ...(existingUser.isAdmin && { isAdmin: true }),
     },
     AUTH_SECRET!,
@@ -46,7 +49,7 @@ export async function createAuthToken(db: Db, refreshToken: string) {
       algorithm: "HS512",
       issuer: "lah-api",
       audience: "lah-client",
-      expiresIn: "10m",
+      expiresIn: "2h",
     },
   );
   return { authToken };

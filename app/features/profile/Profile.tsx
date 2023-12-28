@@ -77,12 +77,12 @@ function Profile() {
           />
         </View>
 
-        {/* <View
+        <View
           style={{
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
-            opacity: 0.25,
+            opacity: push ? 1 : 0.25,
             marginBottom: 8,
           }}
         >
@@ -94,7 +94,7 @@ function Profile() {
           />
         </View>
 
-        <View
+        {/* <View
           style={{
             flexDirection: 'row',
             alignItems: 'center',

@@ -50,6 +50,13 @@
 				<true/>
 			</dict>
 		</dict>
+		<dict>
+			<key>lah.local</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
+		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>To be able to navigate the map we need to find out your location.</string>

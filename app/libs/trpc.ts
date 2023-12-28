@@ -3,7 +3,6 @@ import superjson from 'superjson';
 import type { AppRouter } from '../../api/src/trpc/appRouter';
 import useUserState from '../contexts/session/useUserState';
 import { inferRouterOutputs } from '@trpc/server';
-import { renewAuthToken } from './tokens';
 import { getRefreshToken } from '../contexts/session/getRefreshToken';
 
 export const trpc = createTRPCReact<AppRouter>();
@@ -14,7 +13,7 @@ export const trcpVanilla = createTRPCProxyClient<AppRouter>({
   links: [
     httpBatchLink({
       url: __DEV__
-        ? 'http://10.0.1.61:8080/trpc'
+        ? 'http://lah.local:3000/api/trpc'
         : 'https://liveatheart-production.up.railway.app/trpc',
       async headers() {
         const token = useUserState.getState().authToken;
@@ -33,7 +32,7 @@ export const trpcClient = trpc.createClient({
   links: [
     httpBatchLink({
       url: __DEV__
-        ? 'http://10.0.1.61:8080/trpc'
+        ? 'http://lah.local:3000/api/trpc'
         : 'https://liveatheart-production.up.railway.app/trpc',
       fetch: async (url, options): Promise<Response> => {
         const res = await fetch(url, options);
@@ -66,3 +65,18 @@ export const trpcClient = trpc.createClient({
     }),
   ],
 });
+
+let renewal: Promise<string> | null;
+
+export async function renewAuthToken(refreshToken: string): Promise<string> {
+  if (renewal) {
+    return renewal;
+  }
+  renewal = (async () => {
+    const result = await trcpVanilla.auth.renewAuthToken.mutate({ refreshToken });
+    useUserState.getState().setAuthtoken(result.authToken);
+    renewal = null;
+    return result.authToken;
+  })();
+  return renewal;
+}

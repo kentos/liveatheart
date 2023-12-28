@@ -1,3 +1,79 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+p {
+  @apply mb-2;
+}
+
+input,
+textarea {
+  @apply rounded-md border border-gray-300 p-2 text-base shadow-sm outline-none;
+}
+
+input:disabled,
+textarea:disabled {
+  @apply bg-gray-100 text-gray-300;
+}
+
+button {
+  @apply rounded-3xl border border-gray-300 px-4 py-2 text-lg shadow-sm outline-none;
+}
+
+button[type="submit"]:disabled,
+button[type="button"]:disabled {
+  @apply bg-gray-100 text-gray-300 hover:bg-gray-100 hover:text-gray-300;
+}
+
+button[type="submit"] {
+  @apply bg-blue-500 text-white hover:bg-blue-800;
+}
+
+button[type="button"],
+button[type="reset"] {
+  @apply bg-white hover:bg-blue-800 hover:text-white;
+}
+
+table {
+  @apply border-collapse border border-gray-300;
+}
+
+thead th {
+  @apply border border-zinc-300 bg-blue-100 p-2 text-left text-blue-900;
+}
+
+tbody td {
+  @apply border border-gray-300 p-2 align-top;
+}
+
+a {
+  @apply text-blue-500 hover:text-blue-800;
+}
+
+h1 {
+  @apply text-3xl font-semibold;
+}
+
+h3 {
+  @apply text-xl font-semibold;
+}
+
+.modal-overlay {
+  @apply fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50;
+}
+
+.modal-wrapper {
+  @apply max-h-full w-5/12 overflow-auto font-sans;
+}
+
+.modal {
+  @apply static h-full min-h-96  w-full rounded-lg bg-white shadow-lg;
+}
+
+.modal-body {
+  @apply flex flex-col p-4;
+}
+
+.modal-header {
+  @apply flex flex-row items-center justify-between border-b px-4 pb-2 pt-4;
+}

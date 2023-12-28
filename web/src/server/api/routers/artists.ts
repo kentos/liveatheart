@@ -38,7 +38,7 @@ export default createTRPCRouter({
       .find({ artistid: { $exists: true } }, { sort: { eventAt: 1 } })
       .toArray();
     return result.map((a) => ({
-      _id: a._id.toString(),
+      _id: a._id,
       name: a.name,
       countryCode: a.countryCode ?? "",
       link: a.link,

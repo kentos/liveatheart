@@ -22,7 +22,8 @@
       "bundleIdentifier": "se.liveatheart.app",
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "To be able to navigate the map we need to find out your location.",
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSAllowsArbitraryLoads": true
       },
       "runtimeVersion": "exposdk:45.0.0",
       "config": {

@@ -1,12 +1,13 @@
-import { RouterOutput, trpc } from '../libs/trpc';
+import { trpc } from '../libs/trpc';
 import useUser from './useUser';
 
-type FeaturesHook = RouterOutput['user']['getFeatures'];
-
-export default function useFeatures(): FeaturesHook {
+export default function useFeatures() {
   const user = useUser();
-  const features = trpc.user.getFeatures.useQuery(undefined, {
-    enabled: user._id !== undefined,
-  });
-  return features.data ?? {};
+  const features = trpc.user.getFeatures.useQuery(
+    { userId: user._id },
+    {
+      enabled: user._id !== undefined,
+    }
+  );
+  return features.data;
 }

@@ -32,6 +32,8 @@ export default function BottomTabNavigator() {
   const user = useUser();
   const features = useFeatures();
 
+  if (!features) return null;
+
   return (
     <BottomTab.Navigator
       screenOptions={{
@@ -66,16 +68,18 @@ export default function BottomTabNavigator() {
           headerShown: false,
         }}
       />
-      <BottomTab.Screen
-        name="ArtistsList"
-        component={ArtistsList}
-        options={{
-          title: 'Artists',
-          tabBarIcon: ({ color }) => <TabBarIcon name="music" color={color} />,
-          lazy: false,
-        }}
-      />
-      {(user.role === 'admin' || features.showHeartbeat) && (
+      {!features?.hidden?.artists && (
+        <BottomTab.Screen
+          name="ArtistsList"
+          component={ArtistsList}
+          options={{
+            title: 'Artists',
+            tabBarIcon: ({ color }) => <TabBarIcon name="music" color={color} />,
+            lazy: false,
+          }}
+        />
+      )}
+      {(user.role === 'admin' || features?.showHeartbeat) && (
         <BottomTab.Screen
           name="Heartbeat"
           component={HeartbeatNavigator}
@@ -87,34 +91,40 @@ export default function BottomTabNavigator() {
         />
       )}
 
-      <BottomTab.Screen
-        name="Schedule"
-        component={Schedule}
-        options={{
-          title: 'Program',
-          tabBarIcon: ({ color }) => <TabBarIcon name="clock-o" color={color} />,
-          lazy: false,
-        }}
-      />
+      {!features?.hidden?.schedule && (
+        <BottomTab.Screen
+          name="Schedule"
+          component={Schedule}
+          options={{
+            title: 'Program',
+            tabBarIcon: ({ color }) => <TabBarIcon name="clock-o" color={color} />,
+            lazy: false,
+          }}
+        />
+      )}
 
-      <BottomTab.Screen
-        name="Venues"
-        component={Venues}
-        options={{
-          title: 'Venues',
-          lazy: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-        }}
-      />
+      {!features?.hidden?.venues && (
+        <BottomTab.Screen
+          name="Venues"
+          component={Venues}
+          options={{
+            title: 'Venues',
+            lazy: false,
+            tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+          }}
+        />
+      )}
 
-      <BottomTab.Screen
-        name="MapView"
-        component={MapView}
-        options={{
-          title: 'Map',
-          tabBarIcon: ({ color }) => <TabBarIcon name="map" color={color} />,
-        }}
-      />
+      {!features?.hidden?.map && (
+        <BottomTab.Screen
+          name="MapView"
+          component={MapView}
+          options={{
+            title: 'Map',
+            tabBarIcon: ({ color }) => <TabBarIcon name="map" color={color} />,
+          }}
+        />
+      )}
       {/* <BottomTab.Screen
           name="MyFavorites"
           component={FavoritesList}
@@ -123,16 +133,18 @@ export default function BottomTabNavigator() {
             tabBarIcon: ({ color }) => <TabBarIcon name="heart-o" color={color} />,
           }}
         /> */}
-      <BottomTab.Screen
-        name="Deals"
-        component={DealsNavigator}
-        options={{
-          title: 'Deals',
-          tabBarIcon: ({ color }) => <TabBarIcon name="money" color={color} />,
-          headerShown: false,
-          lazy: false,
-        }}
-      />
+      {!features?.hidden?.deals && (
+        <BottomTab.Screen
+          name="Deals"
+          component={DealsNavigator}
+          options={{
+            title: 'Deals',
+            tabBarIcon: ({ color }) => <TabBarIcon name="money" color={color} />,
+            headerShown: false,
+            lazy: false,
+          }}
+        />
+      )}
       <BottomTab.Screen
         name="More"
         component={More}

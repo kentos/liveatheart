@@ -7,6 +7,7 @@ import { resetClient } from '../../contexts/session/restoreUserSession';
 
 export default function More() {
   const navigation = useNavigation();
+
   return (
     <ScrollView>
       <Item title="Your profile" onPress={() => navigation.navigate('Profile')} />
@@ -15,7 +16,8 @@ export default function More() {
         title="About Live at Heart"
         onPress={() =>
           navigation.navigate('WebView', {
-            url: 'https://liveatheart.se/about-live-at-heart/?in_app=1',
+            //url: 'https://liveatheart.se/about-live-at-heart/?in_app=1',
+            url: 'http://192.168.50.223:3000/in-app/about',
             title: 'About Live at Heart',
           })
         }
@@ -24,7 +26,8 @@ export default function More() {
         title="Partners"
         onPress={() => {
           navigation.navigate('WebView', {
-            url: 'https://liveatheart.se/partners-2022/?in_app=1',
+            //url: 'https://liveatheart.se/partners-2022/?in_app=1',
+            url: 'http://192.168.50.223:3000/in-app/partners',
             title: 'Partners',
           });
         }}

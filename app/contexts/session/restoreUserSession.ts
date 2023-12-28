@@ -1,9 +1,9 @@
-import { get, store, remove } from '../../helpers/storage';
+import { store, remove } from '../../helpers/storage';
 import useUserState from './useUserState';
-import { renewAuthToken } from '../../libs/tokens';
 import setupNewAccount from './setupNewAccount';
 import { getRefreshToken } from './getRefreshToken';
 import { TRPCClientError } from '@trpc/client';
+import { renewAuthToken } from '../../libs/trpc';
 
 const KEY = 'REFRESH_TOKEN';
 

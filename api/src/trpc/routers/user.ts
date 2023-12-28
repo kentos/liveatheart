@@ -52,16 +52,27 @@ export default router({
       return updateProfile(ctx.requester, input)
     }),
 
-  getFeatures: protectedProcedure.query(async ({ ctx }) => {
-    const user = await collection<User>('users').findOne({ _id: ctx.requester })
-    if (!user) {
-      throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' })
-    }
-    const features: Record<string, boolean> = {
-      showSchedule: true,
-    }
-    return features
-  }),
+  getFeatures: protectedProcedure
+    .input(z.object({ userId: z.string() }))
+    .query(async ({ ctx }) => {
+      const user = await collection<User>('users').findOne({
+        _id: ctx.requester,
+      })
+      if (!user) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' })
+      }
+      const features = {
+        showHeartbeat: false,
+        hidden: {
+          artists: true,
+          schedule: true,
+          venues: true,
+          map: true,
+          deals: true,
+        },
+      }
+      return features
+    }),
 
   deleteProfile: protectedProcedure.mutation(async ({ ctx }) => {
     await collection<User>('users').updateOne(

@@ -6,10 +6,10 @@ let localCache: Artist[] = [];
 let lastSet = Date.now();
 
 export async function getAllArtists(db: Db) {
-  if (localCache.length > 0 && Date.now() - lastSet < 1000 * 60 * 2) {
-    // 2 minutes in-memory cache
-    return localCache;
-  }
+  // if (localCache.length > 0 && Date.now() - lastSet < 1000 * 60 * 2) {
+  //   // 2 minutes in-memory cache
+  //   return localCache;
+  // }
   lastSet = Date.now();
   localCache = await collections
     .artists(db)

@@ -1,13 +1,13 @@
-import { type Document, type ObjectId } from "@heja/shared/mongodb";
+import { type ObjectId } from "@heja/shared/mongodb";
 
 export interface Venue {
   _id: ObjectId;
   name: string;
-  slug: string;
-  address: string;
-  coordinates: {
-    latitude: number;
-    longitude: number;
+  slug?: string;
+  address?: string;
+  coordinates?: {
+    latitude: string;
+    longitude: string;
   };
   type?: "showcase" | "dayparty" | "conference";
   color?: string;
@@ -27,20 +27,21 @@ export interface Slot {
 export interface Category {
   name: string;
   slug: string;
-  hidden: boolean;
+  hidden?: boolean;
 }
 
-export interface Artist extends Document {
+export interface Artist {
   _id: ObjectId;
   externalid: string;
   name: string;
   countryCode?: string;
   categories?: Category[];
-  link: string;
+  link?: string;
   image?: string;
   description?: string;
   spotify?: string;
   youtube?: string;
+  published?: boolean;
   // slots: Slot[]
   createdAt: Date;
   updatedAt: Date;
