@@ -6,6 +6,7 @@ p {
   @apply mb-2;
 }
 
+select,
 input,
 textarea {
   @apply rounded-md border border-gray-300 p-2 text-base shadow-sm outline-none;

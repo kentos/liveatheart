@@ -7,7 +7,7 @@ import {
 import { type UserSession, type User } from "./features/users/types";
 import { type Dayparty, type Conference, type News } from "./features/types";
 import { type Deal } from "./features/deals/types";
-import { type ProgramDate } from "./features/program/types";
+import { type Slot, type ProgramDate } from "./features/program/types";
 
 const getCollection = <T extends Document>(db: Db, name: string) =>
   db.collection<T>(name);
@@ -25,6 +25,7 @@ export default {
   news: <T extends Document = News>(db: Db) => getCollection<T>(db, "news"),
   programdates: <T extends Document = ProgramDate>(db: Db) =>
     getCollection<T>(db, "programdates"),
+  slots: <T extends Document = Slot>(db: Db) => getCollection<T>(db, "slots"),
   users: <T extends Document = User>(db: Db) => getCollection<T>(db, "users"),
   usersessions: <T extends Document = UserSession>(db: Db) =>
     getCollection<T>(db, "usersessions"),

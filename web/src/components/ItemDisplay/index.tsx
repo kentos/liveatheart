@@ -12,6 +12,7 @@ type Props<T extends object> = {
     onClick: () => void;
   }[];
   onUpdate?: <K = keyof T>(field: K, value: unknown) => Promise<void>;
+  children?: React.ReactNode;
 };
 
 export default function ItemDisplay<T extends object>({
@@ -20,6 +21,7 @@ export default function ItemDisplay<T extends object>({
   customFields,
   customActions,
   onUpdate,
+  children,
 }: Props<T>) {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement & HTMLTextAreaElement>(null);
@@ -61,60 +63,63 @@ export default function ItemDisplay<T extends object>({
   };
 
   return (
-    <form onSubmit={onSubmit} onReset={onReset}>
-      <div className="flex justify-between border border-b-0 border-gray-300 bg-blue-100 p-2">
-        <div>
-          <button
-            type="button"
-            disabled={!!editing}
-            onClick={() => router.back()}
-          >
-            Back
-          </button>
-        </div>
-        {customActions && (
-          <div className="flex gap-2">
-            {customActions.map((a) => (
-              <button
-                key={a.name}
-                type="button"
-                disabled={!!editing}
-                onClick={a.onClick}
-              >
-                {a.name}
-              </button>
-            ))}
+    <>
+      <form onSubmit={onSubmit} onReset={onReset}>
+        <div className="flex justify-between border border-b-0 border-gray-300 bg-blue-100 p-2">
+          <div>
+            <button
+              type="button"
+              disabled={!!editing}
+              onClick={() => router.back()}
+            >
+              &laquo; Back
+            </button>
           </div>
-        )}
-      </div>
-      <table className="w-full">
-        <tbody>
-          {fields.map((f) => {
-            return (
+          {customActions && (
+            <div className="flex gap-2">
+              {customActions.map((a) => (
+                <button
+                  key={a.name}
+                  type="button"
+                  disabled={!!editing}
+                  onClick={a.onClick}
+                >
+                  {a.name}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+        <table className="w-full">
+          <tbody>
+            {fields.map((f) => {
+              return (
+                <Row
+                  key={String(f)}
+                  ref={inputRef}
+                  fieldName={String(f)}
+                  disabled={isSaving}
+                  value={data[f]}
+                  onClick={() => setEditing(f)}
+                  isEditing={editing === f}
+                />
+              );
+            })}
+            {customFields?.map((f) => (
               <Row
-                key={String(f)}
-                ref={inputRef}
-                fieldName={String(f)}
-                disabled={isSaving}
-                value={data[f]}
-                onClick={() => setEditing(f)}
-                isEditing={editing === f}
+                key={String(f.field)}
+                fieldName={String(f.field)}
+                value={f.Component(data)}
+                disabled={false}
+                isEditing={false}
               />
-            );
-          })}
-          {customFields?.map((f) => (
-            <Row
-              key={String(f.field)}
-              fieldName={String(f.field)}
-              value={f.Component(data)}
-              disabled={false}
-              isEditing={false}
-            />
-          ))}
-        </tbody>
-      </table>
+            ))}
+          </tbody>
+        </table>
+      </form>
+      {children}
       <ItemMetadata item={data} />
-    </form>
+    </>
   );
 }
 
@@ -137,7 +142,7 @@ function ItemMetadata<T extends object>({ item }: { item: T }) {
   }
 
   return (
-    <>
+    <div className="mt-4 rounded-2xl border px-4 py-2 ">
       <h2>Metadata</h2>
       <table>
         <tbody>
@@ -146,7 +151,7 @@ function ItemMetadata<T extends object>({ item }: { item: T }) {
           ))}
         </tbody>
       </table>
-    </>
+    </div>
   );
 }
 

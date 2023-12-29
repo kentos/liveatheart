@@ -14,7 +14,12 @@ import { addMinutes } from "date-fns";
 import { getVenues } from "~/server/features/venues/getVenues";
 import { getVenue } from "~/server/features/venues/getVenue";
 import updateVenue from "~/server/features/venues/updateVenue";
-import Venue from "~/pages/admin/venues/[id]";
+import {
+  addSlot,
+  getSlotsByVenue,
+  removeSlot,
+} from "~/server/features/program/slots";
+import { getDate, updateDate } from "~/server/features/program/dates";
 
 const artists = createTRPCRouter({
   getAll: protectedProcedure.query(async ({ ctx: { db } }) => {
@@ -133,6 +138,38 @@ const news = createTRPCRouter({
 });
 
 const program = createTRPCRouter({
+  addSlot: protectedProcedure
+    .input(
+      z.object({
+        date: z.date(),
+        venueId: z.instanceof(ObjectId).optional(),
+      }),
+    )
+    .mutation(async ({ ctx: { db }, input }) => {
+      return addSlot(db, input.date, input.venueId);
+    }),
+  removeSlot: protectedProcedure
+    .input(
+      z.object({
+        id: z.instanceof(ObjectId),
+      }),
+    )
+    .mutation(async ({ ctx: { db }, input }) => {
+      await removeSlot(db, input.id);
+      return true;
+    }),
+
+  slotsByVenue: protectedProcedure
+    .input(
+      z.object({
+        venueId: z.instanceof(ObjectId),
+      }),
+    )
+    .query(async ({ ctx: { db }, input }) => {
+      const result = await getSlotsByVenue(db, input.venueId);
+      return result;
+    }),
+
   addDate: protectedProcedure
     .input(z.object({ date: z.date() }))
     .mutation(async ({ ctx: { db }, input }) => {
@@ -145,6 +182,26 @@ const program = createTRPCRouter({
         });
       return result.insertedId;
     }),
+
+  updateDate: protectedProcedure
+    .input(
+      z.object({
+        id: z.instanceof(ObjectId),
+        date: z.date().optional(),
+        configuration: z
+          .object({
+            slotsDuration: z.number(),
+            slotsStart: z.number(),
+            numSlots: z.number(),
+          })
+          .optional(),
+      }),
+    )
+    .mutation(async ({ ctx: { db }, input }) => {
+      await updateDate(db, input.id, input);
+      return true;
+    }),
+
   removeDate: protectedProcedure
     .input(z.object({ id: z.instanceof(ObjectId) }))
     .mutation(async ({ ctx: { db }, input }) => {
@@ -164,6 +221,13 @@ const program = createTRPCRouter({
       })),
     }));
   }),
+
+  getOne: protectedProcedure
+    .input(z.object({ id: z.instanceof(ObjectId) }))
+    .query(async ({ ctx: { db }, input }) => {
+      const result = await getDate(db, input.id);
+      return result;
+    }),
 });
 
 const venues = createTRPCRouter({

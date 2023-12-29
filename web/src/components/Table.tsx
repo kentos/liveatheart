@@ -13,6 +13,7 @@ export default function Table<T extends { _id: ObjectId }>({
   transformers,
   features,
   baseUrl,
+  allowFilter = true,
 }: {
   columns: (keyof T)[];
   data: T[];
@@ -21,6 +22,7 @@ export default function Table<T extends { _id: ObjectId }>({
   };
   features?: ("edit" | "delete")[];
   baseUrl?: string;
+  allowFilter?: boolean;
 }) {
   const router = useRouter();
   const params = useSearchParams();
@@ -68,13 +70,15 @@ export default function Table<T extends { _id: ObjectId }>({
               <th key={String(c)}>
                 {title(String(c))}
                 <br />
-                <input
-                  type="text"
-                  defaultValue={filter[c]}
-                  onChange={(e) => {
-                    onSetFilter(c, e.target.value);
-                  }}
-                />
+                {allowFilter && (
+                  <input
+                    type="text"
+                    defaultValue={filter[c]}
+                    onChange={(e) => {
+                      onSetFilter(c, e.target.value);
+                    }}
+                  />
+                )}
               </th>
             ))}
             {features && <th></th>}
